@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                android:id="@+id/llTopAccountingInfo"
+                >
+                <TextView
+                    android:id="@+id/tvAccountingClientName"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client Name"
+                    android:layout_marginLeft="@dimen/_10ssp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    tools:ignore="MissingPrefix"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvAccountingRegion"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Region"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_8ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingTotalLabel"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewEnd"
+                    android:text="Total  : "
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingAmount"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:layout_marginLeft="@dimen/_5ssp"
+                    android:text="10000,00"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/llStatusAccounting"
+                android:layout_below="@id/llTopAccountingInfo"
+                android:layout_weight="5">
+
+                <TextView
+                    android:id="@+id/tvAccountingStatus"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Non Paye"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingVerssi"
+                    fontPath="@string/font_medium"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    android:text="Verssment :"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_10ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingVerssiValue"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:text="6000,00"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingRest"
+                    fontPath="@string/font_medium"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rest :"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_10ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingRestValue"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:text="4000,00"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/llOptionAccounting"
+                android:layout_below="@id/llStatusAccounting"
+                android:layout_weight="4">
+
+                <TextView
+                    android:id="@+id/tvAccountingDate"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvAccountingClientName"
+                    android:layout_marginLeft="@dimen/_10ssp"
+                    android:text="01/08/2022"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_weight="1"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingEdit"
+                    fontPath="@string/font_medium"
+                    android:layout_width="10dp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15ssp"
+                    android:background="@drawable/ic_edit_profile"
+                    android:backgroundTint="#FF5722"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:layout_weight="0.5"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingDelete"
+                    fontPath="@string/font_medium"
+                    android:layout_width="10dp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15ssp"
+                    android:background="@drawable/ic_delete"
+                    android:backgroundTint="#C82525"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:layout_weight="0.5"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvAccountingCheck"
+                    fontPath="@string/font_medium"
+                    android:layout_width="80dp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/bg_corner_white_10"
+                    android:backgroundTint="@color/green"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:layout_weight="0.5"
+                    android:text="CHECK"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10ssp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

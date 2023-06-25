@@ -1,0 +1,41 @@
+-- Merging decision tree log ---
+manifest
+ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+	package
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:2:3-51
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:1-8:12
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:3:3-5:17
+	android:supportsRtl
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml:3:16-42
+uses-sdk
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		ADDED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml
+		INJECTED from H:\QuateProject\SourceCode\QuoteApp\nativetemplates\src\main\AndroidManifest.xml

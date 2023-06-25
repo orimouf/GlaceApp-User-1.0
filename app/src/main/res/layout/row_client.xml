@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvClientBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp">
+
+            <LinearLayout
+                android:id="@+id/llTopClientInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvClientName"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Client Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvRegionTop"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Jijel"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_8ssp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvClientPhone"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:text="0777777777"
+                    android:textColor="@color/black"
+                    android:textDirection="rtl"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llMidelClientInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llTopClientInfo"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvIsCredit"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="No Credit"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvIsPromo"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tvClientName"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Promo"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvIsFrigo"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tvClientName"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Ower Frigo"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llBottomClientInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llMidelClientInfo"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvOldCredit"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Old Credit: 10000,00"
+                    android:textColor="@color/dark_gary"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvCreditBon"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tvClientName"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Bon : 0"
+                    android:textColor="@color/dark_gary"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvLastServe"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tvClientName"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Server : 01/01/2022"
+                    android:textColor="@color/dark_gary"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLeftBottomClientInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llBottomClientInfo"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toLeftOf="@id/llEditOrDelete"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvRegion"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Region: Jijel"
+                    android:layout_weight="1"
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_8ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/tvPaymentBtn"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:text="Payment"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_10ssp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llEditOrDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llBottomClientInfo"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_50sdp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivEditClient"
+                    fontPath="@string/font_medium"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_toLeftOf="@id/ivDeleteCartUser"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:src="@drawable/ic_edit_profile"
+                    app:tint="@color/light_orange"
+                    tools:ignore="MissingPrefix" />
+
+                <ImageView
+                    android:id="@+id/ivDeleteCartClient"
+                    fontPath="@string/font_medium"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/light_orange"
+                    tools:ignore="MissingPrefix" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivAddOrder"
+                fontPath="@string/font_medium"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_5sdp"
+                android:src="@drawable/ic_next"
+                app:tint="@color/light_orange"
+                tools:ignore="MissingPrefix" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

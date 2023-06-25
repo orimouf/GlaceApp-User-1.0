@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F2F7">
+
+    <RelativeLayout
+        android:id="@+id/rlToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <ImageView
+            android:id="@+id/ivMenu"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_nevigation"
+            app:tint="@color/light_orange" />
+
+        <TextView
+            fontPath="@string/font_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_toRightOf="@id/ivMenu"
+            android:text="Glace App"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16ssp"
+            tools:ignore="MissingPrefix" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+            <!--            <ImageView-->
+            <!--                android:layout_width="@dimen/_40sdp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:padding="@dimen/_8sdp"-->
+            <!--                android:id="@+id/ivLocation"-->
+            <!--                android:src="@drawable/ic_location"-->
+            <!--                app:tint="@color/light_orange" />-->
+            <ImageView
+                android:id="@+id/ivUsers"
+                android:layout_width="@dimen/_38sdp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_edit_profile"
+                app:tint="@color/light_orange"
+                android:visibility="gone"/>
+            <!--            <ImageView-->
+            <!--                android:id="@+id/ivSearch"-->
+            <!--                android:layout_width="@dimen/_40sdp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:padding="@dimen/_8sdp"-->
+            <!--                android:src="@drawable/ic_search"-->
+            <!--                app:tint="@color/light_orange" />-->
+            <RelativeLayout
+                android:layout_width="@dimen/_38sdp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivCart"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_logout"
+                    app:tint="@color/light_orange" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlSearchBar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_below="@id/rlToolBar">
+
+        <LinearLayout
+            android:id="@+id/llSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/bg_editfield"
+            android:backgroundTint="@color/white">
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_7sdp"
+                android:src="@drawable/ic_search"
+                android:hint="@color/dark_gary" />
+            <TextView
+                android:id="@+id/tvSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tvTitle"
+                android:background="@android:color/transparent"
+                android:hint="Search Here"
+                android:gravity="center_vertical"
+                android:inputType="textPersonName"
+                android:imeOptions="actionSearch"
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:textSize="@dimen/_11ssp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/rlBenner"-->
+<!--        android:layout_below="@id/rlSearchBar"-->
+<!--        android:layout_marginTop="10dp">-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvBanner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+
+<!--    </RelativeLayout>-->
+
+    <RelativeLayout
+        android:id="@+id/rlGrid"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_below="@+id/rlSearchBar"
+        android:layout_marginTop="10dp">
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ic_grid"-->
+<!--            android:layout_width="@dimen/_32sdp"-->
+<!--            android:layout_height="@dimen/_32sdp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_marginTop="@dimen/_5sdp"-->
+<!--            android:layout_marginRight="@dimen/_10sdp"-->
+<!--            android:layout_marginBottom="@dimen/_5sdp"-->
+<!--            android:background="@drawable/bg_white_100"-->
+<!--            android:padding="@dimen/_8sdp"-->
+<!--            android:src="@drawable/ic_listitem" />-->
+
+        <TextView
+            android:id="@+id/tv_NevProfileName"
+            fontPath="@string/font_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:gravity="start"
+            android:text="Regions"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            tools:ignore="MissingPrefix" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvClientRegion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlGrid"
+        android:layout_marginTop="10dp" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rvClientRegion"
+        android:layout_marginTop="10dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvClientList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:nestedScrollingEnabled="false"/>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>

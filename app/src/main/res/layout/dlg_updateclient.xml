@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:padding="10dp"
+    android:fillViewport="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/bg_corner_white_10"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_30sdp"
+        android:overScrollMode="ifContentScrolls">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Update Client"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="Client Name"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etClientNameDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:hint="Enter Client Name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="Phone"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etUpdatePhoneDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:inputType="number"
+                android:hint="Enter Phone Number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Is Promo" />
+
+            <EditText
+                android:id="@+id/etUpdateIsPromoDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:inputType="number"
+                android:hint="Enter 1 OR 0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Is Frigo" />
+
+            <EditText
+                android:id="@+id/etUpdateIsFrigoDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:inputType="number"
+                android:hint="Enter 1 OR 0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Is Credit" />
+
+            <EditText
+                android:id="@+id/etUpdateIsCreditDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:inputType="number"
+                android:hint="Enter 1 OR 0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Credit Bon" />
+
+            <EditText
+                android:id="@+id/etUpdateCreditBonDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:inputType="number"
+                android:hint="Enter a Number"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Status" />
+
+            <EditText
+                android:id="@+id/etUpdateOldCreditDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:inputType="number"
+                android:hint="Enter Old Credit"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Region" />
+
+            <EditText
+                android:id="@+id/etUpdateRegionDlg"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="0.75"
+                android:hint="Enter Region"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_weight="0.25"
+            android:textSize="10sp"
+            android:text="Prices : [mini:pot:solo:gini:pot vally:big:cornito:cornito gini:gofrito:g8:gold:skiper:scobido:mini scobido:venezia:bf 2l:bf 1l:bf 900:bf 0.5l:buch:tarte:mosta:misso:juliana:bac 5L:bac 6L]" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:textSize="14sp"
+                android:text="Prices" />
+
+            <EditText
+                android:id="@+id/etUpdatePricesDlg"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="0.75"
+                android:inputType="textMultiLine"
+                android:hint="Enter Prices : : :"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tvUpdateClientDlg"
+                fontPath="@string/font_medium"
+                android:layout_width="120dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:background="@drawable/bg_corner_white_10"
+                android:backgroundTint="@color/light_orange"
+                android:gravity="center"
+                android:text="UPDATE"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/tvCancelUpdateClientDlg"
+                fontPath="@string/font_medium"
+                android:layout_width="80dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:background="@drawable/bg_corner_white_10"
+                android:backgroundTint="@color/dark_gary"
+                android:gravity="center"
+                android:text="CANCEL"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                tools:ignore="MissingPrefix" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView >

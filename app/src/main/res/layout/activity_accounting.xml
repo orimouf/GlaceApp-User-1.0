@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_orange"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlTitleAccounting"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:padding="@dimen/_3sdp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/light_orange" />
+
+        <TextView
+            fontPath="@string/font_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Accounting"
+            android:textColor="@color/light_orange"
+            android:textSize="@dimen/_16ssp"
+            tools:ignore="MissingPrefix" />
+
+        <ImageView
+            android:id="@+id/ivHome"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_home"
+            app:tint="@color/light_orange" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llDayAccounting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlTitleAccounting"
+        android:layout_marginRight="@dimen/_10ssp"
+        android:layout_marginLeft="@dimen/_10ssp"
+        android:layout_weight="3"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <TextView
+            fontPath="@string/font_black"
+            android:id="@+id/tvLabelView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/_10ssp"
+            android:text="Day Amount : "
+            android:textAlignment="center"
+            android:textColor="#4E4D4D"
+            android:textSize="@dimen/_15ssp"
+            android:textStyle="bold"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            fontPath="@string/font_black"
+            android:id="@+id/tvTotalDayView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="100000"
+            android:textAlignment="textEnd"
+            android:textColor="#1B8520"
+            android:textSize="@dimen/_15ssp"
+            android:textStyle="bold"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            fontPath="@string/font_black"
+            android:id="@+id/tvCurrencyView"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/_2ssp"
+            android:text=",00 DA"
+            android:textAlignment="center"
+            android:textColor="#1B8520"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            tools:ignore="MissingPrefix" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rlDateAccounting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llDayAccounting"
+        android:layout_marginRight="@dimen/_10ssp"
+        android:layout_marginLeft="@dimen/_10ssp"
+        android:layout_marginBottom="@dimen/_20ssp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <TextView
+            fontPath="@string/font_black"
+            android:id="@+id/tvDateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/_10ssp"
+            android:text="Set the Date"
+            android:textAlignment="center"
+            android:textColor="@color/green"
+            android:textSize="@dimen/_15ssp"
+            android:textStyle="bold"
+            tools:ignore="MissingPrefix" />
+
+        <LinearLayout
+            android:id="@+id/llCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <CalendarView
+                android:id="@+id/cvCalendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvDateView"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llDataSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_15ssp"
+        android:layout_below="@id/rlDateAccounting"
+        android:layout_weight="2"
+        >
+
+        <TextView
+            android:id="@+id/tvSwitchOrder"
+            fontPath="@string/font_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAlignment="center"
+            android:text="Order"
+            android:textColor="@color/light_orange"
+            android:textSize="@dimen/_16ssp"
+            tools:ignore="MissingPrefix"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tvSwitchPayment"
+            fontPath="@string/font_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAlignment="center"
+            android:text="Payment"
+            android:textColor="@color/dark_gary"
+            android:textSize="@dimen/_16ssp"
+            tools:ignore="MissingPrefix"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llOrderList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llDataSwitch"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAccounting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvNoAccountingDataFound"
+            fontPath="@string/font_regular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No Accounting Data Found"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            tools:ignore="MissingPrefix" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llPaymentList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llOrderList"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPayment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvNoPaymentDataFound"
+            fontPath="@string/font_regular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No Payment Data Found"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            tools:ignore="MissingPrefix" />
+    </LinearLayout>
+
+</RelativeLayout>

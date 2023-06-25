@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_orange"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlTitleServer"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:padding="@dimen/_3sdp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/light_orange" />
+
+        <TextView
+            fontPath="@string/font_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Send Data To Server"
+            android:textColor="@color/light_orange"
+            android:textSize="@dimen/_16ssp"
+            tools:ignore="MissingPrefix" />
+
+        <ImageView
+            android:id="@+id/ivHome"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_home"
+            app:tint="@color/light_orange" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlTitleServer"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/rl_dataToServerStatus">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlDelivery"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:orientation="vertical"
+                android:id="@+id/llView"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_round_check"
+                    app:tint="@color/dark_gary" />
+                <View
+                    android:layout_width="3dp"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:id="@+id/view1"/>
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus2"
+                    android:src="@drawable/ic_round_check"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/view2"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus3"
+                    android:src="@drawable/ic_round_check"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/view3"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus4"
+                    android:src="@drawable/ic_round_check"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/view4"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus5"
+                    android:src="@drawable/ic_round_check"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/view5"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus6"
+                    android:src="@drawable/ic_round_check"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlDelivery"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:layout_toRightOf="@id/llView"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tvSendingCheck1"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Clients Data To Server... "
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvSendingCheck2"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Users Data To Server..."
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvSendingCheck3"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Regions Data To Server..."
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:id="@+id/v3"
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvSendingCheck4"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Products Data To Server..."
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:id="@+id/v3"
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvSendingCheck5"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Orders Data To Server..."
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:id="@+id/v3"
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvSendingCheck6"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Ordered Products Data To Server..."
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/llSendData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/rl_dataToServerStatus"
+            android:layout_marginTop="@dimen/_30sdp">
+
+            <TextView
+                android:id="@+id/tvShow"
+                fontPath="@string/font_regular"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100ssp"
+                android:gravity="center"
+                android:text="No Cart Item Found"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_12ssp"
+                tools:ignore="MissingPrefix" />
+
+            <Button
+                android:id="@+id/btnSendData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvShow"
+                android:layout_margin="@dimen/_6sdp"
+                android:text="Send Data"
+                android:onClick="onClick"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llGetData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/llSendData"
+            android:layout_marginTop="@dimen/_15sdp">
+
+            <Button
+                android:id="@+id/btnGetData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_6sdp"
+                android:text="Get Data"
+                android:onClick="onClick"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

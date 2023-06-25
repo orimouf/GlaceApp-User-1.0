@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivUser"
+                fontPath="@string/font_medium"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/temp_barger"
+                android:textSize="@dimen/_12ssp"
+                app:riv_corner_radius="5dp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                fontPath="@string/font_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_toLeftOf="@id/tvCamion"
+                android:layout_toRightOf="@id/ivUser"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text="User Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/tvCamion"
+                fontPath="@string/font_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text="Camion: Amir"
+                android:textColor="@color/dark_gary"
+                android:textSize="@dimen/_8ssp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/tvIsAdmin"
+                fontPath="@string/font_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvUsername"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_toRightOf="@id/ivUser"
+                android:paddingLeft="@dimen/_5sdp"
+                android:text="admin / user"
+                android:textColor="@color/dark_gary"
+                android:textSize="@dimen/_8ssp"
+                tools:ignore="MissingPrefix" />
+
+            <LinearLayout
+                android:id="@+id/llAddonsOrNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvUsername"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivEditUser"
+                    fontPath="@string/font_medium"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_toLeftOf="@id/ivDeleteCartUser"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:src="@drawable/ic_edit_profile"
+                    app:tint="@color/light_orange"
+                    tools:ignore="MissingPrefix" />
+
+                <ImageView
+                    android:id="@+id/ivDeleteCartUser"
+                    fontPath="@string/font_medium"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/light_orange"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
