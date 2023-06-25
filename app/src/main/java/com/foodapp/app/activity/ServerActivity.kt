@@ -36,6 +36,8 @@ import retrofit2.Response
 import java.lang.Integer.parseInt
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ServerActivity : BaseActivity() {
@@ -440,8 +442,9 @@ class ServerActivity : BaseActivity() {
                     val serverResponse: ListResponse<RegionServerModel> = response.body()!!
                     val serverData = serverResponse.regions
 
-                    val currentTimestamp = java.time.Clock.systemUTC()
-                    successfulDialog(this@ServerActivity, currentTimestamp.toString())
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                    val current = LocalDateTime.now().format(formatter)
+                    successfulDialog(this@ServerActivity, current.toString())
                     if(serverData?.size != 0) {
                         for (i in serverData?.indices!!) {
 
