@@ -14,7 +14,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.R
 import com.foodapp.app.api.ApiClient
 import com.foodapp.app.api.ListResponse
@@ -34,10 +33,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Integer.parseInt
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ServerActivity : BaseActivity() {
@@ -60,6 +55,12 @@ class ServerActivity : BaseActivity() {
         val databaseHandler = DatabaseHandler(this)
 
         return databaseHandler.viewUser(true)
+    }
+
+    private fun getPaymentsList(): ArrayList<VerssementModel> {
+        val databaseHandler = DatabaseHandler(this)
+
+        return databaseHandler.viewVerssemnt()
     }
 
     private fun getClientsList(): ArrayList<ClientModel> {
@@ -104,6 +105,7 @@ class ServerActivity : BaseActivity() {
             val getRegionList = getRegionsList()
             val getProductList = getProductsList()
             val getOrderList = getOrdersList()
+            val getPaymentList = getPaymentsList()
             val getOrderedProductList = getOrderedProductsList()
 
             val hashmapClient = HashMap<String, ArrayList<ClientModel>>()
@@ -114,6 +116,8 @@ class ServerActivity : BaseActivity() {
             hashmapRegion["data"] = getRegionList
             val hashmapProduct = HashMap<String, ArrayList<ItemModel>>()
             hashmapProduct["data"] = getProductList
+            val hashmapPayment = HashMap<String, ArrayList<VerssementModel>>()
+            hashmapPayment["data"] = getPaymentList
             val hashmapOrder = HashMap<String, ArrayList<OrderSummaryModel>>()
             hashmapOrder["data"] = getOrderList
             val hashmapOrderedProduct = HashMap<String, ArrayList<AllProductModel>>()
@@ -127,6 +131,7 @@ class ServerActivity : BaseActivity() {
                 if (getRegionList.isNotEmpty()) { callApiRegions(hashmapRegion, getRegionList); operationDone("region") } else { operationDone("region") }
                 if (getProductList.isNotEmpty()) { callApiProducts(hashmapProduct, getProductList); operationDone("product") } else { operationDone("product") }
                 if (getOrderList.isNotEmpty()) { callApiOrders(hashmapOrder, getOrderList); operationDone("order") } else { operationDone("order") }
+                if (getPaymentList.isNotEmpty()) { callApiPayments(hashmapPayment, getPaymentList); operationDone("payment") } else { operationDone("payment") }
                 if (getOrderedProductList.isNotEmpty()) { callApiOrderedProducts(hashmapOrderedProduct, getOrderedProductList); operationDone("orderproduct") } else { operationDone("orderproduct") }
 
                 if (getClientList.isEmpty()) operationDone("client")
@@ -134,10 +139,11 @@ class ServerActivity : BaseActivity() {
                 if (getRegionList.isEmpty()) operationDone("region")
                 if (getProductList.isEmpty()) operationDone("product")
                 if (getOrderList.isEmpty()) operationDone("order")
+                if (getProductList.isEmpty()) operationDone("payment")
                 if (getOrderedProductList.isEmpty()) operationDone("orderproduct")
 
                 if ( getClientList.isEmpty() && getUserList.isEmpty() && getRegionList.isEmpty()
-                    && getProductList.isEmpty() && getOrderList.isEmpty() && getOrderedProductList.isEmpty() ) {
+                    && getProductList.isEmpty() && getOrderList.isEmpty() && getPaymentList.isEmpty() && getOrderedProductList.isEmpty() ) {
                     Common.alertErrorOrValidationDialog(this@ServerActivity,"All data was synchrony with server")
                 }
             } else {
@@ -148,9 +154,20 @@ class ServerActivity : BaseActivity() {
         btnGetData.setOnClickListener{
 
             if (Common.isCheckNetwork(this@ServerActivity)) {
+
+                callApiGetUsers()
+
                 callApiGetClients()
 
                 callApiGetRegions()
+
+                callApiGetPayments()
+
+                callApiGetProducts()
+
+                callApiGetOrders()
+
+                callApiGetOrderedProducts()
 
 //                if (ClientList.isEmpty()) operationDone("client")
 
@@ -222,12 +239,19 @@ class ServerActivity : BaseActivity() {
                 ivStatus6.setBackgroundResource(R.drawable.ic_round_uncheck_orange)
                 ivStatus6.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
             }
+            "payment" -> {
+                tvSendingCheck7.text = "Payments Data Synchrony"
+                tvSendingCheck7.setTextColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                ivStatus7.setBackgroundResource(R.drawable.ic_round_uncheck_orange)
+                ivStatus7.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                view7.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+            }
             else -> "ERROR"
         }
 
     }
 
-    // Api Call
+    // API CALL SEND DATA TO SERVER
     private fun callApiUsers(hashmap: HashMap<String, ArrayList<UserModel>>, userCollection: ArrayList<UserModel>) {
         Common.showLoadingProgress(this@ServerActivity)
         val call = ApiClient.getClient.setUsers(hashmap)
@@ -312,79 +336,6 @@ class ServerActivity : BaseActivity() {
         })
     }
 
-    private fun callApiGetClients() {
-        Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.getClients()
-        val databaseHandler = DatabaseHandler(this)
-        var status: Any = 0
-        call.enqueue(object : Callback<ListResponse<ClientServerModel>> {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(
-                call: Call<ListResponse<ClientServerModel>>,
-                response: Response<ListResponse<ClientServerModel>>
-            ) {
-                if (response.code() == 200) {
-                    val serverResponse: ListResponse<ClientServerModel> = response.body()!!
-                    val serverData = serverResponse.clients
-                    if(serverData?.size != 0) {
-                        for (i in serverData?.indices!!) {
-
-                            if (serverData[i].clientName.isNotEmpty() && serverData[i].region.isNotEmpty() && serverData[i].phone.isNotEmpty() &&
-                                serverData[i].prices.isNotEmpty() && serverData[i].oldCredit.isNotEmpty() && serverData[i].creditBon.isNotEmpty() &&
-                                serverData[i].lastServe.isNotEmpty()
-                            ) {
-                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
-                                val clientCheck = databaseHandler.viewCheckClient(serverData[i].appId.toInt())
-                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-                                val isCredit = if(serverData[i].isCredit)  0 else 1
-                                val isPromo = if(serverData[i].isPromo)  0 else 1
-                                val isFrigo = if(serverData[i].isFrigo)  0 else 1
-
-                                if (!clientCheck) {
-                                    status = databaseHandler.addClient(ClientModel(0, serverData[i]._id, serverData[i].clientName, serverData[i].phone, serverData[i].prices,
-                                        serverData[i].region, serverData[i].oldCredit, isFrigo, isPromo,
-                                        isCredit, parseInt(serverData[i].creditBon), serverData[i].lastServe,
-                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
-                                } else if(!isAfter) {
-                                    status = databaseHandler.updateClient(ClientModel(serverData[i].appId.toInt(), serverData[i]._id, serverData[i].clientName, serverData[i].phone, serverData[i].prices,
-                                        serverData[i].region, serverData[i].oldCredit, isFrigo, isPromo,
-                                        isCredit, parseInt(serverData[i].creditBon), serverData[i].lastServe,
-                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
-                                }
-
-                            } else {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Error Data missing",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                        if (status != -1) {
-                            successfulDialog(this@ServerActivity, "Client Updated")
-                        }
-                    }
-                    Common.dismissLoadingProgress()
-
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
-
-            override fun onFailure(call: Call<ListResponse<ClientServerModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                tvShow.text = t.toString()
-                println(t.toString())
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
-            }
-
-        })
-    }
-
     private fun callApiRegions(hashmap: HashMap<String, ArrayList<RegionModel>>, regionCollection: ArrayList<RegionModel>) {
         Common.showLoadingProgress(this@ServerActivity)
         val call = ApiClient.getClient.setRegions(hashmap)
@@ -426,71 +377,44 @@ class ServerActivity : BaseActivity() {
         })
     }
 
-    private fun callApiGetRegions() {
+    private fun callApiPayments(hashmap: HashMap<String, ArrayList<VerssementModel>>, userCollection: ArrayList<VerssementModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.getRegions()
-        val databaseHandler = DatabaseHandler(this)
-        var status: Any = 0
-
-        call.enqueue(object : Callback<ListResponse<RegionServerModel>> {
-            @RequiresApi(Build.VERSION_CODES.O)
+        val call = ApiClient.getClient.setPayments(hashmap)
+        call.enqueue(object : Callback<RestResponse<VerssementModel>> {
             override fun onResponse(
-                call: Call<ListResponse<RegionServerModel>>,
-                response: Response<ListResponse<RegionServerModel>>
+                call: Call<RestResponse<VerssementModel>>,
+                response: Response<RestResponse<VerssementModel>>
             ) {
-                if (response.code() == 200) {
-                    val serverResponse: ListResponse<RegionServerModel> = response.body()!!
-                    val serverData = serverResponse.regions
+                if (response.code() == 201) {
+                    val serverResponse: RestResponse<VerssementModel> = response.body()!!
+                    if(serverResponse.getStatus().equals("1")) {
+                        for (item in userCollection) {
+                            val databaseHandler = DatabaseHandler(applicationContext)
 
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-                    val current = LocalDateTime.now().format(formatter)
-                    successfulDialog(this@ServerActivity, current.toString())
-                    if(serverData?.size != 0) {
-                        for (i in serverData?.indices!!) {
-
-                            if (serverData[i].regionName.isNotEmpty()) {
-                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
-                                val regionCheck = databaseHandler.viewCheckRegion(serverData[i].regionName)
-                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-
-                                if (!regionCheck) {
-                                    status = databaseHandler.addRegion(RegionModel( 0, serverData[i]._id, serverData[i].regionName,
-                                            serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v,1))
-                                } else if(!isAfter) {
-                                    status = databaseHandler.updateRegion(RegionModel( serverData[i].appId.toInt(), serverData[i]._id, serverData[i].regionName,
-                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v,1))
-                                }
-
-                            } else {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Error Data missing",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
+                            databaseHandler.updateUpToServer(item.id, "TABLE_VERSSEMENT")
                         }
-                        if (status != -1) {
-                            successfulDialog(this@ServerActivity, "Regions Updated")
-                        }
+                        Common.dismissLoadingProgress()
+                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
+                    }else if (serverResponse.getStatus().equals("0")) {
+                        Common.dismissLoadingProgress()
+                        Common.alertErrorOrValidationDialog(
+                            this@ServerActivity,
+                            serverResponse.getMessage()
+                        )
                     }
-                    Common.dismissLoadingProgress()
-
                 } else {
                     Common.dismissLoadingProgress()
                     Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
                 }
             }
 
-            override fun onFailure(call: Call<ListResponse<RegionServerModel>>, t: Throwable) {
+            override fun onFailure(call: Call<RestResponse<VerssementModel>>, t: Throwable) {
                 Common.dismissLoadingProgress()
-                tvShow.text = t.toString()
-                println(t.toString())
                 Common.alertErrorOrValidationDialog(
                     this@ServerActivity,
                     resources.getString(R.string.error_msg)
                 )
             }
-
         })
     }
 
@@ -614,6 +538,505 @@ class ServerActivity : BaseActivity() {
                     resources.getString(R.string.error_msg)
                 )
             }
+        })
+    }
+
+    // API CALL GET DATA FROM SERVER
+
+    private fun callApiGetUsers() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getUsers()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+        call.enqueue(object : Callback<ListResponse<UserServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<UserServerModel>>,
+                response: Response<ListResponse<UserServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<UserServerModel> = response.body()!!
+                    val serverData = serverResponse.users
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].username.isNotEmpty() && serverData[i].email.isNotEmpty() && serverData[i].password.isNotEmpty() &&
+                                serverData[i].profilePic.isNotEmpty() && serverData[i].camion.isNotEmpty()) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val userCheck = databaseHandler.viewCheckUser(serverData[i].appId.toInt())
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+                                val isAdmin = if(serverData[i].isAdmin)  0 else 1
+
+                                if (!userCheck) {
+                                    status = databaseHandler.addUser(UserModel(0, serverData[i]._id, serverData[i].username, serverData[i].email, serverData[i].password,
+                                        serverData[i].profilePic, serverData[i].camion,  isAdmin, serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.addUser(UserModel(serverData[i].appId.toInt(), serverData[i]._id, serverData[i].username, serverData[i].email, serverData[i].password,
+                                        serverData[i].profilePic, serverData[i].camion,  isAdmin, serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "User Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<UserServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
+        })
+    }
+
+    private fun callApiGetClients() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getClients()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+        call.enqueue(object : Callback<ListResponse<ClientServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<ClientServerModel>>,
+                response: Response<ListResponse<ClientServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<ClientServerModel> = response.body()!!
+                    val serverData = serverResponse.clients
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].clientName.isNotEmpty() && serverData[i].region.isNotEmpty() && serverData[i].phone.isNotEmpty() &&
+                                serverData[i].prices.isNotEmpty() && serverData[i].oldCredit.isNotEmpty() && serverData[i].creditBon.isNotEmpty() &&
+                                serverData[i].lastServe.isNotEmpty()
+                            ) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val clientCheck = databaseHandler.viewCheckClient(serverData[i].appId.toInt())
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+                                val isCredit = if(serverData[i].isCredit)  0 else 1
+                                val isPromo = if(serverData[i].isPromo)  0 else 1
+                                val isFrigo = if(serverData[i].isFrigo)  0 else 1
+
+                                if (!clientCheck) {
+                                    status = databaseHandler.addClient(ClientModel(0, serverData[i]._id, serverData[i].clientName, serverData[i].phone, serverData[i].prices,
+                                        serverData[i].region, serverData[i].oldCredit, isFrigo, isPromo,
+                                        isCredit, parseInt(serverData[i].creditBon), serverData[i].lastServe,
+                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.updateClient(ClientModel(serverData[i].appId.toInt(), serverData[i]._id, serverData[i].clientName, serverData[i].phone, serverData[i].prices,
+                                        serverData[i].region, serverData[i].oldCredit, isFrigo, isPromo,
+                                        isCredit, parseInt(serverData[i].creditBon), serverData[i].lastServe,
+                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "Client Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<ClientServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
+        })
+    }
+
+    private fun callApiGetRegions() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getRegions()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+
+        call.enqueue(object : Callback<ListResponse<RegionServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<RegionServerModel>>,
+                response: Response<ListResponse<RegionServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<RegionServerModel> = response.body()!!
+                    val serverData = serverResponse.regions
+
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].regionName.isNotEmpty()) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val regionCheck = databaseHandler.viewCheckRegion(serverData[i].regionName)
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+
+                                if (!regionCheck) {
+                                    status = databaseHandler.addRegion(RegionModel( 0, serverData[i]._id, serverData[i].regionName,
+                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v,1))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.updateRegion(RegionModel( serverData[i].appId.toInt(), serverData[i]._id, serverData[i].regionName,
+                                        serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v,1))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "Regions Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<RegionServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
+        })
+    }
+
+    private fun callApiGetPayments() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getPayments()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+
+        call.enqueue(object : Callback<ListResponse<VerssementServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<VerssementServerModel>>,
+                response: Response<ListResponse<VerssementServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<VerssementServerModel> = response.body()!!
+                    val serverData = serverResponse.payments
+
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].clientName.isNotEmpty() && serverData[i].clientId.isNotEmpty() && serverData[i].region.isNotEmpty() && serverData[i].oldSomme.isNotEmpty() &&
+                                serverData[i].verssi.isNotEmpty() && serverData[i].rest.isNotEmpty() && serverData[i].date.isNotEmpty()) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+                                val isCheck = if(serverData[i].isCheck)  0 else 1
+
+                                if (!paymentCheck) {
+                                    status = databaseHandler.addVerssement(VerssementModel( 0, serverData[i]._id, serverData[i].clientId,
+                                        serverData[i].clientName, serverData[i].region, serverData[i].oldSomme, serverData[i].verssi, serverData[i].rest,
+                                        1, isCheck, serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v,serverData[i].date))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.addVerssement(VerssementModel( serverData[i].appId.toInt(), serverData[i]._id, serverData[i].clientId,
+                                        serverData[i].clientName, serverData[i].region, serverData[i].oldSomme, serverData[i].verssi, serverData[i].rest,
+                                        1, isCheck, serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v,serverData[i].date))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "Payment Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<VerssementServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
+        })
+    }
+
+    private fun callApiGetProducts() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getProducts()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+
+        call.enqueue(object : Callback<ListResponse<ItemServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<ItemServerModel>>,
+                response: Response<ListResponse<ItemServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<ItemServerModel> = response.body()!!
+                    val serverData = serverResponse.products
+
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].name.isNotEmpty() && serverData[i].price.isNotEmpty() && serverData[i].image.isNotEmpty()) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+                                val itStatus = if(serverData[i].status)  0 else 1
+
+                                if (!paymentCheck) {
+                                    status = databaseHandler.addItem(ItemModel( 0, serverData[i]._id, serverData[i].name,
+                                        serverData[i].price, itStatus, serverData[i].qty_par_one, serverData[i].image, serverData[i].createdAt,
+                                        serverData[i].updatedAt, serverData[i].__v, 1))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.addItem(ItemModel( serverData[i].appId.toInt(), serverData[i]._id, serverData[i].name,
+                                        serverData[i].price, itStatus, serverData[i].qty_par_one, serverData[i].image, serverData[i].createdAt,
+                                        serverData[i].updatedAt, serverData[i].__v, 1))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "Product Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<ItemServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
+        })
+    }
+
+    private fun callApiGetOrders() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getOrders()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+
+        call.enqueue(object : Callback<ListResponse<OrderServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<OrderServerModel>>,
+                response: Response<ListResponse<OrderServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<OrderServerModel> = response.body()!!
+                    val serverData = serverResponse.orders
+
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].clientName.isNotEmpty() && serverData[i].clientId.isNotEmpty() && serverData[i].productListId.isNotEmpty() &&
+                                serverData[i].totalToPay.isNotEmpty() && serverData[i].verssi.isNotEmpty() && serverData[i].rest.isNotEmpty() && serverData[i].date.isNotEmpty()) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+                                val isCheck = if(serverData[i].isCheck)  0 else 1
+                                val isCredit = if(serverData[i].isCredit)  0 else 1
+
+                                if (!paymentCheck) {
+                                    status = databaseHandler.addOrderSummary(OrderSummaryModel( 0, serverData[i]._id, serverData[i].clientName, serverData[i].clientId.toInt(),
+                                        serverData[i].productListId.toInt(), serverData[i].totalToPay.toInt(), serverData[i].verssi, serverData[i].rest, isCredit, serverData[i].date,
+                                        isCheck, serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.addOrderSummary(OrderSummaryModel( serverData[i].appId.toInt(), serverData[i]._id, serverData[i].clientName, serverData[i].clientId.toInt(),
+                                        serverData[i].productListId.toInt(), serverData[i].totalToPay.toInt(), serverData[i].verssi, serverData[i].rest, isCredit, serverData[i].date,
+                                        isCheck, serverData[i].createdAt, serverData[i].updatedAt, serverData[i].__v, 1))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "Order Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<OrderServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
+        })
+    }
+
+    private fun callApiGetOrderedProducts() {
+        Common.showLoadingProgress(this@ServerActivity)
+        val call = ApiClient.getClient.getAllProducts()
+        val databaseHandler = DatabaseHandler(this)
+        var status: Any = 0
+
+        call.enqueue(object : Callback<ListResponse<AllProductServerModel>> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ListResponse<AllProductServerModel>>,
+                response: Response<ListResponse<AllProductServerModel>>
+            ) {
+                if (response.code() == 200) {
+                    val serverResponse: ListResponse<AllProductServerModel> = response.body()!!
+                    val serverData = serverResponse.allProducts
+
+                    if(serverData?.size != 0) {
+                        for (i in serverData?.indices!!) {
+
+                            if (serverData[i].orderId.isNotEmpty()) {
+                                val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
+
+                                if (!paymentCheck) {
+                                    status = databaseHandler.addAllProduct(AllProductModel( 0, serverData[i]._id, serverData[i].orderId.toInt(), serverData[i].mini_qty.toInt(),
+                                        serverData[i].mini_q_u.toInt(), serverData[i].trio_qty.toInt(), serverData[i].trio_q_u.toInt(), serverData[i].solo_qty.toInt(), serverData[i].solo_q_u.toInt(),
+                                        serverData[i].pot_qty.toInt(), serverData[i].pot_q_u.toInt(), serverData[i].gini_qty.toInt(), serverData[i].gini_q_u.toInt(),
+                                        serverData[i].big_qty.toInt(), serverData[i].big_q_u.toInt(), serverData[i].cornito_4_qty.toInt(), serverData[i].cornito_4_q_u.toInt(),
+                                        serverData[i].cornito_5_qty.toInt(), serverData[i].cornito_5_q_u.toInt(), serverData[i].cornito_g_qty.toInt(), serverData[i].cornito_g_q_u.toInt(),
+                                        serverData[i].gofrito_qty.toInt(), serverData[i].gofrito_q_u.toInt(), serverData[i].pot_v_qty.toInt(), serverData[i].pot_v_q_u.toInt(),
+                                        serverData[i].g8_qty.toInt(), serverData[i].g8_q_u.toInt(), serverData[i].gold_qty.toInt(), serverData[i].gold_q_u.toInt(), serverData[i].skiper_qty.toInt(),
+                                        serverData[i].skiper_q_u.toInt(), serverData[i].scobido_qty.toInt(), serverData[i].scobido_q_u.toInt(), serverData[i].mini_scobido_qty.toInt(),
+                                        serverData[i].mini_scobido_q_u.toInt(), serverData[i].venezia_qty.toInt(), serverData[i].venezia_q_u.toInt(), serverData[i].bf_400_q_u.toInt(),
+                                        serverData[i].bf_250_q_u.toInt(), serverData[i].bf_230_q_u.toInt(), serverData[i].bf_200_q_u.toInt(), serverData[i].bf_150_q_u.toInt(),
+                                        serverData[i].buch_q_u.toInt(), serverData[i].tarte_q_u.toInt(), serverData[i].mosta_q_u.toInt(), serverData[i].misso_q_u.toInt(),
+                                        serverData[i].juliana_q_u.toInt(), serverData[i].bac_5_q_u.toInt(), serverData[i].bac_6_q_u.toInt(), serverData[i].createdAt,
+                                        serverData[i].updatedAt, serverData[i].__v, 1))
+                                } else if(!isAfter) {
+                                    status = databaseHandler.addAllProduct(AllProductModel( serverData[i].appId.toInt(), serverData[i]._id, serverData[i].orderId.toInt(), serverData[i].mini_qty.toInt(),
+                                        serverData[i].mini_q_u.toInt(), serverData[i].trio_qty.toInt(), serverData[i].trio_q_u.toInt(), serverData[i].solo_qty.toInt(), serverData[i].solo_q_u.toInt(),
+                                        serverData[i].pot_qty.toInt(), serverData[i].pot_q_u.toInt(), serverData[i].gini_qty.toInt(), serverData[i].gini_q_u.toInt(),
+                                        serverData[i].big_qty.toInt(), serverData[i].big_q_u.toInt(), serverData[i].cornito_4_qty.toInt(), serverData[i].cornito_4_q_u.toInt(),
+                                        serverData[i].cornito_5_qty.toInt(), serverData[i].cornito_5_q_u.toInt(), serverData[i].cornito_g_qty.toInt(), serverData[i].cornito_g_q_u.toInt(),
+                                        serverData[i].gofrito_qty.toInt(), serverData[i].gofrito_q_u.toInt(), serverData[i].pot_v_qty.toInt(), serverData[i].pot_v_q_u.toInt(),
+                                        serverData[i].g8_qty.toInt(), serverData[i].g8_q_u.toInt(), serverData[i].gold_qty.toInt(), serverData[i].gold_q_u.toInt(), serverData[i].skiper_qty.toInt(),
+                                        serverData[i].skiper_q_u.toInt(), serverData[i].scobido_qty.toInt(), serverData[i].scobido_q_u.toInt(), serverData[i].mini_scobido_qty.toInt(),
+                                        serverData[i].mini_scobido_q_u.toInt(), serverData[i].venezia_qty.toInt(), serverData[i].venezia_q_u.toInt(), serverData[i].bf_400_q_u.toInt(),
+                                        serverData[i].bf_250_q_u.toInt(), serverData[i].bf_230_q_u.toInt(), serverData[i].bf_200_q_u.toInt(), serverData[i].bf_150_q_u.toInt(),
+                                        serverData[i].buch_q_u.toInt(), serverData[i].tarte_q_u.toInt(), serverData[i].mosta_q_u.toInt(), serverData[i].misso_q_u.toInt(),
+                                        serverData[i].juliana_q_u.toInt(), serverData[i].bac_5_q_u.toInt(), serverData[i].bac_6_q_u.toInt(), serverData[i].createdAt,
+                                        serverData[i].updatedAt, serverData[i].__v, 1))
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Error Data missing",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                        if (status != -1) {
+                            successfulDialog(this@ServerActivity, "All Product Updated")
+                        }
+                    }
+                    Common.dismissLoadingProgress()
+
+                } else {
+                    Common.dismissLoadingProgress()
+                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
+                }
+            }
+
+            override fun onFailure(call: Call<ListResponse<AllProductServerModel>>, t: Throwable) {
+                Common.dismissLoadingProgress()
+                tvShow.text = t.toString()
+                println(t.toString())
+                Common.alertErrorOrValidationDialog(
+                    this@ServerActivity,
+                    resources.getString(R.string.error_msg)
+                )
+            }
+
         })
     }
 

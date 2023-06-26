@@ -13,7 +13,6 @@ import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlin.collections.ArrayList
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.adaptor.AccountingAdaptor
 import com.foodapp.app.adaptor.PaymentAdaptor
 import com.foodapp.app.model.*

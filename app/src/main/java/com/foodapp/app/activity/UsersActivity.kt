@@ -8,20 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common.getCurrentLanguage
-import kotlinx.android.synthetic.main.activity_cart.*
-import kotlinx.android.synthetic.main.row_cart.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 import android.widget.Toast
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.adaptor.UserAdaptor
 import com.foodapp.app.model.UserModel
 import kotlinx.android.synthetic.main.activity_cart.ivBack
 import kotlinx.android.synthetic.main.activity_cart.ivHome
 import kotlinx.android.synthetic.main.activity_users.*
-import kotlinx.android.synthetic.main.dlg_updateproduct.*
 import kotlinx.android.synthetic.main.dlg_updateuser.*
-import kotlinx.android.synthetic.main.row_cart.*
 import java.lang.Integer.parseInt
 
 class UsersActivity : BaseActivity() {
@@ -95,6 +89,7 @@ class UsersActivity : BaseActivity() {
 
         updateDialog.tvUpdateUser.setOnClickListener(View.OnClickListener {
 
+            val email = updateDialog.etUpdateEmail.text.toString()
             val username = updateDialog.etUpdateUsername.text.toString()
             val password = updateDialog.etUpdatePassword.text.toString()
             val camion = updateDialog.etUpdateCamion.text.toString()
@@ -104,7 +99,8 @@ class UsersActivity : BaseActivity() {
             if (!username.isEmpty() && !password.isEmpty() && !camion.isEmpty() && !isadmin.isEmpty()) {
 
                 val status =
-                    databaseHandler.updateUser(UserModel(userModel.id, userModel.server_id, username, password, camion, parseInt(isadmin), "0", "0", "0", 0))
+                    databaseHandler.updateUser(UserModel(userModel.id, userModel.server_id, username, email, password, userModel.profile_pic,
+                        camion, parseInt(isadmin), userModel.createdAt, userModel.updatedAt, userModel.__v, userModel.up_to_server))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "User Updated.", Toast.LENGTH_LONG).show()
 
@@ -144,7 +140,8 @@ class UsersActivity : BaseActivity() {
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
             //calling the deleteEmployee method of DatabaseHandler class to delete record
-            val status = databaseHandler.deleteUser(UserModel(userModel.id,"", "", "", "", 0, "0", "0", "0", 0))
+            val status = databaseHandler.deleteUser(UserModel(userModel.id,"", "", "", "", "null",
+                "0", 0, "0", "0", "0", 0))
             if (status > -1) {
                 Toast.makeText(
                     applicationContext,

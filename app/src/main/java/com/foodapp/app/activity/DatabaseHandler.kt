@@ -1,4 +1,4 @@
-package com.example.glaceapp
+package com.foodapp.app.activity
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,159 +6,159 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
 import com.foodapp.app.model.*
-import kotlin.coroutines.coroutineContext
 
 //creating the database logic, extending the SQLiteOpenHelper base class
 class DatabaseHandler(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private val DATABASE_VERSION = 1
-        private val DATABASE_NAME = "GlaceDatabase"
+        const val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "GlaceDatabase"
 
-        private val TABLE_ITEMS = "ItemsTable"
-        private val TABLE_STOCK = "StockTable"
-        private val TABLE_USER = "UserTable"
-        private val TABLE_ORDER_SUMMARY = "OrderSummaryTable"
-        private val TABLE_ALL_PRODUCT = "AllProductTable"
-        private val TABLE_CLIENT = "clientTable"
-        private val TABLE_REGION = "regionTable"
-        private val TABLE_VERSSEMENT = "verssementTable"
+        const val TABLE_ITEMS = "ItemsTable"
+        const val TABLE_STOCK = "StockTable"
+        const val TABLE_USER = "UserTable"
+        const val TABLE_ORDER_SUMMARY = "OrderSummaryTable"
+        const val TABLE_ALL_PRODUCT = "AllProductTable"
+        const val TABLE_CLIENT = "clientTable"
+        const val TABLE_REGION = "regionTable"
+        const val TABLE_VERSSEMENT = "verssementTable"
 
-        private val KEY_ID = "_id"
-        private val KEY_SERVER_ID = "server_id"
-        private val KEY_NAME = "name"
-        private val KEY_CLIENT_NAME = "client_name"
-        private val KEY_CLIENT_ID = "client_id"
-        private val KEY_ORDER_ID = "order_id"
-        private val KEY_PRODUCT_LIST_ID = "product_list_id"
-        private val KEY_TOTAL_TO_PAY = "total_to_pay"
-        private val KEY_IS_CREDIT = "is_credit"
-        private val KEY_USERNAME = "username"
-        private val KEY_PASSWORD = "password"
-        private val KEY_CAMION = "camion"
-        private val KEY_ISADMIN = "isadmin"
-        private val KEY_PRICE = "price"
-        private val KEY_IMAGE = "image"
-        private val KEY_STATUS = "status"
-        private val KEY_QTY_PAR_ONE = "qty_par_one"
-        private val KEY_QTY = "qty"
-        private val KEY_REGION = "region"
-        private val KEY_PHONE = "phone"
-        private val KEY_PRICES = "prices"
-        private val KEY_ISPROMO = "is_promo"
-        private val KEY_ISFRIGO = "is_frigo"
-        private val KEY_OLDCREDIT = "old_credit"
-        private val KEY_LASTSERVE = "last_serve"
-        private val KEY_CREDITBON = "credit_bon"
-        private val KEY_UP_TO_SERVER = "up_to_server"
-        private val KEY_DATE = "date"
-        private val KEY_IS_CHECK = "is_check"
-        private val KEY_OLD_SOMME = "old_somme"
-        private val KEY_VERSSI = "verssi"
-        private val KEY_REST = "rest"
-        private val KEY_CREATEAT = "createdAt"
-        private val KEY_UPDATEAT = "updatedAt"
-        private val KEY___V = "__v"
+        const val KEY_ID = "_id"
+        const val KEY_SERVER_ID = "server_id"
+        const val KEY_NAME = "name"
+        const val KEY_CLIENT_NAME = "client_name"
+        const val KEY_CLIENT_ID = "client_id"
+        const val KEY_ORDER_ID = "order_id"
+        const val KEY_PRODUCT_LIST_ID = "product_list_id"
+        const val KEY_TOTAL_TO_PAY = "total_to_pay"
+        const val KEY_IS_CREDIT = "is_credit"
+        const val KEY_USERNAME = "username"
+        const val KEY_EMAIL = "email"
+        const val KEY_PASSWORD = "password"
+        const val KEY_PROFILE_PIC = "profile_pic"
+        const val KEY_CAMION = "camion"
+        const val KEY_ISADMIN = "isadmin"
+        const val KEY_PRICE = "price"
+        const val KEY_IMAGE = "image"
+        const val KEY_STATUS = "status"
+        const val KEY_QTY_PAR_ONE = "qty_par_one"
+        const val KEY_QTY = "qty"
+        const val KEY_REGION = "region"
+        const val KEY_PHONE = "phone"
+        const val KEY_PRICES = "prices"
+        const val KEY_ISPROMO = "is_promo"
+        const val KEY_ISFRIGO = "is_frigo"
+        const val KEY_OLDCREDIT = "old_credit"
+        const val KEY_LASTSERVE = "last_serve"
+        const val KEY_CREDITBON = "credit_bon"
+        const val KEY_UP_TO_SERVER = "up_to_server"
+        const val KEY_DATE = "date"
+        const val KEY_IS_CHECK = "is_check"
+        const val KEY_OLD_SOMME = "old_somme"
+        const val KEY_VERSSI = "verssi"
+        const val KEY_REST = "rest"
+        const val KEY_CREATEAT = "createdAt"
+        const val KEY_UPDATEAT = "updatedAt"
+        const val KEY___V = "__v"
 
 //        ------------------------------------------------------
 
-        private val KEY_MINI_QTY = "mini_qty"
-        private val KEY_MINI_QU = "mini_q_u"
-        private val KEY_TRIO_QTY = "trio_qty"
-        private val KEY_TRIO_QU = "trio_q_u"
-        private val KEY_SOLO_QTY = "solo_qty"
-        private val KEY_SOLO_QU = "solo_q_u"
-        private val KEY_POT_QTY = "pot_qty"
-        private val KEY_POT_QU = "pot_q_u"
-        private val KEY_GINI_QTY = "gini_qty"
-        private val KEY_GINI_QU = "gini_q_u"
-        private val KEY_BIG_QTY = "big_qty"
-        private val KEY_BIG_QU = "big_q_u"
-        private val KEY_CORNITO_4_QTY = "cornito_4_qty"
-        private val KEY_CORNITO_4_QU = "cornito_4_q_u"
-        private val KEY_CORNITO_5_QTY = "cornito_5_qty"
-        private val KEY_CORNITO_5_QU = "cornito_5_q_u"
-        private val KEY_CORNITO_G_QTY = "cornito_g_qty"
-        private val KEY_CORNITO_G_QU = "cornito_g_q_u"
-        private val KEY_GOFRITO_QTY = "gofrito_qty"
-        private val KEY_GOFRITO_QU = "gofrito_q_u"
-        private val KEY_POT_V_QTY = "pot_v_qty"
-        private val KEY_POT_V_QU = "pot_v_q_u"
-        private val KEY_BF_400_QU = "bf_400_q_u"
-        private val KEY_BF_250_QU = "bf_250_q_u"
-        private val KEY_BF_230_QU = "bf_230_q_u"
-        private val KEY_BF_200_QU = "bf_200_q_u"
-        private val KEY_BF_150_QU = "bf_150_q_u"
-        private val KEY_BUCH_QU = "buch_q_u"
-        private val KEY_TARTE_QU = "tarte_q_u"
-        private val KEY_MOSTA_QU = "mosta_q_u"
-        private val KEY_MISSO_QU = "misso_q_u"
-        private val KEY_G8_QTY = "g8_qty"
-        private val KEY_G8_QU = "g8_q_u"
-        private val KEY_GOLD_QTY = "gold_qty"
-        private val KEY_GOLD_QU = "gold_q_u"
-        private val KEY_SKIPER_QTY = "skiper_qty"
-        private val KEY_SKIPER_QU = "skiper_q_u"
-        private val KEY_SCOBIDO_QTY = "scobido_qty"
-        private val KEY_SCOBIDO_QU = "scobido_q_u"
-        private val KEY_MINI_SCOBIDO_QTY = "mini_scobido_qty"
-        private val KEY_MINI_SCOBIDO_QU = "mini_scobido_q_u"
-        private val KEY_JULIANA_QU = "juliana_q_u"
-        private val KEY_BAC_5_QU = "bac_5_q_u"
-        private val KEY_BAC_6_QU = "bac_6_q_u"
-        private val KEY_VENEZIA_QTY = "venezia_qty"
-        private val KEY_VENEZIA_QU = "venezia_q_u"
+        const val KEY_MINI_QTY = "mini_qty"
+        const val KEY_MINI_QU = "mini_q_u"
+        const val KEY_TRIO_QTY = "trio_qty"
+        const val KEY_TRIO_QU = "trio_q_u"
+        const val KEY_SOLO_QTY = "solo_qty"
+        const val KEY_SOLO_QU = "solo_q_u"
+        const val KEY_POT_QTY = "pot_qty"
+        const val KEY_POT_QU = "pot_q_u"
+        const val KEY_GINI_QTY = "gini_qty"
+        const val KEY_GINI_QU = "gini_q_u"
+        const val KEY_BIG_QTY = "big_qty"
+        const val KEY_BIG_QU = "big_q_u"
+        const val KEY_CORNITO_4_QTY = "cornito_4_qty"
+        const val KEY_CORNITO_4_QU = "cornito_4_q_u"
+        const val KEY_CORNITO_5_QTY = "cornito_5_qty"
+        const val KEY_CORNITO_5_QU = "cornito_5_q_u"
+        const val KEY_CORNITO_G_QTY = "cornito_g_qty"
+        const val KEY_CORNITO_G_QU = "cornito_g_q_u"
+        const val KEY_GOFRITO_QTY = "gofrito_qty"
+        const val KEY_GOFRITO_QU = "gofrito_q_u"
+        const val KEY_POT_V_QTY = "pot_v_qty"
+        const val KEY_POT_V_QU = "pot_v_q_u"
+        const val KEY_BF_400_QU = "bf_400_q_u"
+        const val KEY_BF_250_QU = "bf_250_q_u"
+        const val KEY_BF_230_QU = "bf_230_q_u"
+        const val KEY_BF_200_QU = "bf_200_q_u"
+        const val KEY_BF_150_QU = "bf_150_q_u"
+        const val KEY_BUCH_QU = "buch_q_u"
+        const val KEY_TARTE_QU = "tarte_q_u"
+        const val KEY_MOSTA_QU = "mosta_q_u"
+        const val KEY_MISSO_QU = "misso_q_u"
+        const val KEY_G8_QTY = "g8_qty"
+        const val KEY_G8_QU = "g8_q_u"
+        const val KEY_GOLD_QTY = "gold_qty"
+        const val KEY_GOLD_QU = "gold_q_u"
+        const val KEY_SKIPER_QTY = "skiper_qty"
+        const val KEY_SKIPER_QU = "skiper_q_u"
+        const val KEY_SCOBIDO_QTY = "scobido_qty"
+        const val KEY_SCOBIDO_QU = "scobido_q_u"
+        const val KEY_MINI_SCOBIDO_QTY = "mini_scobido_qty"
+        const val KEY_MINI_SCOBIDO_QU = "mini_scobido_q_u"
+        const val KEY_JULIANA_QU = "juliana_q_u"
+        const val KEY_BAC_5_QU = "bac_5_q_u"
+        const val KEY_BAC_6_QU = "bac_6_q_u"
+        const val KEY_VENEZIA_QTY = "venezia_qty"
+        const val KEY_VENEZIA_QU = "venezia_q_u"
 
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         //creating items table with fields
-        val CREATE_ITEMS_TABLE = ("CREATE TABLE " + TABLE_ITEMS + "("
+        val createItemsTable = ("CREATE TABLE " + TABLE_ITEMS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_PRICE + " TEXT," + KEY_STATUS + " INTEGER,"
                 + KEY_QTY_PAR_ONE + " INTEGER," + KEY_IMAGE + " TEXT,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_UP_TO_SERVER + " INTEGER" + ")")
 
-        db?.execSQL(CREATE_ITEMS_TABLE)
+        db?.execSQL(createItemsTable)
 
         //creating region table with fields
-        val CREATE_REGION_TABLE = ("CREATE TABLE " + TABLE_REGION + "("
+        val createRegionTable = ("CREATE TABLE " + TABLE_REGION + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_REGION + " TEXT,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_UP_TO_SERVER + " INTEGER" + ")")
-        db?.execSQL(CREATE_REGION_TABLE)
+        db?.execSQL(createRegionTable)
 
         //creating stock table with fields
-        val CREATE_STOCK_TABLE = ("CREATE TABLE " + TABLE_STOCK + "("
+        val createStockTable = ("CREATE TABLE " + TABLE_STOCK + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_QTY + " INTEGER," + KEY_UP_TO_SERVER + " INTEGER" + ")")
-        db?.execSQL(CREATE_STOCK_TABLE)
+        db?.execSQL(createStockTable)
 
         //creating user table with fields
-        val CREATE_USER_TABLE = ("CREATE TABLE " + TABLE_USER + "("
+        val createUserTable = ("CREATE TABLE " + TABLE_USER + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_USERNAME + " TEXT,"
-                + KEY_PASSWORD + " TEXT," + KEY_CAMION + " TEXT,"
+                + KEY_PROFILE_PIC + " TEXT," + KEY_EMAIL + " TEXT," + KEY_PASSWORD + " TEXT," + KEY_CAMION + " TEXT,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_ISADMIN + " INTEGER," + KEY_UP_TO_SERVER + " INTEGER" + ")")
-        db?.execSQL(CREATE_USER_TABLE)
+        db?.execSQL(createUserTable)
 
         //creating client table with fields
-        val CREATE_CLIENT_TABLE = ("CREATE TABLE " + TABLE_CLIENT + "("
+        val createClientTable = ("CREATE TABLE " + TABLE_CLIENT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_CLIENT_NAME + " TEXT,"
                 + KEY_REGION + " TEXT," + KEY_PHONE + " TEXT," + KEY_PRICES + " TEXT,"
                 + KEY_OLDCREDIT + " TEXT," + KEY_IS_CREDIT + " INTEGER," + KEY_ISFRIGO + " INTEGER,"
                 + KEY_ISPROMO + " INTEGER," + KEY_CREDITBON + " INTEGER," + KEY_LASTSERVE + " TEXT,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_UP_TO_SERVER + " INTEGER" + ")")
-        db?.execSQL(CREATE_CLIENT_TABLE)
+        db?.execSQL(createClientTable)
 
         //creating order summary table with fields
-        val CREATE_ORDER_SUMMARY_TABLE = ("CREATE TABLE " + TABLE_ORDER_SUMMARY + "("
+        val createOrderSummaryTable = ("CREATE TABLE " + TABLE_ORDER_SUMMARY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_CLIENT_NAME + " TEXT,"
                 + KEY_CLIENT_ID + " INTEGER," + KEY_PRODUCT_LIST_ID + " INTEGER,"
                 + KEY_VERSSI + " TEXT," + KEY_REST + " TEXT,"
@@ -166,20 +166,20 @@ class DatabaseHandler(context: Context) :
                 + KEY_UP_TO_SERVER + " INTEGER," + KEY_IS_CHECK + " INTEGER,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_DATE + " TEXT" + ")")
-        db?.execSQL(CREATE_ORDER_SUMMARY_TABLE)
+        db?.execSQL(createOrderSummaryTable)
 
         //creating verssment table with fields
-        val CREATE_VERSSEMENT_TABLE = ("CREATE TABLE " + TABLE_VERSSEMENT + "("
+        val createVerssementTable = ("CREATE TABLE " + TABLE_VERSSEMENT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_CLIENT_ID + " TEXT,"
                 + KEY_CLIENT_NAME + " TEXT," + KEY_REGION + " TEXT," + KEY_OLD_SOMME + " TEXT,"
                 + KEY_VERSSI + " TEXT," + KEY_REST + " TEXT,"
                 + KEY_UP_TO_SERVER + " INTEGER," + KEY_IS_CHECK + " INTEGER,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_DATE + " TEXT" + ")")
-        db?.execSQL(CREATE_VERSSEMENT_TABLE)
+        db?.execSQL(createVerssementTable)
 
         //creating all product table with fields
-        val CREATE_ALL_PRODUCT_TABLE = ("CREATE TABLE " + TABLE_ALL_PRODUCT + "("
+        val createAllProductTable = ("CREATE TABLE " + TABLE_ALL_PRODUCT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_ORDER_ID + " INTEGER,"
                 + KEY_MINI_QTY + " INTEGER," + KEY_MINI_QU + " INTEGER,"
                 + KEY_TRIO_QTY + " INTEGER," + KEY_TRIO_QU + " INTEGER,"
@@ -206,7 +206,7 @@ class DatabaseHandler(context: Context) :
                 + KEY_BUCH_QU + " INTEGER," + KEY_TARTE_QU + " INTEGER,"
                 + KEY_CREATEAT + " TEXT," + KEY_UPDATEAT + " TEXT," + KEY___V + " TEXT,"
                 + KEY_SERVER_ID + " TEXT," + KEY_UP_TO_SERVER + " INTEGER" + ")")
-        db?.execSQL(CREATE_ALL_PRODUCT_TABLE)
+        db?.execSQL(createAllProductTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -426,8 +426,10 @@ class DatabaseHandler(context: Context) :
         val contentValues = ContentValues()
         contentValues.put(KEY_SERVER_ID, user.server_id)
         contentValues.put(KEY_USERNAME, user.username)
+        contentValues.put(KEY_USERNAME, user.email)
         contentValues.put(KEY_PASSWORD, user.password)
         contentValues.put(KEY_CAMION, user.camion)
+        contentValues.put(KEY_PROFILE_PIC, user.profile_pic)
         contentValues.put(KEY_ISADMIN, user.isadmin)
         contentValues.put(KEY_CREATEAT, user.createdAt)
         contentValues.put(KEY_UPDATEAT, user.updatedAt)
@@ -468,9 +470,10 @@ class DatabaseHandler(context: Context) :
         // Query to select all the records from the table.
         val selectQuery = "SELECT * FROM $TABLE_REGION WHERE $KEY_ID = $id"
 
+
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -482,7 +485,7 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                responce = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
+                responce = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -499,7 +502,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -523,17 +526,17 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                name = cursor.getString(cursor.getColumnIndex(KEY_NAME))
-                price = cursor.getString(cursor.getColumnIndex(KEY_PRICE))
-                image = cursor.getString(cursor.getColumnIndex(KEY_IMAGE))
-                status = cursor.getInt(cursor.getColumnIndex(KEY_STATUS))
-                qty_par_one = cursor.getInt(cursor.getColumnIndex(KEY_QTY_PAR_ONE))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME))
+                price = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PRICE))
+                image = cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGE))
+                status = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_STATUS))
+                qty_par_one = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_QTY_PAR_ONE))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
                 val item = ItemModel(id = id, server_id = server_id, name = name, price = price, status = status, qty_par_one = qty_par_one, image = image
                     , createdAt = createdAt, updatedAt = updatedAt, __v = __v, up_to_server = up_to_server)
@@ -549,13 +552,13 @@ class DatabaseHandler(context: Context) :
 
         val regionList: ArrayList<RegionModel> = ArrayList()
 
-        var selectQuery = if (upToServer) "SELECT * FROM $TABLE_REGION WHERE $KEY_UP_TO_SERVER = 0"
+        val selectQuery = if (upToServer) "SELECT * FROM $TABLE_REGION WHERE $KEY_UP_TO_SERVER = 0"
         else "SELECT * FROM $TABLE_REGION"
 
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -575,13 +578,13 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                regionName = cursor.getString(cursor.getColumnIndex(KEY_REGION))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                regionName = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REGION))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
                 val region = RegionModel(id = id, server_id = server_id, region_name = regionName, createdAt = createdAt, updatedAt = updatedAt, __v = __v, up_to_server = up_to_server)
                 regionList.add(region)
@@ -592,9 +595,38 @@ class DatabaseHandler(context: Context) :
         return regionList
     }
 
+    fun viewCheckUser(id: Int): Boolean {
+
+        var responce = false
+
+        // Query to select all the records from the table.
+        val selectQuery = "SELECT * FROMT$TABLE_USER WHERE $KEY_ID = '$id'"
+
+
+        val db = this.readableDatabase
+        // Cursor is used to read the record one by one. Add them to data model class.
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return responce
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                responce = true
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return responce
+    }
+
     fun viewCheckClient(id: Int): Boolean {
 
-        var responce: Boolean = false
+        var responce = false
 
         // Query to select all the records from the table.
         val selectQuery = "SELECT * FROM $TABLE_CLIENT WHERE $KEY_ID = '$id'"
@@ -602,7 +634,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -623,7 +655,7 @@ class DatabaseHandler(context: Context) :
 
     fun viewCheckRegion(regionName: String): Boolean {
 
-        var responce: Boolean = false
+        var responce = false
 
         // Query to select all the records from the table.
         val selectQuery = "SELECT * FROM $TABLE_REGION WHERE $KEY_REGION = '$regionName'"
@@ -631,7 +663,36 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return responce
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                responce = true
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return responce
+    }
+
+    fun viewCheckPayment(id: Int): Boolean {
+
+        var responce = false
+
+        // Query to select all the records from the table.
+        val selectQuery = "SELECT * FROMT$TABLE_VERSSEMENT WHERE $KEY_ID = '$id'"
+
+
+        val db = this.readableDatabase
+        // Cursor is used to read the record one by one. Add them to data model class.
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -660,7 +721,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -689,22 +750,22 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                client_name = cursor.getString(cursor.getColumnIndex(KEY_CLIENT_NAME))
-                region = cursor.getString(cursor.getColumnIndex(KEY_REGION))
-                phone = cursor.getString(cursor.getColumnIndex(KEY_PHONE))
-                prices = cursor.getString(cursor.getColumnIndex(KEY_PRICES))
-                is_promo = cursor.getInt(cursor.getColumnIndex(KEY_ISPROMO))
-                is_frigo = cursor.getInt(cursor.getColumnIndex(KEY_ISFRIGO))
-                is_credit = cursor.getInt(cursor.getColumnIndex(KEY_IS_CREDIT))
-                old_credit = cursor.getString(cursor.getColumnIndex(KEY_OLDCREDIT))
-                credit_bon = cursor.getInt(cursor.getColumnIndex(KEY_CREDITBON))
-                last_serve = cursor.getString(cursor.getColumnIndex(KEY_LASTSERVE))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                client_name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLIENT_NAME))
+                region = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REGION))
+                phone = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PHONE))
+                prices = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PRICES))
+                is_promo = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ISPROMO))
+                is_frigo = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ISFRIGO))
+                is_credit = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_IS_CREDIT))
+                old_credit = cursor.getString(cursor.getColumnIndexOrThrow(KEY_OLDCREDIT))
+                credit_bon = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CREDITBON))
+                last_serve = cursor.getString(cursor.getColumnIndexOrThrow(KEY_LASTSERVE))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
                 val item = ClientModel(id = id, server_id = server_id, client_name = client_name, region = region, phone = phone,
                     prices = prices, is_promo = is_promo, is_frigo = is_frigo, is_credit = is_credit,
@@ -723,7 +784,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -733,11 +794,11 @@ class DatabaseHandler(context: Context) :
             return "null"
         }
 
-        var region: String = "null"
+        var region = "null"
 
         if (cursor.moveToFirst()) {
             do {
-                region = cursor.getString(cursor.getColumnIndex(KEY_REGION))
+                region = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REGION))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -756,7 +817,7 @@ class DatabaseHandler(context: Context) :
             "SELECT * FROM $TABLE_CLIENT WHERE $KEY_ID = $id LIMIT 1"
         } else if (regionName == "" && !isForOrder) {
             "SELECT * FROM $TABLE_CLIENT"
-        } else if (id == 0 && !isForOrder && regionName == "up_to_server" && upToServer) {
+        } else if (id == 0 && regionName == "up_to_server" && upToServer) {
             "SELECT * FROM $TABLE_CLIENT WHERE $KEY_UP_TO_SERVER = 0"
         } else {
             "SELECT * FROM $TABLE_CLIENT WHERE $KEY_REGION = '$regionName'"
@@ -764,7 +825,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -774,7 +835,7 @@ class DatabaseHandler(context: Context) :
             return ArrayList()
         }
 
-        var id: Int
+        var _id: Int
         var server_id: String
         var client_name: String
         var region: String
@@ -793,24 +854,24 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                client_name = cursor.getString(cursor.getColumnIndex(KEY_CLIENT_NAME))
-                region = cursor.getString(cursor.getColumnIndex(KEY_REGION))
-                phone = cursor.getString(cursor.getColumnIndex(KEY_PHONE))
-                prices = cursor.getString(cursor.getColumnIndex(KEY_PRICES))
-                is_promo = cursor.getInt(cursor.getColumnIndex(KEY_ISPROMO))
-                is_frigo = cursor.getInt(cursor.getColumnIndex(KEY_ISFRIGO))
-                is_credit = cursor.getInt(cursor.getColumnIndex(KEY_IS_CREDIT))
-                old_credit = cursor.getString(cursor.getColumnIndex(KEY_OLDCREDIT))
-                credit_bon = cursor.getInt(cursor.getColumnIndex(KEY_CREDITBON))
-                last_serve = cursor.getString(cursor.getColumnIndex(KEY_LASTSERVE))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                _id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                client_name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLIENT_NAME))
+                region = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REGION))
+                phone = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PHONE))
+                prices = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PRICES))
+                is_promo = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ISPROMO))
+                is_frigo = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ISFRIGO))
+                is_credit = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_IS_CREDIT))
+                old_credit = cursor.getString(cursor.getColumnIndexOrThrow(KEY_OLDCREDIT))
+                credit_bon = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CREDITBON))
+                last_serve = cursor.getString(cursor.getColumnIndexOrThrow(KEY_LASTSERVE))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
-                val item = ClientModel(id = id, server_id = server_id, client_name = client_name, region = region, phone = phone,
+                val item = ClientModel(id = _id, server_id = server_id, client_name = client_name, region = region, phone = phone,
                     prices = prices, is_promo = is_promo, is_frigo = is_frigo, is_credit = is_credit,
                     old_credit = old_credit, credit_bon = credit_bon, last_serve = last_serve
                     , createdAt = createdAt, updatedAt = updatedAt, __v = __v, up_to_server = up_to_server )
@@ -832,7 +893,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -842,7 +903,7 @@ class DatabaseHandler(context: Context) :
             return ArrayList()
         }
 
-        var id: Int
+        var _id: Int
         var server_id: String
         var orderID: Int
         var mini_qty: Int; var mini_q_u: Int
@@ -881,62 +942,62 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                orderID = cursor.getInt(cursor.getColumnIndex(KEY_ORDER_ID))
-                mini_qty = cursor.getInt(cursor.getColumnIndex(KEY_MINI_QTY))
-                mini_q_u = cursor.getInt(cursor.getColumnIndex(KEY_MINI_QU))
-                trio_qty = cursor.getInt(cursor.getColumnIndex(KEY_TRIO_QTY))
-                trio_q_u = cursor.getInt(cursor.getColumnIndex(KEY_TRIO_QU))
-                solo_qty = cursor.getInt(cursor.getColumnIndex(KEY_SOLO_QTY))
-                solo_q_u = cursor.getInt(cursor.getColumnIndex(KEY_SOLO_QU))
-                pot_qty = cursor.getInt(cursor.getColumnIndex(KEY_POT_QTY))
-                pot_q_u = cursor.getInt(cursor.getColumnIndex(KEY_POT_QU))
-                gini_qty = cursor.getInt(cursor.getColumnIndex(KEY_GINI_QTY))
-                gini_q_u = cursor.getInt(cursor.getColumnIndex(KEY_GINI_QU))
-                big_qty = cursor.getInt(cursor.getColumnIndex(KEY_BIG_QTY))
-                big_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BIG_QU))
-                cornito_4_qty = cursor.getInt(cursor.getColumnIndex(KEY_CORNITO_4_QTY))
-                cornito_4_q_u = cursor.getInt(cursor.getColumnIndex(KEY_CORNITO_4_QU))
-                cornito_5_qty = cursor.getInt(cursor.getColumnIndex(KEY_CORNITO_5_QTY))
-                cornito_5_q_u = cursor.getInt(cursor.getColumnIndex(KEY_CORNITO_5_QU))
-                cornito_g_qty = cursor.getInt(cursor.getColumnIndex(KEY_CORNITO_G_QTY))
-                cornito_g_q_u = cursor.getInt(cursor.getColumnIndex(KEY_CORNITO_G_QU))
-                gofrito_qty = cursor.getInt(cursor.getColumnIndex(KEY_GOFRITO_QTY))
-                gofrito_q_u = cursor.getInt(cursor.getColumnIndex(KEY_GOFRITO_QU))
-                pot_v_qty = cursor.getInt(cursor.getColumnIndex(KEY_POT_V_QTY))
-                pot_v_q_u = cursor.getInt(cursor.getColumnIndex(KEY_POT_V_QU))
-                g8_qty = cursor.getInt(cursor.getColumnIndex(KEY_G8_QTY))
-                g8_q_u = cursor.getInt(cursor.getColumnIndex(KEY_G8_QU))
-                gold_qty = cursor.getInt(cursor.getColumnIndex(KEY_GOLD_QTY))
-                gold_q_u = cursor.getInt(cursor.getColumnIndex(KEY_GOLD_QU))
-                skiper_qty = cursor.getInt(cursor.getColumnIndex(KEY_SKIPER_QTY))
-                skiper_q_u = cursor.getInt(cursor.getColumnIndex(KEY_SKIPER_QU))
-                scobido_qty = cursor.getInt(cursor.getColumnIndex(KEY_SCOBIDO_QTY))
-                scobido_q_u = cursor.getInt(cursor.getColumnIndex(KEY_SCOBIDO_QU))
-                mini_scobido_qty = cursor.getInt(cursor.getColumnIndex(KEY_MINI_SCOBIDO_QTY))
-                mini_scobido_q_u = cursor.getInt(cursor.getColumnIndex(KEY_MINI_SCOBIDO_QU))
-                venezia_qty = cursor.getInt(cursor.getColumnIndex(KEY_VENEZIA_QTY))
-                venezia_q_u = cursor.getInt(cursor.getColumnIndex(KEY_VENEZIA_QU))
-                bf_400_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BF_400_QU))
-                bf_250_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BF_250_QU))
-                bf_230_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BF_230_QU))
-                bf_200_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BF_200_QU))
-                bf_150_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BF_150_QU))
-                buch_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BUCH_QU))
-                tarte_q_u = cursor.getInt(cursor.getColumnIndex(KEY_TARTE_QU))
-                mosta_q_u = cursor.getInt(cursor.getColumnIndex(KEY_MOSTA_QU))
-                misso_q_u = cursor.getInt(cursor.getColumnIndex(KEY_MISSO_QU))
-                juliana_q_u = cursor.getInt(cursor.getColumnIndex(KEY_JULIANA_QU))
-                bac_5_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BAC_5_QU))
-                bac_6_q_u = cursor.getInt(cursor.getColumnIndex(KEY_BAC_6_QU))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                _id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                orderID = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ORDER_ID))
+                mini_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_MINI_QTY))
+                mini_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_MINI_QU))
+                trio_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_TRIO_QTY))
+                trio_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_TRIO_QU))
+                solo_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SOLO_QTY))
+                solo_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SOLO_QU))
+                pot_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POT_QTY))
+                pot_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POT_QU))
+                gini_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GINI_QTY))
+                gini_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GINI_QU))
+                big_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BIG_QTY))
+                big_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BIG_QU))
+                cornito_4_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CORNITO_4_QTY))
+                cornito_4_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CORNITO_4_QU))
+                cornito_5_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CORNITO_5_QTY))
+                cornito_5_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CORNITO_5_QU))
+                cornito_g_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CORNITO_G_QTY))
+                cornito_g_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CORNITO_G_QU))
+                gofrito_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GOFRITO_QTY))
+                gofrito_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GOFRITO_QU))
+                pot_v_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POT_V_QTY))
+                pot_v_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_POT_V_QU))
+                g8_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_G8_QTY))
+                g8_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_G8_QU))
+                gold_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GOLD_QTY))
+                gold_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GOLD_QU))
+                skiper_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SKIPER_QTY))
+                skiper_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SKIPER_QU))
+                scobido_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCOBIDO_QTY))
+                scobido_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_SCOBIDO_QU))
+                mini_scobido_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_MINI_SCOBIDO_QTY))
+                mini_scobido_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_MINI_SCOBIDO_QU))
+                venezia_qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_VENEZIA_QTY))
+                venezia_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_VENEZIA_QU))
+                bf_400_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BF_400_QU))
+                bf_250_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BF_250_QU))
+                bf_230_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BF_230_QU))
+                bf_200_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BF_200_QU))
+                bf_150_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BF_150_QU))
+                buch_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BUCH_QU))
+                tarte_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_TARTE_QU))
+                mosta_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_MOSTA_QU))
+                misso_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_MISSO_QU))
+                juliana_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_JULIANA_QU))
+                bac_5_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BAC_5_QU))
+                bac_6_q_u = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_BAC_6_QU))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
 
-                val item = AllProductModel(id = id, server_id = server_id, orderId = orderID, mini_qty = mini_qty, mini_q_u = mini_q_u,
+                val item = AllProductModel(id = _id, server_id = server_id, orderId = orderID, mini_qty = mini_qty, mini_q_u = mini_q_u,
                     trio_qty = trio_qty, trio_q_u = trio_q_u, solo_qty = solo_qty,
                     solo_q_u = solo_q_u, pot_qty = pot_qty, pot_q_u = pot_q_u, gini_qty = gini_qty, gini_q_u = gini_q_u,
                     big_qty = big_qty, big_q_u = big_q_u, cornito_4_qty = cornito_4_qty, cornito_4_q_u = cornito_4_q_u,
@@ -970,7 +1031,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -980,7 +1041,7 @@ class DatabaseHandler(context: Context) :
             return ArrayList()
         }
 
-        var id: Int
+        var _id: Int
         var server_id: String
         var client_name: String
         var client_id: Int
@@ -989,7 +1050,7 @@ class DatabaseHandler(context: Context) :
         var verssi: String
         var rest: String
         var iscredit: Int
-        var date: String
+        var _date: String
         var is_check: Int
         var createdAt: String
         var updatedAt: String
@@ -998,25 +1059,25 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                client_name = cursor.getString(cursor.getColumnIndex(KEY_CLIENT_NAME))
-                client_id = cursor.getInt(cursor.getColumnIndex(KEY_CLIENT_ID))
-                product_list_id = cursor.getInt(cursor.getColumnIndex(KEY_PRODUCT_LIST_ID))
-                total_to_pay = cursor.getInt(cursor.getColumnIndex(KEY_TOTAL_TO_PAY))
-                verssi = cursor.getString(cursor.getColumnIndex(KEY_VERSSI))
-                rest = cursor.getString(cursor.getColumnIndex(KEY_REST))
-                iscredit = cursor.getInt(cursor.getColumnIndex(KEY_IS_CREDIT))
-                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                is_check = cursor.getInt(cursor.getColumnIndex(KEY_IS_CHECK))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                _id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                client_name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLIENT_NAME))
+                client_id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_CLIENT_ID))
+                product_list_id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_PRODUCT_LIST_ID))
+                total_to_pay = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_TOTAL_TO_PAY))
+                verssi = cursor.getString(cursor.getColumnIndexOrThrow(KEY_VERSSI))
+                rest = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REST))
+                iscredit = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_IS_CREDIT))
+                _date = cursor.getString(cursor.getColumnIndexOrThrow(KEY_DATE))
+                is_check = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_IS_CHECK))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
-                val order = OrderSummaryModel(id = id, server_id = server_id, client_name = client_name, client_id = client_id,
+                val order = OrderSummaryModel(id = _id, server_id = server_id, client_name = client_name, client_id = client_id,
                     product_list_id = product_list_id, total_to_pay = total_to_pay, verssi = verssi,
-                    rest = rest, iscredit = iscredit, up_to_server = up_to_server, date = date, is_check = is_check
+                    rest = rest, iscredit = iscredit, up_to_server = up_to_server, date = _date, is_check = is_check
                     , createdAt = createdAt, updatedAt = updatedAt, __v = __v)
                 orderSummaryList.add(order)
 
@@ -1038,7 +1099,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -1057,7 +1118,7 @@ class DatabaseHandler(context: Context) :
         var rest: String
         var old_somme: String
         var is_check: Int
-        var date: String
+        var _date: String
         var createdAt: String
         var updatedAt: String
         var __v: String
@@ -1065,22 +1126,22 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                cliant_name = cursor.getString(cursor.getColumnIndex(KEY_CLIENT_NAME))
-                region = cursor.getString(cursor.getColumnIndex(KEY_REGION))
-                client_id = cursor.getString(cursor.getColumnIndex(KEY_CLIENT_ID))
-                verssi = cursor.getString(cursor.getColumnIndex(KEY_VERSSI))
-                old_somme = cursor.getString(cursor.getColumnIndex(KEY_OLD_SOMME))
-                rest = cursor.getString(cursor.getColumnIndex(KEY_REST))
-                date = cursor.getString(cursor.getColumnIndex(KEY_DATE))
-                is_check = cursor.getInt(cursor.getColumnIndex(KEY_IS_CHECK))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                cliant_name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLIENT_NAME))
+                region = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REGION))
+                client_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CLIENT_ID))
+                verssi = cursor.getString(cursor.getColumnIndexOrThrow(KEY_VERSSI))
+                old_somme = cursor.getString(cursor.getColumnIndexOrThrow(KEY_OLD_SOMME))
+                rest = cursor.getString(cursor.getColumnIndexOrThrow(KEY_REST))
+                _date = cursor.getString(cursor.getColumnIndexOrThrow(KEY_DATE))
+                is_check = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_IS_CHECK))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
-                val item = VerssementModel(id, server_id, client_id, cliant_name, region, old_somme, verssi, rest, up_to_server, is_check, date, createdAt, updatedAt, __v)
+                val item = VerssementModel(id, server_id, client_id, cliant_name, region, old_somme, verssi, rest, up_to_server, is_check, _date, createdAt, updatedAt, __v)
                 verssementList.add(item)
 
             } while (cursor.moveToNext())
@@ -1096,7 +1157,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -1106,11 +1167,11 @@ class DatabaseHandler(context: Context) :
             return 0
         }
 
-        var id: Int = 0
+        var id = 0
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -1124,7 +1185,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -1134,11 +1195,11 @@ class DatabaseHandler(context: Context) :
             return 0
         }
 
-        var id: Int = 0
+        var id = 0
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -1150,12 +1211,12 @@ class DatabaseHandler(context: Context) :
 
         val userList: ArrayList<UserModel> = ArrayList()
 
-        var selectQuery = if(upToServer) "SELECT  * FROM $TABLE_USER WHERE $KEY_UP_TO_SERVER = 0"
+        val selectQuery = if(upToServer) "SELECT  * FROM $TABLE_USER WHERE $KEY_UP_TO_SERVER = 0"
         else "SELECT  * FROM $TABLE_USER"
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -1168,8 +1229,10 @@ class DatabaseHandler(context: Context) :
         var id: Int
         var server_id: String
         var username: String
+        var email: String
         var password: String
         var camion: String
+        var profile_pic: String
         var isadmin: Int
         var createdAt: String
         var updatedAt: String
@@ -1178,19 +1241,21 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                username = cursor.getString(cursor.getColumnIndex(KEY_USERNAME))
-                password = cursor.getString(cursor.getColumnIndex(KEY_PASSWORD))
-                camion = cursor.getString(cursor.getColumnIndex(KEY_CAMION))
-                isadmin = cursor.getInt(cursor.getColumnIndex(KEY_ISADMIN))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                username = cursor.getString(cursor.getColumnIndexOrThrow(KEY_USERNAME))
+                email = cursor.getString(cursor.getColumnIndexOrThrow(KEY_EMAIL))
+                password = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PASSWORD))
+                profile_pic = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PROFILE_PIC))
+                camion = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CAMION))
+                isadmin = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ISADMIN))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
-                val user = UserModel(id = id, server_id = server_id, username = username, password = password, camion = camion, isadmin = isadmin
-                    , createdAt = createdAt, updatedAt = updatedAt, __v = __v, up_to_server = up_to_server)
+                val user = UserModel(id = id, server_id = server_id, username = username, email = email, password = password, camion = camion,
+                    profile_pic = profile_pic, isadmin = isadmin, createdAt = createdAt, updatedAt = updatedAt, __v = __v, up_to_server = up_to_server)
                 userList.add(user)
 
             } while (cursor.moveToNext())
@@ -1209,7 +1274,7 @@ class DatabaseHandler(context: Context) :
 
         val db = this.readableDatabase
         // Cursor is used to read the record one by one. Add them to data model class.
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = db.rawQuery(selectQuery, null)
@@ -1230,14 +1295,14 @@ class DatabaseHandler(context: Context) :
 
         if (cursor.moveToFirst()) {
             do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                server_id = cursor.getString(cursor.getColumnIndex(KEY_SERVER_ID))
-                name = cursor.getString(cursor.getColumnIndex(KEY_NAME))
-                qty = cursor.getInt(cursor.getColumnIndex(KEY_QTY))
-                createdAt = cursor.getString(cursor.getColumnIndex(KEY_CREATEAT))
-                updatedAt = cursor.getString(cursor.getColumnIndex(KEY_UPDATEAT))
-                __v = cursor.getString(cursor.getColumnIndex(KEY___V))
-                up_to_server = cursor.getInt(cursor.getColumnIndex(KEY_UP_TO_SERVER))
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID))
+                server_id = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SERVER_ID))
+                name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME))
+                qty = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_QTY))
+                createdAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CREATEAT))
+                updatedAt = cursor.getString(cursor.getColumnIndexOrThrow(KEY_UPDATEAT))
+                __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
+                up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
                 val item = CamionStockModel(id = id, server_id = server_id, name = name, qty = qty
                     , createdAt = createdAt, updatedAt = updatedAt, __v = __v, up_to_server = up_to_server)
@@ -1366,7 +1431,7 @@ class DatabaseHandler(context: Context) :
         val contentValues = ContentValues()
         contentValues.put(KEY_UP_TO_SERVER, 1)
 
-        var success = when (tableName) {
+        val success = when (tableName) {
             "TABLE_ITEMS" -> db.update(TABLE_ITEMS, contentValues, "$KEY_ID = $id", null)
             "TABLE_STOCK" -> db.update(TABLE_STOCK, contentValues, "$KEY_ID = $id", null)
             "TABLE_USER" -> db.update(TABLE_USER, contentValues, "$KEY_ID = $id", null)
@@ -1510,8 +1575,10 @@ class DatabaseHandler(context: Context) :
         val contentValues = ContentValues()
         contentValues.put(KEY_SERVER_ID, user.server_id)
         contentValues.put(KEY_USERNAME, user.username)
+        contentValues.put(KEY_EMAIL, user.email)
         contentValues.put(KEY_PASSWORD, user.password)
         contentValues.put(KEY_CAMION, user.camion)
+        contentValues.put(KEY_PROFILE_PIC, user.profile_pic)
         contentValues.put(KEY_ISADMIN, user.isadmin)
         contentValues.put(KEY_CREATEAT, user.createdAt)
         contentValues.put(KEY_UPDATEAT, user.updatedAt)

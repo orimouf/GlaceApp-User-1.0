@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.R
 import com.foodapp.app.adaptor.OrderSummuryAdaptor
 import com.foodapp.app.base.BaseActivity

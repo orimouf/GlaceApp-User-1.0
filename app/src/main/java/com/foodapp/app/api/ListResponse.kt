@@ -1,8 +1,14 @@
 package com.foodapp.app.api
 
 class ListResponse<T> {
+    val users: Array<T>?=null
     val clients: Array<T>?=null
     val regions: Array<T>?=null
+    val payments: Array<T>?=null
+    val products: Array<T>?=null
+    val orders: Array<T>?=null
+    val allProducts: Array<T>?=null
+
     private var data: ArrayList<T>?=null
 
     private var message: String? = null

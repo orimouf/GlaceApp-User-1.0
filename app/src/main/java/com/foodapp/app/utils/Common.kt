@@ -48,6 +48,8 @@ import retrofit2.Response
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.regex.Pattern
 
@@ -58,6 +60,12 @@ object Common {
     var isCartTrueOut:Boolean=false
     fun getToast(activity: Activity, strTxtToast: String) {
         Toast.makeText(activity, strTxtToast, Toast.LENGTH_SHORT).show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getCurrentUpdateAt (): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return LocalDateTime.now().format(formatter)
     }
 
     fun getLog(strKey: String, strValue: String) {

@@ -17,10 +17,11 @@ import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import com.example.glaceapp.DatabaseHandler
+import com.foodapp.app.activity.DatabaseHandler
 import com.foodapp.app.R
 import com.foodapp.app.activity.*
 import com.foodapp.app.model.ClientModel
+import com.foodapp.app.utils.Common.getCurrentUpdateAt
 import kotlinx.android.synthetic.main.dlg_updateclient.*
 import kotlinx.android.synthetic.main.row_client.view.*
 import java.lang.Integer.parseInt
@@ -127,8 +128,10 @@ class ClientAdaptor(val context: Context, private val clients: ArrayList<ClientM
     /**
      * Method is used to show the Custom Dialog.
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateClientDialog(context: Context, client: ClientModel) {
 
+        val currentUpdateAt = getCurrentUpdateAt()
         val updateDialog = Dialog(context, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
         /*Set the screen content from a layout resource.
@@ -166,24 +169,8 @@ class ClientAdaptor(val context: Context, private val clients: ArrayList<ClientM
 
                 val status =
                     databaseHandler.updateClient(
-                        ClientModel(
-                            client.id,
-                            client.server_id,
-                            clientName,
-                            phone,
-                            prices,
-                            region,
-                            oldCredit,
-                            parseInt(isFrigo),
-                            parseInt(isPromo),
-                            parseInt(isCredit),
-                            parseInt(creditBon),
-                            lastServe,
-                            "0",
-                            "0",
-                            "0",
-                            0
-                        )
+                        ClientModel(client.id, client.server_id, clientName, phone, prices, region, oldCredit, parseInt(isFrigo),
+                            parseInt(isPromo), parseInt(isCredit), parseInt(creditBon), lastServe, client.createdAt, currentUpdateAt, client.__v, 0)
                     )
                 if (status > -1) {
                     Toast.makeText(context, "Client Updated.", Toast.LENGTH_LONG).show()

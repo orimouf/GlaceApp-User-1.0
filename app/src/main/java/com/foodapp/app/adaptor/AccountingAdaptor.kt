@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.glaceapp.DatabaseHandler
+import com.foodapp.app.activity.DatabaseHandler
 import com.foodapp.app.R
 import com.foodapp.app.activity.AccountingActivity
 import com.foodapp.app.model.*

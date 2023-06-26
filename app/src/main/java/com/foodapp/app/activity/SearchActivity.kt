@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.adaptor.ClientAdaptor
 import com.foodapp.app.model.ClientModel
-import com.foodapp.app.model.ItemModel
-import com.foodapp.app.model.OrderSummaryModel
 import com.foodapp.app.model.VerssementModel
 import kotlinx.android.synthetic.main.activity_addproduct.*
 import kotlinx.android.synthetic.main.activity_search.*

@@ -29,17 +29,41 @@ interface ApiInterface {
     @GET("clients/")
     fun getClients(): Call<ListResponse<ClientServerModel>>
 
-    //Send Users Data To Server Api 0
-    @POST("appdata/datausers")
-    fun setUsers(@Body map: HashMap<String, ArrayList<UserModel>>): Call<RestResponse<UserModel>>
-
-    //Send Users Data To Server Api 0
-    @POST("appdata/dataregions")
-    fun setRegions(@Body map: HashMap<String, ArrayList<RegionModel>>): Call<RestResponse<RegionModel>>
+    //Get users Data From Server Api 0
+    @GET("users/")
+    fun getUsers(): Call<ListResponse<UserServerModel>>
 
     //Get Regions Data From Server Api 0
     @GET("Regions/")
     fun getRegions(): Call<ListResponse<RegionServerModel>>
+
+    //Get Payments Data From Server Api 0
+    @GET("Payments/")
+    fun getPayments(): Call<ListResponse<VerssementServerModel>>
+
+    //Get Products Data From Server Api 0
+    @GET("Products/")
+    fun getProducts(): Call<ListResponse<ItemServerModel>>
+
+    //Get Orders Data From Server Api 0
+    @GET("Orders/")
+    fun getOrders(): Call<ListResponse<OrderServerModel>>
+
+    //Get Orders Data From Server Api 0
+    @GET("AllProducts/")
+    fun getAllProducts(): Call<ListResponse<AllProductServerModel>>
+
+    //Send Users Data To Server Api 0
+    @POST("appdata/datausers")
+    fun setUsers(@Body map: HashMap<String, ArrayList<UserModel>>): Call<RestResponse<UserModel>>
+
+    //Send Payments Data To Server Api 0
+    @POST("appdata/datapayment")
+    fun setPayments(@Body map: HashMap<String, ArrayList<VerssementModel>>): Call<RestResponse<VerssementModel>>
+
+    //Send Users Data To Server Api 0
+    @POST("appdata/dataregions")
+    fun setRegions(@Body map: HashMap<String, ArrayList<RegionModel>>): Call<RestResponse<RegionModel>>
 
     //Send Users Data To Server Api 0
     @POST("appdata/dataproducts")

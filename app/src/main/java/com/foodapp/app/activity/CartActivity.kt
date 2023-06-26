@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.R
 import com.foodapp.app.adaptor.ItemAdapter
 import com.foodapp.app.base.BaseActivity

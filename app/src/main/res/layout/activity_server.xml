@@ -57,7 +57,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rlDelivery"
                 android:layout_marginTop="@dimen/_7sdp"
                 android:orientation="vertical"
                 android:id="@+id/llView"
@@ -145,13 +144,35 @@
                     android:layout_gravity="center"
                     android:id="@+id/ivStatus6"
                     android:src="@drawable/ic_round_check"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/view6"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatus7"
+                    android:src="@drawable/ic_round_check"/>
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_weight="1"
+                    android:background="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/view7"
+                    />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rlDelivery"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_7sdp"
                 android:layout_toRightOf="@id/llView"
@@ -207,7 +228,6 @@
                     tools:ignore="MissingPrefix" />
 
                 <View
-                    android:id="@+id/v3"
                     android:layout_width="3dp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
@@ -226,7 +246,6 @@
                     tools:ignore="MissingPrefix" />
 
                 <View
-                    android:id="@+id/v3"
                     android:layout_width="3dp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
@@ -245,7 +264,6 @@
                     tools:ignore="MissingPrefix" />
 
                 <View
-                    android:id="@+id/v3"
                     android:layout_width="3dp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
@@ -253,6 +271,24 @@
 
                 <TextView
                     android:id="@+id/tvSendingCheck6"
+                    fontPath="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Sending Ordered Products Data To Server..."
+                    android:textColor="@color/dark_gary"
+                    android:textSize="@dimen/_11ssp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvSendingCheck7"
                     fontPath="@string/font_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -38,9 +38,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Update Client"
+                    android:text="@string/update_client"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_16sdp" />
             </RelativeLayout>
 
             <View
@@ -60,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:text="Client Name"
+                android:text="@string/client_name"
                 android:textSize="14sp" />
 
             <EditText
@@ -226,10 +226,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_weight="0.25"
-            android:textSize="10sp"
-            android:text="Prices : [mini:trio:pot:solo:gini:pot vally:big:cornito:cornito gini:gofrito:g8:gold:skiper:scobido:mini scobido:venezia:bf 2l:bf 1l:bf 900:bf 0.5l:buch:tarte:mosta:misso:juliana:bac 5L:bac 6L]" />
+            android:textSize="14sp"
+            android:text="Prices : [mini:trio:pot:solo:gini:pot vally:big:cornito:cornito gini:gofrito:g8:gold:skiper:scobido:mini scobido:venezia:bf 2l:bf 1l:bf 900:bf 0.5l:buch:tarte:mosta:misso:juliana:bac 5L:bac 6L]"
+            android:layout_marginBottom="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -241,7 +242,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:text="Prices" />
 
             <EditText

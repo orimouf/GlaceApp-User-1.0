@@ -4,24 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.glaceapp.DatabaseHandler
+import com.foodapp.app.activity.DatabaseHandler
 import com.foodapp.app.R
-import com.foodapp.app.activity.AddProductActivity
-import com.foodapp.app.activity.CartActivity
 import com.foodapp.app.activity.OrderDetailActivity
-import com.foodapp.app.activity.UsersActivity
 import com.foodapp.app.model.*
-import com.foodapp.app.utils.Common.alertErrorOrValidationDialog
 import kotlinx.android.synthetic.main.activity_orderdetail.*
 import kotlinx.android.synthetic.main.activity_orderdetail.view.*
-import kotlinx.android.synthetic.main.dlg_updateproduct.*
-import kotlinx.android.synthetic.main.row_cart.view.*
 import kotlinx.android.synthetic.main.row_orderitemsummary.view.*
-import kotlinx.android.synthetic.main.row_user.view.*
-import java.lang.Integer.parseInt
 
 class OrderSummuryAdaptor (val context: Context, private val products: ArrayList<AllProductModel>,
                            private val pricesList: Array<String>, private val orderId: Int) :

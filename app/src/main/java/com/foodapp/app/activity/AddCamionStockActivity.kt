@@ -7,20 +7,13 @@ import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.getCurrentLanguage
-import kotlinx.android.synthetic.main.activity_cart.*
-import kotlinx.android.synthetic.main.row_cart.view.*
-import java.util.*
 import android.os.Bundle
 import android.widget.Toast
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.model.CamionStockModel
 import kotlinx.android.synthetic.main.activity_addcamionstock.*
-import kotlinx.android.synthetic.main.activity_addproduct.*
 import kotlinx.android.synthetic.main.activity_addproduct.etName
 import kotlinx.android.synthetic.main.activity_cart.ivBack
 import kotlinx.android.synthetic.main.activity_cart.ivHome
-import kotlinx.android.synthetic.main.row_cart.*
-
 
 
 class AddCamionStockActivity : BaseActivity() {

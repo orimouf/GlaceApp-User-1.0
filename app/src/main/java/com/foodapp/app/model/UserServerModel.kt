@@ -1,10 +1,12 @@
 package com.foodapp.app.model
 
-class UserModel(
+class UserServerModel(
 
-    val id: Int,
+    val _id: String,
 
-    val server_id: String,
+    val appId: String,
+
+    val profilePic: String,
 
     val username: String,
 
@@ -12,18 +14,14 @@ class UserModel(
 
     val password: String,
 
-    val profile_pic: String,
-
     val camion: String,
 
-    val isadmin: Int,
+    val isAdmin: Boolean,
 
     val createdAt: String,
 
     val updatedAt: String,
 
-    val __v: String,
-
-    val up_to_server: Int
+    val __v: String
 
     )

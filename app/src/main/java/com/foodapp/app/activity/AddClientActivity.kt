@@ -5,9 +5,7 @@ import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common.getCurrentLanguage
 import android.widget.Toast
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.model.ClientModel
-import com.foodapp.app.model.ItemModel
 import com.foodapp.app.model.RegionModel
 import kotlinx.android.synthetic.main.activity_addclient.*
 import kotlinx.android.synthetic.main.activity_adduser.btnAddUser

@@ -10,7 +10,7 @@ import com.foodapp.app.base.BaseFragmnet
 import com.foodapp.app.model.*
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.SharePreference
-import com.example.glaceapp.DatabaseHandler
+import com.foodapp.app.activity.DatabaseHandler
 import com.foodapp.app.adaptor.ClientAdaptor
 import com.foodapp.app.adaptor.RegionAdaptor
 import com.foodapp.app.api.*
@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.ivCart
 import kotlinx.android.synthetic.main.fragment_home.ivMenu
 import kotlinx.android.synthetic.main.fragment_home.swiperefresh
-import kotlinx.android.synthetic.main.layout_nevheader.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : BaseFragmnet() , Communicator {

@@ -5,7 +5,6 @@ import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common.getCurrentLanguage
 import android.widget.Toast
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.model.ItemModel
 import kotlinx.android.synthetic.main.activity_addproduct.*
 import kotlinx.android.synthetic.main.activity_addproduct.etName

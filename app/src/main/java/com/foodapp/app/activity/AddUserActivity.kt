@@ -4,19 +4,11 @@ import android.content.Intent
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common.getCurrentLanguage
-import kotlinx.android.synthetic.main.activity_cart.*
-import kotlinx.android.synthetic.main.row_cart.view.*
-import java.util.*
 import android.widget.Toast
-import com.example.glaceapp.DatabaseHandler
 import com.foodapp.app.model.UserModel
-import kotlinx.android.synthetic.main.activity_addcamionstock.*
-import kotlinx.android.synthetic.main.activity_addproduct.*
 import kotlinx.android.synthetic.main.activity_adduser.*
 import kotlinx.android.synthetic.main.activity_cart.ivBack
 import kotlinx.android.synthetic.main.activity_cart.ivHome
-import kotlinx.android.synthetic.main.dlg_updateproduct.*
-import kotlinx.android.synthetic.main.row_cart.*
 
 class AddUserActivity : BaseActivity() {
 
@@ -25,15 +17,17 @@ class AddUserActivity : BaseActivity() {
     }
 
     private fun addUser() {
+        val email = etEmail.text.toString()
         val username = etUsername.text.toString()
         val password = etPassword.text.toString()
         val camion = etCamion.text.toString()
         val isadmin = 0
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
 
-        if (!username.isEmpty() && !password.isEmpty() && !camion.isEmpty()) {
+        if (!email.isEmpty() && !username.isEmpty() && !password.isEmpty() && !camion.isEmpty()) {
             val status =
-                databaseHandler.addUser(UserModel(0,"", username, password, camion, isadmin, "0", "0", "0", 0))
+                databaseHandler.addUser(UserModel(0,"", username, email, password , "null",
+                    camion, isadmin, "0", "0", "0",0))
             if (status > -1) {
                 Toast.makeText(applicationContext, "User saved", Toast.LENGTH_LONG).show()
                 etUsername.text.clear()

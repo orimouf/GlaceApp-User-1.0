@@ -9,8 +9,17 @@
     <string name="font_light">fonts/Roboto-Light.ttf</string>
     <string name="font_italic">fonts/Roboto-Italic.ttf</string>
 
+    <string name="hintText">Enter User Name</string>
+    <string name="heading">Content Provider In Android</string>
+    <string name="insertButtontext">Insert Data</string>
+    <string name="loadButtonText">Load Data</string>
+
     <!--MARK_WEB-->
     <string name="font_mark_web_thin">fonts/MARK_WEB_W04_BLACK.TTF</string>
+
+    <!-- UPDATE DIALOG -->
+    <string name="update_client">Update Client</string>
+    <string name="client_name">Client Name</string>
 
     <string name="logout">Are you sure to logout from this app ?</string>
     <string name="exit_screen">Sure if you wan\'t to exits this app</string>
