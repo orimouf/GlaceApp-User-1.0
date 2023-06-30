@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import com.foodapp.app.adaptor.AccountingAdaptor
 import com.foodapp.app.adaptor.PaymentAdaptor
 import com.foodapp.app.model.*
+import com.foodapp.app.utils.Common.getCurrentDateTime
 import kotlinx.android.synthetic.main.activity_accounting.*
 import kotlinx.android.synthetic.main.activity_cart.ivBack
 import kotlinx.android.synthetic.main.activity_cart.ivHome
@@ -182,7 +183,7 @@ class AccountingActivity : BaseActivity() {
             if (type == "order") {
                 val databaseHandler = DatabaseHandler(this)
                 val status = databaseHandler.updateOrderSummary(OrderSummaryModel(id,"", "", 0, 0,
-                    0, "","",0,"",1,"0","0","0",0), "is_check")
+                    0, "","",0,"",1,"0",getCurrentDateTime(),"0",0), "is_check")
                 if (status > -1) {
                     Toast.makeText(
                         applicationContext,
@@ -195,7 +196,7 @@ class AccountingActivity : BaseActivity() {
             } else {
                 val databaseHandler = DatabaseHandler(this)
                 val status = databaseHandler.updateVerssement(VerssementModel(id,"", "", "", "",
-                    "", "","",0,0,"0","0","0", "0"), "is_check")
+                    "", "","",0,0,"0",getCurrentDateTime(),"0", "0"), "is_check")
                 if (status > -1) {
                     Toast.makeText(
                         applicationContext,
@@ -303,7 +304,7 @@ class AccountingActivity : BaseActivity() {
 
                 val status =
                     databaseHandler.updateVerssement(VerssementModel(0,"", pay.id.toString(), pay.client_name, pay.region,
-                        pay.old_somme, payment, rest, 0, 0, "0","0","0", pay.date))
+                        pay.old_somme, payment, rest, 0, 0, "0",getCurrentDateTime(),"0", pay.date))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Payment updated", Toast.LENGTH_LONG).show()
 
@@ -354,7 +355,7 @@ class AccountingActivity : BaseActivity() {
                 val status =
                     databaseHandler.updateOrderSummary(OrderSummaryModel(order.id,order.server_id, order.client_name, order.client_id,
                         order.product_list_id, total_to_pay.toInt(), verssi, rest, statusInt, order.date,
-                        order.is_check, "0","0","0",0), "All")
+                        order.is_check, "0",getCurrentDateTime(),"0",0), "All")
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Order Updated.", Toast.LENGTH_LONG).show()
 

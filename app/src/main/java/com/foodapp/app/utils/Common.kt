@@ -62,12 +62,6 @@ object Common {
         Toast.makeText(activity, strTxtToast, Toast.LENGTH_SHORT).show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getCurrentUpdateAt (): String {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        return LocalDateTime.now().format(formatter)
-    }
-
     fun getLog(strKey: String, strValue: String) {
         Log.e(">>>---  $strKey  ---<<<", strValue)
     }
@@ -83,6 +77,12 @@ object Common {
         ).matcher(strPattern).matches();
     }
 
+    // get current date/time
+    fun getCurrentDateTime (): String {
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return formatter.format(time)
+    }
     // check if date 1 after date 2
     @RequiresApi(Build.VERSION_CODES.O)
     fun betweenDate(firstDate: String, secondDate: String): Boolean {

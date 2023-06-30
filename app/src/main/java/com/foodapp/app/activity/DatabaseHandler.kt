@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import com.foodapp.app.model.*
+import com.foodapp.app.utils.Common.getCurrentDateTime
 
 //creating the database logic, extending the SQLiteOpenHelper base class
 class DatabaseHandler(context: Context) :
@@ -464,11 +465,21 @@ class DatabaseHandler(context: Context) :
         return success
     }
 
-    fun viewUpdateAt(id: Int): String {
+    fun viewUpdateAt(id: String, table: String): String {
         var responce: String = ""
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_REGION WHERE $KEY_ID = $id"
+        var selectQuery: String = ""
+        when(table) {
+            "user" -> selectQuery = "SELECT * FROM $TABLE_USER WHERE $KEY_SERVER_ID = '$id'"
+            "client" -> selectQuery = "SELECT * FROM $TABLE_CLIENT WHERE $KEY_SERVER_ID = '$id'"
+            "region" -> selectQuery = "SELECT * FROM $TABLE_REGION WHERE $KEY_SERVER_ID = '$id'"
+            "payment" -> selectQuery = "SELECT * FROM $TABLE_VERSSEMENT WHERE $KEY_SERVER_ID = '$id'"
+            "product" -> selectQuery = "SELECT * FROM $TABLE_ITEMS WHERE $KEY_SERVER_ID = '$id'"
+            "order" -> selectQuery = "SELECT * FROM $TABLE_ORDER_SUMMARY WHERE $KEY_SERVER_ID = '$id'"
+            "orderedproducts" -> selectQuery = "SELECT * FROM $TABLE_ALL_PRODUCT WHERE $KEY_SERVER_ID = '$id'"
+            else -> -1
+        }
 
 
         val db = this.readableDatabase
@@ -595,12 +606,12 @@ class DatabaseHandler(context: Context) :
         return regionList
     }
 
-    fun viewCheckUser(id: Int): Boolean {
+    fun viewCheckUser(id: String): Boolean {
 
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_USER WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_USER WHERE $KEY_SERVER_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -624,12 +635,12 @@ class DatabaseHandler(context: Context) :
         return responce
     }
 
-    fun viewCheckClient(id: Int): Boolean {
+    fun viewCheckClient(id: String): Boolean {
 
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_CLIENT WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_CLIENT WHERE $KEY_SERVER_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -682,12 +693,12 @@ class DatabaseHandler(context: Context) :
         return responce
     }
 
-    fun viewCheckPayment(id: Int): Boolean {
+    fun viewCheckPayment(id: String): Boolean {
 
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_VERSSEMENT WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_VERSSEMENT WHERE $KEY_SERVER_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -711,12 +722,12 @@ class DatabaseHandler(context: Context) :
         return responce
     }
 
-    fun viewCheckProduct(id: Int): Boolean {
+    fun viewCheckProduct(id: String): Boolean {
 
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_ITEMS WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_ITEMS WHERE $KEY_SERVER_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -740,12 +751,12 @@ class DatabaseHandler(context: Context) :
         return responce
     }
 
-    fun viewCheckOrders(id: Int): Boolean {
+    fun viewCheckOrders(id: String): Boolean {
 
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_ORDER_SUMMARY WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_ORDER_SUMMARY WHERE $KEY_SERVER_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -769,12 +780,12 @@ class DatabaseHandler(context: Context) :
         return responce
     }
 
-    fun viewCheckOrderedProducts(id: Int): Boolean {
+    fun viewCheckOrderedProducts(id: String): Boolean {
 
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROM $TABLE_ALL_PRODUCT WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_ALL_PRODUCT WHERE $KEY_SERVER_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -1518,6 +1529,7 @@ class DatabaseHandler(context: Context) :
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_UP_TO_SERVER, 1)
+        contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
 
         val success = when (tableName) {
             "TABLE_ITEMS" -> db.update(TABLE_ITEMS, contentValues, "$KEY_ID = $id", null)
@@ -1612,6 +1624,7 @@ class DatabaseHandler(context: Context) :
 
         if (type == "up_to_server"){
             contentValues.put(KEY_PRODUCT_LIST_ID, order.product_list_id)
+            contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
             contentValues.put(KEY_UP_TO_SERVER, 0)
         } else if (type == "All"){
             contentValues.put(KEY_SERVER_ID, order.server_id)
@@ -1625,12 +1638,14 @@ class DatabaseHandler(context: Context) :
             contentValues.put(KEY_IS_CREDIT, order.iscredit)
             contentValues.put(KEY_IS_CHECK, 0)
             contentValues.put(KEY_CREATEAT, order.createdAt)
-            contentValues.put(KEY_UPDATEAT, order.updatedAt)
+            contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
             contentValues.put(KEY___V, order.__v)
             contentValues.put(KEY_UP_TO_SERVER, 0)
         } else {
             contentValues.put(KEY_PRODUCT_LIST_ID, order.product_list_id)
             contentValues.put(KEY_IS_CHECK, order.is_check)
+            contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
+            contentValues.put(KEY_UP_TO_SERVER, 0)
         }
 
         val success = db.update(TABLE_ORDER_SUMMARY, contentValues, KEY_ID + "=" + order.id, null)
@@ -1647,6 +1662,7 @@ class DatabaseHandler(context: Context) :
         contentValues.put(KEY_VERSSI, Verssi)
         contentValues.put(KEY_REST, Rest)
         contentValues.put(KEY_IS_CREDIT, IsCredit)
+        contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
         contentValues.put(KEY_UP_TO_SERVER, 0)
 
         val success = db.update(TABLE_ORDER_SUMMARY, contentValues, "$KEY_ID=$id", null)
@@ -1692,7 +1708,7 @@ class DatabaseHandler(context: Context) :
         contentValues.put(KEY_NAME, stock.name)
         contentValues.put(KEY_QTY_PAR_ONE, stock.qty)
         contentValues.put(KEY_CREATEAT, stock.createdAt)
-        contentValues.put(KEY_UPDATEAT, stock.updatedAt)
+        contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
         contentValues.put(KEY___V, stock.__v)
         contentValues.put(KEY_UP_TO_SERVER, 0)
 

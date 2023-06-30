@@ -7,7 +7,7 @@ class ListResponse<T> {
     val payments: Array<T>?=null
     val products: Array<T>?=null
     val orders: Array<T>?=null
-    val allProducts: Array<T>?=null
+    val orderedProducts: Array<T>?=null
 
     private var data: ArrayList<T>?=null
 

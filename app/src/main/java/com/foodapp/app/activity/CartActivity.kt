@@ -13,6 +13,7 @@ import com.foodapp.app.R
 import com.foodapp.app.adaptor.ItemAdapter
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.model.*
+import com.foodapp.app.utils.Common.getCurrentDateTime
 import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.activity_cart.ivBack
@@ -287,7 +288,7 @@ class CartActivity : BaseActivity() {
                 g8_q_u, gold_qty, gold_q_u, skiper_qty, skiper_q_u, scobido_qty,
                 scobido_q_u, mini_scobido_qty, mini_scobido_q_u, venezia_qty, venezia_q_u,
                 bf_400_q_u, bf_250_q_u, bf_230_q_u, bf_200_q_u, bf_150_q_u, buch_q_u, tarte_q_u,
-                mosta_q_u, misso_q_u, juliana_q_u, bac_5_q_u, bac_6_q_u, "0", "0", "0", 0))
+                mosta_q_u, misso_q_u, juliana_q_u, bac_5_q_u, bac_6_q_u, "0", getCurrentDateTime(), "0", 0))
         if (status > -1) {
             setupListOfDataIntoRecyclerView(productListID)
         }
@@ -325,7 +326,8 @@ class CartActivity : BaseActivity() {
             if (!name.isEmpty() && !price.isEmpty() && !_status.isEmpty() && !qty_par_one.isEmpty() && !image.isEmpty()) {
 
                 val status =
-                    databaseHandler.updateItem(ItemModel(itemModelClass.id, itemModelClass.server_id, name, price, statusInt, qty_par_oneInt, image, "0", "0", "0", 0))
+                    databaseHandler.updateItem(ItemModel(itemModelClass.id, itemModelClass.server_id, name, price, statusInt,
+                        qty_par_oneInt, image, "0", getCurrentDateTime(), "0", 0))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Product Updated.", Toast.LENGTH_LONG).show()
 
@@ -360,7 +362,7 @@ class CartActivity : BaseActivity() {
                 databaseHandler.updateOrderSummary(
                     OrderSummaryModel(
                         orderID, "","", 0,
-                        productListID, 0, "", "",0,"",0, "0", "0", "0",0
+                        productListID, 0, "", "",0,"",0, "0", getCurrentDateTime(), "0",0
                     ), "up_to_server"
                 )
             if (status > -1) {

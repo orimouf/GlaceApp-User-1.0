@@ -12,6 +12,7 @@ import kotlin.collections.ArrayList
 import android.widget.Toast
 import com.foodapp.app.adaptor.UserAdaptor
 import com.foodapp.app.model.UserModel
+import com.foodapp.app.utils.Common.getCurrentDateTime
 import kotlinx.android.synthetic.main.activity_cart.ivBack
 import kotlinx.android.synthetic.main.activity_cart.ivHome
 import kotlinx.android.synthetic.main.activity_users.*
@@ -100,7 +101,7 @@ class UsersActivity : BaseActivity() {
 
                 val status =
                     databaseHandler.updateUser(UserModel(userModel.id, userModel.server_id, username, email, password, userModel.profile_pic,
-                        camion, parseInt(isadmin), userModel.createdAt, userModel.updatedAt, userModel.__v, userModel.up_to_server))
+                        camion, parseInt(isadmin), userModel.createdAt, getCurrentDateTime(), userModel.__v, userModel.up_to_server))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "User Updated.", Toast.LENGTH_LONG).show()
 

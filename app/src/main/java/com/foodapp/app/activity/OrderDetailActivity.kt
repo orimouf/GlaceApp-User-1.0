@@ -23,6 +23,7 @@ import kotlin.collections.ArrayList
 
 import android.os.Environment
 import android.provider.MediaStore
+import com.foodapp.app.utils.Common.getCurrentDateTime
 import java.io.*
 
 
@@ -221,7 +222,7 @@ class OrderDetailActivity:BaseActivity() {
             val clientBon = thisClient.credit_bon + 1
             val statusClient =
                 databaseHandler.updateClient(ClientModel( thisClient.id, thisClient.server_id, thisClient.client_name, thisClient.phone, thisClient.prices, thisClient.region,
-                    totalCredit, thisClient.is_frigo, thisClient.is_promo, thisClient.is_credit, clientBon, thisClient.last_serve, "0", "0", "0", 0))
+                    totalCredit, thisClient.is_frigo, thisClient.is_promo, thisClient.is_credit, clientBon, thisClient.last_serve, "0", getCurrentDateTime(), "0", 0))
             if (status > -1 && statusClient > -1) {
                 Toast.makeText(applicationContext, "Payment Done", Toast.LENGTH_SHORT).show()
             }

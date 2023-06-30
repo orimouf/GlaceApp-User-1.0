@@ -21,7 +21,7 @@ import com.foodapp.app.activity.DatabaseHandler
 import com.foodapp.app.R
 import com.foodapp.app.activity.*
 import com.foodapp.app.model.ClientModel
-import com.foodapp.app.utils.Common.getCurrentUpdateAt
+import com.foodapp.app.utils.Common.getCurrentDateTime
 import kotlinx.android.synthetic.main.dlg_updateclient.*
 import kotlinx.android.synthetic.main.row_client.view.*
 import java.lang.Integer.parseInt
@@ -131,7 +131,7 @@ class ClientAdaptor(val context: Context, private val clients: ArrayList<ClientM
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateClientDialog(context: Context, client: ClientModel) {
 
-        val currentUpdateAt = getCurrentUpdateAt()
+        val currentUpdateAt = getCurrentDateTime()
         val updateDialog = Dialog(context, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
         /*Set the screen content from a layout resource.
