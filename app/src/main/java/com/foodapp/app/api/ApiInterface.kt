@@ -34,23 +34,23 @@ interface ApiInterface {
     fun getUsers(): Call<ListResponse<UserServerModel>>
 
     //Get Regions Data From Server Api 0
-    @GET("Regions/")
+    @GET("regions/")
     fun getRegions(): Call<ListResponse<RegionServerModel>>
 
     //Get Payments Data From Server Api 0
-    @GET("Payments/")
+    @GET("payments/")
     fun getPayments(): Call<ListResponse<VerssementServerModel>>
 
     //Get Products Data From Server Api 0
-    @GET("Products/")
+    @GET("products/")
     fun getProducts(): Call<ListResponse<ItemServerModel>>
 
     //Get Orders Data From Server Api 0
-    @GET("Orders/")
+    @GET("orders/")
     fun getOrders(): Call<ListResponse<OrderServerModel>>
 
     //Get Orders Data From Server Api 0
-    @GET("AllProducts/")
+    @GET("allproducts/")
     fun getAllProducts(): Call<ListResponse<AllProductServerModel>>
 
     //Send Users Data To Server Api 0

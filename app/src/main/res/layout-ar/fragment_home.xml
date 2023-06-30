@@ -119,7 +119,7 @@
             android:src="@drawable/ic_listitem"
             android:id="@+id/ic_grid"/>
         <TextView
-            android:id="@+id/tv_NevProfileName"
+            android:id="@+id/tv_RegionName"
             fontPath="@string/font_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_centerVertical="true"
-            android:text="Categories"
+            android:text="Region"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp"
             tools:ignore="MissingPrefix" />

@@ -13,7 +13,6 @@ import com.foodapp.app.R
 import com.foodapp.app.adaptor.ItemAdapter
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.model.*
-import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.activity_cart.ivBack
@@ -24,6 +23,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
+@Suppress("UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
 class CartActivity : BaseActivity() {
 
     var clientName : String = ""
@@ -43,7 +43,7 @@ class CartActivity : BaseActivity() {
     /**
      * Function is used to show the list of inserted data.
      */
-    private fun setupListOfDataIntoRecyclerView(id: Int, productListID: Int) {
+    private fun setupListOfDataIntoRecyclerView(productListID: Int) {
 
         if (getItemsList().size > 0) {
             rvCartFood.visibility = View.VISIBLE
@@ -96,7 +96,7 @@ class CartActivity : BaseActivity() {
 //    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun InitView() {
-        getCurrentLanguage(this@CartActivity,false)
+        this@CartActivity.getCurrentLanguage(false)
 //        tvCheckout.visibility = View.GONE
 
 
@@ -289,7 +289,7 @@ class CartActivity : BaseActivity() {
                 bf_400_q_u, bf_250_q_u, bf_230_q_u, bf_200_q_u, bf_150_q_u, buch_q_u, tarte_q_u,
                 mosta_q_u, misso_q_u, juliana_q_u, bac_5_q_u, bac_6_q_u, "0", "0", "0", 0))
         if (status > -1) {
-            setupListOfDataIntoRecyclerView(parseInt(clientId), productListID)
+            setupListOfDataIntoRecyclerView(productListID)
         }
     }
 
@@ -314,15 +314,15 @@ class CartActivity : BaseActivity() {
 
             val name = updateDialog.etUpdateName.text.toString()
             val price = updateDialog.etUpdatePrice.text.toString()
-            val status = updateDialog.etUpdateStatus.text.toString()
+            val _status = updateDialog.etUpdateStatus.text.toString()
             val qty_par_one = updateDialog.etUpdateQtyParOne.text.toString()
             val image = updateDialog.etUpdateImage.text.toString()
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
 
-            val statusInt = status.toInt()
+            val statusInt = _status.toInt()
             val qty_par_oneInt = qty_par_one.toInt()
 
-            if (!name.isEmpty() && !price.isEmpty() && !status.isEmpty() && !qty_par_one.isEmpty() && !image.isEmpty()) {
+            if (!name.isEmpty() && !price.isEmpty() && !_status.isEmpty() && !qty_par_one.isEmpty() && !image.isEmpty()) {
 
                 val status =
                     databaseHandler.updateItem(ItemModel(itemModelClass.id, itemModelClass.server_id, name, price, statusInt, qty_par_oneInt, image, "0", "0", "0", 0))
@@ -366,7 +366,7 @@ class CartActivity : BaseActivity() {
             if (status > -1) {
                 thisProductListId = productListID
 
-                setupListOfDataIntoRecyclerView(parseInt(clientId), productListID)
+                setupListOfDataIntoRecyclerView(productListID)
             }
         }
     }
@@ -383,7 +383,7 @@ class CartActivity : BaseActivity() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
 
         //performing positive action
-        builder.setPositiveButton("Yes") { dialogInterface, which ->
+        builder.setPositiveButton("Yes") { dialogInterface, _ ->
 
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
@@ -397,13 +397,13 @@ class CartActivity : BaseActivity() {
                     Toast.LENGTH_LONG
                 ).show()
 
-                setupListOfDataIntoRecyclerView(parseInt(clientId), productListID)
+                setupListOfDataIntoRecyclerView(productListID)
             }
 
             dialogInterface.dismiss() // Dialog will be dismissed
         }
         //performing negative action
-        builder.setNegativeButton("No") { dialogInterface, which ->
+        builder.setNegativeButton("No") { dialogInterface, _ ->
             dialogInterface.dismiss() // Dialog will be dismissed
         }
         // Create the AlertDialog
@@ -423,7 +423,7 @@ class CartActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@CartActivity, false)
+        this@CartActivity.getCurrentLanguage(false)
     }
 
 }

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.foodapp.app.R
-import com.foodapp.app.utils.Common
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
@@ -13,7 +13,7 @@ abstract class BaseActivity:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Common.getCurrentLanguage(this@BaseActivity, false)
+        this@BaseActivity.getCurrentLanguage(false)
         setContentView(setLayout())
         InitView()
     }
@@ -37,6 +37,6 @@ abstract class BaseActivity:AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         overridePendingTransition(R.anim.fad_in, R.anim.fad_out)
-        Common.getCurrentLanguage(this@BaseActivity, false)
+        this@BaseActivity.getCurrentLanguage(false)
     }
 }

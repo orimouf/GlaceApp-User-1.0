@@ -17,6 +17,7 @@
             android:layout_width="@dimen/_38sdp"
             android:layout_height="match_parent"
             android:onClick="onClick"
+            android:hint="@string/e_g_5"
             android:padding="@dimen/_3sdp"
             android:src="@drawable/ic_back"
             app:tint="@color/light_orange" />
@@ -159,14 +160,77 @@
                     android:layout_gravity="center"
                     android:id="@+id/ivStatus7"
                     android:src="@drawable/ic_round_check"/>
-                <View
-                    android:layout_width="3dp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_weight="1"
-                    android:background="@color/gray"
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:layout_toRightOf="@id/llView"
+                android:orientation="vertical"
+                android:id="@+id/llViewStatusUpDown"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/_5sdp">
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_gravity="center"
-                    android:id="@+id/view7"
-                    />
+                    android:id="@+id/ivStatusUpDown1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_round_check"
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    app:tint="@color/dark_gary" />
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatusUpDown2"
+
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    android:src="@drawable/ic_round_check"/>
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatusUpDown3"
+
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    android:src="@drawable/ic_round_check"/>
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatusUpDown4"
+
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    android:src="@drawable/ic_round_check"/>
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatusUpDown5"
+
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    android:src="@drawable/ic_round_check"/>
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatusUpDown6"
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    android:src="@drawable/ic_round_check"/>
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    app:tint="@color/gray"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivStatusUpDown7"
+                    android:src="@drawable/ic_round_check"/>
             </LinearLayout>
 
             <LinearLayout
@@ -175,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_7sdp"
-                android:layout_toRightOf="@id/llView"
+                android:layout_toRightOf="@id/llViewStatusUpDown"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -294,7 +358,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
                     android:layout_marginRight="@dimen/_10sdp"
-                    android:text="Sending Ordered Products Data To Server..."
+                    android:text="Sending Payments Data To Server..."
                     android:textColor="@color/dark_gary"
                     android:textSize="@dimen/_11ssp"
                     tools:ignore="MissingPrefix" />

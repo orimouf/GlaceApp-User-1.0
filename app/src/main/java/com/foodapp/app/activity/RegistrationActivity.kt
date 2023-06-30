@@ -14,6 +14,7 @@ import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.model.RegistrationModel
 import com.foodapp.app.utils.Common
 import com.foodapp.app.api.*
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_registration.*
 import kotlinx.android.synthetic.main.activity_registration.edEmail
 import kotlinx.android.synthetic.main.activity_registration.edPassword
@@ -28,7 +29,7 @@ class RegistrationActivity :BaseActivity() {
     }
 
     override fun InitView() {
-        Common.getCurrentLanguage(this@RegistrationActivity, false)
+        this@RegistrationActivity.getCurrentLanguage(false)
         tvTermsAndCondition.setOnClickListener {
             openActivity(TearmsAndConditionActivity::class.java)
         }
@@ -143,6 +144,6 @@ class RegistrationActivity :BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@RegistrationActivity, false)
+        this@RegistrationActivity.getCurrentLanguage(false)
     }
 }

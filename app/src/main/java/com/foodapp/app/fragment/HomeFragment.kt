@@ -8,18 +8,20 @@ import com.foodapp.app.R
 import com.foodapp.app.activity.*
 import com.foodapp.app.base.BaseFragmnet
 import com.foodapp.app.model.*
-import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.SharePreference
 import com.foodapp.app.activity.DatabaseHandler
 import com.foodapp.app.adaptor.ClientAdaptor
 import com.foodapp.app.adaptor.RegionAdaptor
 import com.foodapp.app.api.*
+import com.foodapp.app.utils.Common.getCurrentLanguage
+import com.foodapp.app.utils.SharePreference.Companion.getStringSharedPrefs
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.ivCart
 import kotlinx.android.synthetic.main.fragment_home.ivMenu
 import kotlinx.android.synthetic.main.fragment_home.swiperefresh
 import kotlin.collections.ArrayList
 
+@Suppress("UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
 class HomeFragment : BaseFragmnet() , Communicator {
 
     var manager1: GridLayoutManager? = null
@@ -45,15 +47,16 @@ class HomeFragment : BaseFragmnet() , Communicator {
         }
     }
 
-    fun setupListOfRegionDataIntoRecyclerView(position: Int = 0) {
+    private fun setupListOfRegionDataIntoRecyclerView(position: Int = 0) {
         if (getRegionList().size > 0) {
             rvClientRegion.visibility = View.VISIBLE
 
             rvClientRegion.layoutManager = LinearLayoutManager(requireContext())
+
             val regionAdapter = RegionAdaptor(this.requireContext(), getRegionList(), this@HomeFragment, position)
             rvClientRegion.adapter = regionAdapter
             rvClientRegion.layoutManager =
-                LinearLayoutManager(activity!!, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
             rvClientRegion.itemAnimator = DefaultItemAnimator()
             rvClientRegion.isNestedScrollingEnabled = true
 
@@ -73,9 +76,8 @@ class HomeFragment : BaseFragmnet() , Communicator {
      */
     private fun getClientList(regionName: String): ArrayList<ClientModel> {
         val databaseHandler: DatabaseHandler = DatabaseHandler(requireContext())
-        val clientList: ArrayList<ClientModel> = databaseHandler.viewClient(-1, false, regionName)
 
-        return clientList
+        return databaseHandler.viewClient(-1, false, regionName)
     }
 
     /**
@@ -83,15 +85,14 @@ class HomeFragment : BaseFragmnet() , Communicator {
      */
     private fun getRegionList(): ArrayList<RegionModel> {
         val databaseHandler: DatabaseHandler = DatabaseHandler(requireContext())
-        val regionList: ArrayList<RegionModel> = databaseHandler.viewRegion()
 
-        return regionList
+        return databaseHandler.viewRegion()
     }
 
     override fun Init(view: View) {
-        Common.getCurrentLanguage(activity!!, false)
+        requireActivity().getCurrentLanguage(false)
 
-        if (SharePreference.getStringPref(requireContext(), SharePreference.isAdmin).equals("true")) {
+        if (getStringSharedPrefs(requireContext(), SharePreference.isAdmin).equals("true")) {
             ivUsers.visibility = View.VISIBLE
         }
 
@@ -115,24 +116,25 @@ class HomeFragment : BaseFragmnet() , Communicator {
         ivMenu.setOnClickListener {
             (activity as DashboardActivity?)!!.onDrawerToggle()
         }
+
         ivCart.setOnClickListener {
 //            if (SharePreference.getBooleanPref(activity!!, SharePreference.isLogin)) {
 //                openActivity(CartActivity::class.java)
 //            }else{
                 openActivity(LoginActivity::class.java)
-                activity!!.finish()
-                activity!!.finishAffinity()
+                requireActivity().finish()
+                requireActivity().finishAffinity()
 //            }
         }
 
         tvSearch.setOnClickListener {
             openActivity(SearchActivity::class.java)
-            activity!!.finish()
+            requireActivity().finish()
         }
 
         ivUsers.setOnClickListener {
             openActivity(UsersActivity::class.java)
-            activity!!.finish()
+            requireActivity().finish()
         }
 
         swiperefresh.setOnRefreshListener { // Your code to refresh the list here.

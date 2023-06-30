@@ -15,7 +15,6 @@ import com.foodapp.app.adaptor.OrderSummuryAdaptor
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.model.*
 import kotlinx.android.synthetic.main.activity_orderdetail.*
-import kotlinx.android.synthetic.main.activity_orderdetail.ivBack
 import java.lang.Integer.parseInt
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -27,6 +26,7 @@ import android.provider.MediaStore
 import java.io.*
 
 
+@Suppress("UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
 class OrderDetailActivity:BaseActivity() {
 
     var clientName : String = ""
@@ -120,7 +120,7 @@ class OrderDetailActivity:BaseActivity() {
 
         setupListOfDataIntoRecyclerViewOrderSummary(parseInt(clientId), parseInt(productListId))
 
-        ivBack.setOnClickListener {
+        ivBackOrderDetail.setOnClickListener {
             finish()
         }
 

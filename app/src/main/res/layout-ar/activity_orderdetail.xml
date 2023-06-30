@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_orange"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/rl_orderDetail">
 
     <RelativeLayout
         android:id="@+id/rlTitle"
@@ -13,11 +14,12 @@
         android:layout_height="?actionBarSize">
 
         <ImageView
-            android:id="@+id/ivBack"
+            android:id="@+id/ivBackOrderDetail"
             android:layout_width="@dimen/_38sdp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/_2sdp"
             android:onClick="onClick"
+            android:hint="e.g 5"
             android:padding="@dimen/_3sdp"
             android:rotation="180"
             android:src="@drawable/ic_back"

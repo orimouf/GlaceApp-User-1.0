@@ -18,7 +18,7 @@ class AddProductActivity : BaseActivity() {
     }
 
     override fun InitView() {
-        getCurrentLanguage(this@AddProductActivity,false)
+        this@AddProductActivity.getCurrentLanguage(false)
 
 
         ivBack.setOnClickListener {
@@ -48,15 +48,15 @@ class AddProductActivity : BaseActivity() {
     private fun addRecord() {
         val name = etName.text.toString()
         val price = etPrice.text.toString()
-        val status = etStatus.text.toString()
+        val _status = etStatus.text.toString()
         val qty_par_one = etQtyParOne.text.toString()
         val image = etImage.text.toString()
         val databaseHandler = DatabaseHandler(this)
 
-        val statusInt = status.toInt()
+        val statusInt = _status.toInt()
         val qty_par_oneInt = qty_par_one.toInt()
 
-        if (name.isNotEmpty() && price.isNotEmpty() && status.isNotEmpty() && qty_par_one.isNotEmpty() && image.isNotEmpty()) {
+        if (name.isNotEmpty() && price.isNotEmpty() && _status.isNotEmpty() && qty_par_one.isNotEmpty() && image.isNotEmpty()) {
             val status =
                 databaseHandler.addItem(ItemModel(0,"", name, price, statusInt, qty_par_oneInt, image, "0", "0", "0", 0))
             if (status > -1) {
@@ -112,7 +112,7 @@ class AddProductActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(this@AddProductActivity, false)
+        this@AddProductActivity.getCurrentLanguage(false)
     }
 
 }

@@ -29,6 +29,11 @@ import kotlinx.android.synthetic.main.activity_cart.ivHome
 import kotlinx.android.synthetic.main.activity_server.*
 import kotlinx.android.synthetic.main.activity_users.*
 import kotlinx.android.synthetic.main.dlg_updateuser.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,61 +46,49 @@ class ServerActivity : BaseActivity() {
         return R.layout.activity_server
     }
 
-    /**
-     * Function is used to get the Items List from the database table.
-     */
-
     private fun getUpdateAt(id: Int): String {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewUpdateAt(id)
     }
 
     private fun getUsersList(): ArrayList<UserModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewUser(true)
     }
 
     private fun getPaymentsList(): ArrayList<VerssementModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewVerssemnt()
     }
 
     private fun getClientsList(): ArrayList<ClientModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewClient(0, false,"up_to_server", true)
     }
 
     private fun getRegionsList(): ArrayList<RegionModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewRegion(true)
     }
 
     private fun getProductsList(): ArrayList<ItemModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewItem(true)
     }
 
     private fun getOrdersList(): ArrayList<OrderSummaryModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewOrderSummary(0,0,true)
     }
 
     private fun getOrderedProductsList(): ArrayList<AllProductModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewAllProduct(0,true)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun InitView() {
-        getCurrentLanguage(this@ServerActivity,false)
+        this@ServerActivity.getCurrentLanguage(false)
         FirebaseApp.initializeApp(this@ServerActivity)
 
         btnSendData.setOnClickListener{
@@ -126,26 +119,20 @@ class ServerActivity : BaseActivity() {
             tvShow.text = getClientList.toString() +  getUserList.toString() + getRegionList.toString() + getProductList.toString() + getOrderList.toString() + getOrderedProductList.toString()
 
             if (Common.isCheckNetwork(this@ServerActivity)) {
-                if (getClientList.isNotEmpty()) { callApiClients(hashmapClient, getClientList); operationDone("client") } else { operationDone("client") }
-                if (getUserList.isNotEmpty()) { callApiUsers(hashmapUser, getUserList); operationDone("user") } else { operationDone("user") }
-                if (getRegionList.isNotEmpty()) { callApiRegions(hashmapRegion, getRegionList); operationDone("region") } else { operationDone("region") }
-                if (getProductList.isNotEmpty()) { callApiProducts(hashmapProduct, getProductList); operationDone("product") } else { operationDone("product") }
-                if (getOrderList.isNotEmpty()) { callApiOrders(hashmapOrder, getOrderList); operationDone("order") } else { operationDone("order") }
-                if (getPaymentList.isNotEmpty()) { callApiPayments(hashmapPayment, getPaymentList); operationDone("payment") } else { operationDone("payment") }
-                if (getOrderedProductList.isNotEmpty()) { callApiOrderedProducts(hashmapOrderedProduct, getOrderedProductList); operationDone("orderproduct") } else { operationDone("orderproduct") }
-
-                if (getClientList.isEmpty()) operationDone("client")
-                if (getUserList.isEmpty()) operationDone("user")
-                if (getRegionList.isEmpty()) operationDone("region")
-                if (getProductList.isEmpty()) operationDone("product")
-                if (getOrderList.isEmpty()) operationDone("order")
-                if (getProductList.isEmpty()) operationDone("payment")
-                if (getOrderedProductList.isEmpty()) operationDone("orderproduct")
-
-                if ( getClientList.isEmpty() && getUserList.isEmpty() && getRegionList.isEmpty()
-                    && getProductList.isEmpty() && getOrderList.isEmpty() && getPaymentList.isEmpty() && getOrderedProductList.isEmpty() ) {
-                    Common.alertErrorOrValidationDialog(this@ServerActivity,"All data was synchrony with server")
-                }
+//                if ( getClientList.isEmpty() && getUserList.isEmpty() && getRegionList.isEmpty()
+//                    && getProductList.isEmpty() && getOrderList.isEmpty() && getPaymentList.isEmpty() && getOrderedProductList.isEmpty() ) {
+//                    Common.alertErrorOrValidationDialog(this@ServerActivity,"All data was synchrony with server")
+//                    operationDone("client");operationDone("user");operationDone("region");operationDone("product")
+//                    operationDone("order");operationDone("orderproduct");operationDone("payment")
+//                } else {
+                    callApiClients(hashmapClient, getClientList)
+                    callApiUsers(hashmapUser, getUserList)
+                    callApiRegions(hashmapRegion, getRegionList)
+                    callApiProducts(hashmapProduct, getProductList)
+                    callApiOrders(hashmapOrder, getOrderList)
+                    callApiPayments(hashmapPayment, getPaymentList)
+                    callApiOrderedProducts(hashmapOrderedProduct, getOrderedProductList)
+//                }
             } else {
                 Common.alertErrorOrValidationDialog(this@ServerActivity,resources.getString(R.string.no_internet))
             }
@@ -154,19 +141,12 @@ class ServerActivity : BaseActivity() {
         btnGetData.setOnClickListener{
 
             if (Common.isCheckNetwork(this@ServerActivity)) {
-
                 callApiGetUsers()
-
                 callApiGetClients()
-
                 callApiGetRegions()
-
                 callApiGetPayments()
-
                 callApiGetProducts()
-
                 callApiGetOrders()
-
                 callApiGetOrderedProducts()
 
 //                if (ClientList.isEmpty()) operationDone("client")
@@ -200,9 +180,11 @@ class ServerActivity : BaseActivity() {
         when(info){
             "client" -> {
                 tvSendingCheck1.text = "Clients Data Synchrony"
-                tvSendingCheck1.setTextColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                tvSendingCheck1.setTextColor(ContextCompat.getColor(applicationContext,R.color.quantum_googblue))
                 ivStatus1.setBackgroundResource(R.drawable.ic_round_uncheck_orange)
                 ivStatus1.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                ivStatusUpDown1.setBackgroundResource(android.R.drawable.ic_menu_upload)
+                ivStatusUpDown1.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext,R.color.quantum_googblue))
                 view1.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
             }
             "user" -> {
@@ -238,13 +220,13 @@ class ServerActivity : BaseActivity() {
                 tvSendingCheck6.setTextColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
                 ivStatus6.setBackgroundResource(R.drawable.ic_round_uncheck_orange)
                 ivStatus6.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
+                view6.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
             }
             "payment" -> {
                 tvSendingCheck7.text = "Payments Data Synchrony"
                 tvSendingCheck7.setTextColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
                 ivStatus7.setBackgroundResource(R.drawable.ic_round_uncheck_orange)
                 ivStatus7.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
-                view7.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
             }
             else -> "ERROR"
         }
@@ -252,293 +234,365 @@ class ServerActivity : BaseActivity() {
     }
 
     // API CALL SEND DATA TO SERVER
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiUsers(hashmap: HashMap<String, ArrayList<UserModel>>, userCollection: ArrayList<UserModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setUsers(hashmap)
-        call.enqueue(object : Callback<RestResponse<UserModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<UserModel>>,
-                response: Response<RestResponse<UserModel>>
-            ) {
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<UserModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in userCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_USER")
+                val call = ApiClient.getClient.setUsers(hashmap)
+                call.enqueue(object : Callback<RestResponse<UserModel>> {
+                override fun onResponse(
+                    call: Call<RestResponse<UserModel>>,
+                    response: Response<RestResponse<UserModel>>
+                ) {
+                    if (response.code() == 201) {
+                        val serverResponse: RestResponse<UserModel> = response.body()!!
+                        if(serverResponse.getStatus().equals("1")) {
+                            for (item in userCollection) {
+                                val databaseHandler = DatabaseHandler(applicationContext)
+                                databaseHandler.updateUpToServer(item.id, "TABLE_USER")
+                            }
+                            Common.dismissLoadingProgress()
+                            successfulDialog(this@ServerActivity,serverResponse.getMessage())
+                            // make view checked
+                            operationDone("user")
+                        }else if (serverResponse.getStatus().equals("0")) {
+                            Common.dismissLoadingProgress()
+                            Common.alertErrorOrValidationDialog(
+                                this@ServerActivity,
+                                serverResponse.getMessage()
+                            )
                         }
+                    } else {
                         Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
-                        Common.dismissLoadingProgress()
-                        Common.alertErrorOrValidationDialog(
-                            this@ServerActivity,
-                            serverResponse.getMessage()
-                        )
+                        Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
                     }
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
                 }
-            }
 
-            override fun onFailure(call: Call<RestResponse<UserModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
+                override fun onFailure(call: Call<RestResponse<UserModel>>, t: Throwable) {
+                    Common.dismissLoadingProgress()
+                    Common.alertErrorOrValidationDialog(
+                        this@ServerActivity,
+                        resources.getString(R.string.error_msg)
+                    )
+                }
+            })
+
             }
-        })
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiClients(hashmap: HashMap<String, ArrayList<ClientModel>>, clientCollection: ArrayList<ClientModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setClients(hashmap)
-        call.enqueue(object : Callback<RestResponse<ClientModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<ClientModel>>,
-                response: Response<RestResponse<ClientModel>>
-            ) {
-                tvShow.text = response.code().toString()
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<ClientModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in clientCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_CLIENT")
+                val call = ApiClient.getClient.setClients(hashmap)
+                call.enqueue(object : Callback<RestResponse<ClientModel>> {
+                    override fun onResponse(
+                        call: Call<RestResponse<ClientModel>>,
+                        response: Response<RestResponse<ClientModel>>
+                    ) {
+                        tvShow.text = response.code().toString()
+                        if (response.code() == 201) {
+                            val serverResponse: RestResponse<ClientModel> = response.body()!!
+                            if (serverResponse.getStatus().equals("1")) {
+                                for (item in clientCollection) {
+                                    val databaseHandler = DatabaseHandler(applicationContext)
+                                    databaseHandler.updateUpToServer(item.id, "TABLE_CLIENT")
+                                }
+                                Common.dismissLoadingProgress()
+                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
+                                // make view checked
+                                operationDone("client")
+                            } else if (serverResponse.getStatus().equals("0")) {
+                                Common.dismissLoadingProgress()
+                                Common.alertErrorOrValidationDialog(
+                                    this@ServerActivity,
+                                    serverResponse.getMessage()
+                                )
+                            }
+                        } else {
+                            tvShow.text = response.body().toString()
+                            Common.dismissLoadingProgress()
+                            Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
-                        Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
+                    }
+
+                    override fun onFailure(call: Call<RestResponse<ClientModel>>, t: Throwable) {
                         Common.dismissLoadingProgress()
                         Common.alertErrorOrValidationDialog(
                             this@ServerActivity,
-                            serverResponse.getMessage()
+                            resources.getString(R.string.error_msg)
                         )
                     }
-                } else {
-                    tvShow.text = response.body().toString()
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<RestResponse<ClientModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
             }
-        })
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiRegions(hashmap: HashMap<String, ArrayList<RegionModel>>, regionCollection: ArrayList<RegionModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setRegions(hashmap)
-        call.enqueue(object : Callback<RestResponse<RegionModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<RegionModel>>,
-                response: Response<RestResponse<RegionModel>>
-            ) {
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<RegionModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in regionCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_REGION")
+                val call = ApiClient.getClient.setRegions(hashmap)
+                call.enqueue(object : Callback<RestResponse<RegionModel>> {
+                    override fun onResponse(
+                        call: Call<RestResponse<RegionModel>>,
+                        response: Response<RestResponse<RegionModel>>
+                    ) {
+                        if (response.code() == 201) {
+                            val serverResponse: RestResponse<RegionModel> = response.body()!!
+                            if (serverResponse.getStatus().equals("1")) {
+                                for (item in regionCollection) {
+                                    val databaseHandler = DatabaseHandler(applicationContext)
+                                    databaseHandler.updateUpToServer(item.id, "TABLE_REGION")
+                                }
+                                Common.dismissLoadingProgress()
+                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
+                                // make view checked
+                                operationDone("region")
+                            } else if (serverResponse.getStatus().equals("0")) {
+                                Common.dismissLoadingProgress()
+                                Common.alertErrorOrValidationDialog(
+                                    this@ServerActivity,
+                                    serverResponse.getMessage()
+                                )
+                            }
+                        } else {
+                            Common.dismissLoadingProgress()
+                            Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
-                        Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
+                    }
+
+                    override fun onFailure(call: Call<RestResponse<RegionModel>>, t: Throwable) {
                         Common.dismissLoadingProgress()
                         Common.alertErrorOrValidationDialog(
                             this@ServerActivity,
-                            serverResponse.getMessage()
+                            resources.getString(R.string.error_msg)
                         )
                     }
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<RestResponse<RegionModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
             }
-        })
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiPayments(hashmap: HashMap<String, ArrayList<VerssementModel>>, userCollection: ArrayList<VerssementModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setPayments(hashmap)
-        call.enqueue(object : Callback<RestResponse<VerssementModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<VerssementModel>>,
-                response: Response<RestResponse<VerssementModel>>
-            ) {
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<VerssementModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in userCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_VERSSEMENT")
+                val call = ApiClient.getClient.setPayments(hashmap)
+                call.enqueue(object : Callback<RestResponse<VerssementModel>> {
+                    override fun onResponse(
+                        call: Call<RestResponse<VerssementModel>>,
+                        response: Response<RestResponse<VerssementModel>>
+                    ) {
+                        if (response.code() == 201) {
+                            val serverResponse: RestResponse<VerssementModel> = response.body()!!
+                            if (serverResponse.getStatus().equals("1")) {
+                                for (item in userCollection) {
+                                    val databaseHandler = DatabaseHandler(applicationContext)
+                                    databaseHandler.updateUpToServer(item.id, "TABLE_VERSSEMENT")
+                                }
+                                Common.dismissLoadingProgress()
+                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
+                                // make view checked
+                                operationDone("payment")
+                            } else if (serverResponse.getStatus().equals("0")) {
+                                Common.dismissLoadingProgress()
+                                Common.alertErrorOrValidationDialog(
+                                    this@ServerActivity,
+                                    serverResponse.getMessage()
+                                )
+                            }
+                        } else {
+                            Common.dismissLoadingProgress()
+                            Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
-                        Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
+                    }
+
+                    override fun onFailure(
+                        call: Call<RestResponse<VerssementModel>>,
+                        t: Throwable
+                    ) {
                         Common.dismissLoadingProgress()
                         Common.alertErrorOrValidationDialog(
                             this@ServerActivity,
-                            serverResponse.getMessage()
+                            resources.getString(R.string.error_msg)
                         )
                     }
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<RestResponse<VerssementModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
             }
-        })
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiProducts(hashmap: HashMap<String, ArrayList<ItemModel>>, productCollection: ArrayList<ItemModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setProducts(hashmap)
-        call.enqueue(object : Callback<RestResponse<ItemModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<ItemModel>>,
-                response: Response<RestResponse<ItemModel>>
-            ) {
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<ItemModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in productCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_ITEMS")
+                val call = ApiClient.getClient.setProducts(hashmap)
+                call.enqueue(object : Callback<RestResponse<ItemModel>> {
+                    override fun onResponse(
+                        call: Call<RestResponse<ItemModel>>,
+                        response: Response<RestResponse<ItemModel>>
+                    ) {
+                        if (response.code() == 201) {
+                            val serverResponse: RestResponse<ItemModel> = response.body()!!
+                            if (serverResponse.getStatus().equals("1")) {
+                                for (item in productCollection) {
+                                    val databaseHandler = DatabaseHandler(applicationContext)
+                                    databaseHandler.updateUpToServer(item.id, "TABLE_ITEMS")
+                                }
+                                Common.dismissLoadingProgress()
+                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
+                                // make view checked
+                                operationDone("product")
+                            } else if (serverResponse.getStatus().equals("0")) {
+                                Common.dismissLoadingProgress()
+                                Common.alertErrorOrValidationDialog(
+                                    this@ServerActivity,
+                                    serverResponse.getMessage()
+                                )
+                            }
+                        } else {
+                            Common.dismissLoadingProgress()
+                            Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
-                        Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
+                    }
+
+                    override fun onFailure(call: Call<RestResponse<ItemModel>>, t: Throwable) {
                         Common.dismissLoadingProgress()
                         Common.alertErrorOrValidationDialog(
                             this@ServerActivity,
-                            serverResponse.getMessage()
+                            resources.getString(R.string.error_msg)
                         )
                     }
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<RestResponse<ItemModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
             }
-        })
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiOrders(hashmap: HashMap<String, ArrayList<OrderSummaryModel>>, orderCollection: ArrayList<OrderSummaryModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setOrders(hashmap)
-        call.enqueue(object : Callback<RestResponse<OrderSummaryModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<OrderSummaryModel>>,
-                response: Response<RestResponse<OrderSummaryModel>>
-            ) {
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<OrderSummaryModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in orderCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_ORDER_SUMMARY")
+                val call = ApiClient.getClient.setOrders(hashmap)
+                call.enqueue(object : Callback<RestResponse<OrderSummaryModel>> {
+                    override fun onResponse(
+                        call: Call<RestResponse<OrderSummaryModel>>,
+                        response: Response<RestResponse<OrderSummaryModel>>
+                    ) {
+                        if (response.code() == 201) {
+                            val serverResponse: RestResponse<OrderSummaryModel> = response.body()!!
+                            if (serverResponse.getStatus().equals("1")) {
+                                for (item in orderCollection) {
+                                    val databaseHandler = DatabaseHandler(applicationContext)
+                                    databaseHandler.updateUpToServer(item.id, "TABLE_ORDER_SUMMARY")
+                                }
+                                Common.dismissLoadingProgress()
+                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
+                                // make view checked
+                                operationDone("order")
+                            } else if (serverResponse.getStatus().equals("0")) {
+                                Common.dismissLoadingProgress()
+                                Common.alertErrorOrValidationDialog(
+                                    this@ServerActivity,
+                                    serverResponse.getMessage()
+                                )
+                            }
+                        } else {
+                            Common.dismissLoadingProgress()
+                            Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
-                        Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
+                    }
+
+                    override fun onFailure(
+                        call: Call<RestResponse<OrderSummaryModel>>,
+                        t: Throwable
+                    ) {
                         Common.dismissLoadingProgress()
                         Common.alertErrorOrValidationDialog(
                             this@ServerActivity,
-                            serverResponse.getMessage()
+                            resources.getString(R.string.error_msg)
                         )
                     }
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<RestResponse<OrderSummaryModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
             }
-        })
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun callApiOrderedProducts(hashmap: HashMap<String, ArrayList<AllProductModel>>, orderedProductCollection: ArrayList<AllProductModel>) {
         Common.showLoadingProgress(this@ServerActivity)
-        val call = ApiClient.getClient.setOrderedProducts(hashmap)
-        call.enqueue(object : Callback<RestResponse<AllProductModel>> {
-            override fun onResponse(
-                call: Call<RestResponse<AllProductModel>>,
-                response: Response<RestResponse<AllProductModel>>
-            ) {
-                if (response.code() == 201) {
-                    val serverResponse: RestResponse<AllProductModel> = response.body()!!
-                    if(serverResponse.getStatus().equals("1")) {
-                        for (item in orderedProductCollection) {
-                            val databaseHandler = DatabaseHandler(applicationContext)
+        GlobalScope.launch(Dispatchers.IO) {
+            // Async / await Method
+            withContext(Dispatchers.Default) {
 
-                            databaseHandler.updateUpToServer(item.id, "TABLE_ALL_PRODUCT")
+                val call = ApiClient.getClient.setOrderedProducts(hashmap)
+                call.enqueue(object : Callback<RestResponse<AllProductModel>> {
+                    override fun onResponse(
+                        call: Call<RestResponse<AllProductModel>>,
+                        response: Response<RestResponse<AllProductModel>>
+                    ) {
+                        if (response.code() == 201) {
+                            val serverResponse: RestResponse<AllProductModel> = response.body()!!
+                            if (serverResponse.getStatus().equals("1")) {
+                                for (item in orderedProductCollection) {
+                                    val databaseHandler = DatabaseHandler(applicationContext)
+                                    databaseHandler.updateUpToServer(item.id, "TABLE_ALL_PRODUCT")
+                                }
+                                Common.dismissLoadingProgress()
+                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
+                                // make view checked
+                                operationDone("orderproduct")
+                            } else if (serverResponse.getStatus().equals("0")) {
+                                Common.dismissLoadingProgress()
+                                Common.alertErrorOrValidationDialog(
+                                    this@ServerActivity,
+                                    serverResponse.getMessage()
+                                )
+                            }
+                        } else {
+                            Common.dismissLoadingProgress()
+                            Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
-                        Common.dismissLoadingProgress()
-                        successfulDialog(this@ServerActivity,serverResponse.getMessage())
-                    }else if (serverResponse.getStatus().equals("0")) {
+                    }
+
+                    override fun onFailure(
+                        call: Call<RestResponse<AllProductModel>>,
+                        t: Throwable
+                    ) {
                         Common.dismissLoadingProgress()
                         Common.alertErrorOrValidationDialog(
                             this@ServerActivity,
-                            serverResponse.getMessage()
+                            resources.getString(R.string.error_msg)
                         )
                     }
-                } else {
-                    Common.dismissLoadingProgress()
-                    Common.showErrorFullMsg(this@ServerActivity,"Error with apis")
-                }
-            }
+                })
 
-            override fun onFailure(call: Call<RestResponse<AllProductModel>>, t: Throwable) {
-                Common.dismissLoadingProgress()
-                Common.alertErrorOrValidationDialog(
-                    this@ServerActivity,
-                    resources.getString(R.string.error_msg)
-                )
             }
-        })
+        }
     }
 
     // API CALL GET DATA FROM SERVER
@@ -548,6 +602,7 @@ class ServerActivity : BaseActivity() {
         val call = ApiClient.getClient.getUsers()
         val databaseHandler = DatabaseHandler(this)
         var status: Any = 0
+
         call.enqueue(object : Callback<ListResponse<UserServerModel>> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
@@ -560,12 +615,11 @@ class ServerActivity : BaseActivity() {
                     if(serverData?.size != 0) {
                         for (i in serverData?.indices!!) {
 
-                            if (serverData[i].username.isNotEmpty() && serverData[i].email.isNotEmpty() && serverData[i].password.isNotEmpty() &&
-                                serverData[i].profilePic.isNotEmpty() && serverData[i].camion.isNotEmpty()) {
+                            if (serverData[i].username.isNotEmpty() && serverData[i].email.isNotEmpty()) {
                                 val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
                                 val userCheck = databaseHandler.viewCheckUser(serverData[i].appId.toInt())
                                 val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-                                val isAdmin = if(serverData[i].isAdmin)  0 else 1
+                                val isAdmin = if(serverData[i].isAdmin) 1 else 0
 
                                 if (!userCheck) {
                                     status = databaseHandler.addUser(UserModel(0, serverData[i]._id, serverData[i].username, serverData[i].email, serverData[i].password,
@@ -632,9 +686,9 @@ class ServerActivity : BaseActivity() {
                                 val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
                                 val clientCheck = databaseHandler.viewCheckClient(serverData[i].appId.toInt())
                                 val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-                                val isCredit = if(serverData[i].isCredit)  0 else 1
-                                val isPromo = if(serverData[i].isPromo)  0 else 1
-                                val isFrigo = if(serverData[i].isFrigo)  0 else 1
+                                val isCredit = if(serverData[i].isCredit) 1 else 0
+                                val isPromo = if(serverData[i].isPromo) 1 else 0
+                                val isFrigo = if(serverData[i].isFrigo) 1 else 0
 
                                 if (!clientCheck) {
                                     status = databaseHandler.addClient(ClientModel(0, serverData[i]._id, serverData[i].clientName, serverData[i].phone, serverData[i].prices,
@@ -770,7 +824,7 @@ class ServerActivity : BaseActivity() {
                                 val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
                                 val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
                                 val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-                                val isCheck = if(serverData[i].isCheck)  0 else 1
+                                val isCheck = if(serverData[i].isCheck) 1 else 0
 
                                 if (!paymentCheck) {
                                     status = databaseHandler.addVerssement(VerssementModel( 0, serverData[i]._id, serverData[i].clientId,
@@ -836,9 +890,9 @@ class ServerActivity : BaseActivity() {
 
                             if (serverData[i].name.isNotEmpty() && serverData[i].price.isNotEmpty() && serverData[i].image.isNotEmpty()) {
                                 val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
-                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckProduct(serverData[i].appId.toInt())
                                 val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-                                val itStatus = if(serverData[i].status)  0 else 1
+                                val itStatus = if(serverData[i].status) 1 else 0
 
                                 if (!paymentCheck) {
                                     status = databaseHandler.addItem(ItemModel( 0, serverData[i]._id, serverData[i].name,
@@ -905,10 +959,10 @@ class ServerActivity : BaseActivity() {
                             if (serverData[i].clientName.isNotEmpty() && serverData[i].clientId.isNotEmpty() && serverData[i].productListId.isNotEmpty() &&
                                 serverData[i].totalToPay.isNotEmpty() && serverData[i].verssi.isNotEmpty() && serverData[i].rest.isNotEmpty() && serverData[i].date.isNotEmpty()) {
                                 val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
-                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckOrders(serverData[i].appId.toInt())
                                 val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
-                                val isCheck = if(serverData[i].isCheck)  0 else 1
-                                val isCredit = if(serverData[i].isCredit)  0 else 1
+                                val isCheck = if(serverData[i].isCheck) 1 else 0
+                                val isCredit = if(serverData[i].isCredit) 1 else 0
 
                                 if (!paymentCheck) {
                                     status = databaseHandler.addOrderSummary(OrderSummaryModel( 0, serverData[i]._id, serverData[i].clientName, serverData[i].clientId.toInt(),
@@ -974,7 +1028,7 @@ class ServerActivity : BaseActivity() {
 
                             if (serverData[i].orderId.isNotEmpty()) {
                                 val getUpdateAt = getUpdateAt(serverData[i].appId.toInt())
-                                val paymentCheck = databaseHandler.viewCheckPayment(serverData[i].appId.toInt())
+                                val paymentCheck = databaseHandler.viewCheckOrderedProducts(serverData[i].appId.toInt())
                                 val isAfter = betweenDate(serverData[i].updatedAt,getUpdateAt)
 
                                 if (!paymentCheck) {
@@ -1080,6 +1134,6 @@ class ServerActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(this@ServerActivity, false)
+        this@ServerActivity.getCurrentLanguage(false)
     }
 }

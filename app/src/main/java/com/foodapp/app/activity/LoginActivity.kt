@@ -8,14 +8,18 @@ import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.model.LoginModel
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.showLoadingProgress
-import com.foodapp.app.utils.SharePreference
-import com.foodapp.app.utils.SharePreference.Companion.setStringPref
-import com.foodapp.app.utils.SharePreference.Companion.userEmail
-import com.foodapp.app.utils.SharePreference.Companion.userId
-import com.foodapp.app.utils.SharePreference.Companion.userMobile
 import com.foodapp.app.api.*
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import com.foodapp.app.utils.Common.getLog
 import com.foodapp.app.utils.Common.showErrorFullMsg
+import com.foodapp.app.utils.SharePreference.Companion.getBooleanSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.getStringSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.isLogin
+import com.foodapp.app.utils.SharePreference.Companion.loginToken
+import com.foodapp.app.utils.SharePreference.Companion.setBooleanSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.setStringSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.userEmail
+import com.foodapp.app.utils.SharePreference.Companion.userId
 import com.foodapp.app.utils.SharePreference.Companion.userName
 //import com.foodapp.app.utils.TokenManager
 import com.google.firebase.FirebaseApp
@@ -26,8 +30,8 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 class LoginActivity:BaseActivity() {
     lateinit var strToken: String
 //    @Inject
@@ -37,7 +41,7 @@ class LoginActivity:BaseActivity() {
         return R.layout.activity_login
     }
     override fun InitView() {
-        Common.getCurrentLanguage(this@LoginActivity, false)
+        this@LoginActivity.getCurrentLanguage(false)
         FirebaseApp.initializeApp(this@LoginActivity)
 
         strToken=FirebaseInstanceId.getInstance().token.toString()
@@ -92,17 +96,18 @@ class LoginActivity:BaseActivity() {
 
                     Toast.makeText(this@LoginActivity, response.body()!!.getData().toString(), Toast.LENGTH_LONG).show()
                     Toast.makeText(this@LoginActivity, loginResponce.getStatus().toString(), Toast.LENGTH_SHORT).show()
+
                     if (loginResponce.getStatus().equals("1")) {
                         Common.dismissLoadingProgress()
                         val loginModel: LoginModel = loginResponce.getData()!!
-                        SharePreference.setBooleanPref(this@LoginActivity, SharePreference.isLogin,true)
-                        setStringPref(this@LoginActivity, SharePreference.loginToken, strToken)
-                        setStringPref(this@LoginActivity,userId, loginModel.getId()!!)
-                        setStringPref(this@LoginActivity,userName, loginModel.getName()!!)
-                        setStringPref(this@LoginActivity,userEmail, loginModel.getEmail()!!)
+                        setBooleanSharedPrefs(this@LoginActivity, isLogin,true)
+                        setStringSharedPrefs(this@LoginActivity, loginToken, strToken)
+                        setStringSharedPrefs(this@LoginActivity,userId, loginModel.getId()!!)
+                        setStringSharedPrefs(this@LoginActivity,userName, loginModel.getName()!!)
+                        setStringSharedPrefs(this@LoginActivity,userEmail, loginModel.getEmail()!!)
                         val intent = Intent(this@LoginActivity,DashboardActivity::class.java)
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent);
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
                         finish()
                         finishAffinity()
                     }
@@ -132,7 +137,7 @@ class LoginActivity:BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@LoginActivity, false)
+        this@LoginActivity.getCurrentLanguage(false)
     }
 
     override fun onBackPressed() {

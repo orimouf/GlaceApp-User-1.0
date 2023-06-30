@@ -149,7 +149,7 @@
 <!--            android:src="@drawable/ic_listitem" />-->
 
         <TextView
-            android:id="@+id/tv_NevProfileName"
+            android:id="@+id/tv_RegionName"
             fontPath="@string/font_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

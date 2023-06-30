@@ -52,7 +52,7 @@ class UsersActivity : BaseActivity() {
     }
 
     override fun InitView() {
-        getCurrentLanguage(this@UsersActivity,false)
+        this@UsersActivity.getCurrentLanguage(false)
 
         setupListOfUserDataIntoRecyclerView()
 
@@ -174,6 +174,6 @@ class UsersActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(this@UsersActivity, false)
+        this@UsersActivity.getCurrentLanguage(false)
     }
 }

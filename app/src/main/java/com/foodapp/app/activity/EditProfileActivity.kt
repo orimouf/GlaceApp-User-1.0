@@ -36,9 +36,11 @@ import com.foodapp.app.utils.Common.isProfileMainEdit
 import com.foodapp.app.utils.Common.setImageUpload
 import com.foodapp.app.utils.Common.setRequestBody
 import com.foodapp.app.utils.Common.showLoadingProgress
-import com.foodapp.app.utils.SharePreference
 import com.foodapp.app.api.*
 import com.foodapp.app.utils.Common
+import com.foodapp.app.utils.Common.getCurrentLanguage
+import com.foodapp.app.utils.SharePreference.Companion.getStringSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.userId
 import kotlinx.android.synthetic.main.activity_editprofile.*
 import kotlinx.android.synthetic.main.dlg_externalstorage.view.*
 import org.json.JSONObject
@@ -58,7 +60,7 @@ class EditProfileActivity:BaseActivity() {
     override fun InitView() {
         if (isCheckNetwork(this@EditProfileActivity)) {
             val hasmap = HashMap<String, String>()
-            hasmap.put("user_id", SharePreference.getStringPref(this@EditProfileActivity, SharePreference.userId)!!)
+            hasmap.put("user_id", getStringSharedPrefs(this@EditProfileActivity, userId)!!)
             callApiProfile(hasmap)
         } else {
             alertErrorOrValidationDialog(
@@ -127,7 +129,7 @@ class EditProfileActivity:BaseActivity() {
         edUserName!!.setText(dataResponse.getName())
         tvMobileNumber!!.text=dataResponse.getIsAdmin().toString()
         Glide.with(this@EditProfileActivity).load(dataResponse.getProfilePic()).placeholder(
-            ResourcesCompat.getDrawable(resources,R.drawable.ic_placeholder,null)).into(ivProfile)
+            ResourcesCompat.getDrawable(resources,R.drawable.ic_placeholder,null)).into(ivProfileEditPic)
     }
 
 
@@ -240,7 +242,7 @@ class EditProfileActivity:BaseActivity() {
                 e.printStackTrace()
             }
         }
-        ivProfile.setImageBitmap(bm);
+        ivProfileEditPic.setImageBitmap(bm);
     }
 
     private fun onCaptureImageResult(data: Intent) {
@@ -265,20 +267,24 @@ class EditProfileActivity:BaseActivity() {
         }
         Glide.with(this@EditProfileActivity)
             .load(Uri.parse("file://" + mSelectedFileImg!!.getPath()))
-            .into(ivProfile)
+            .into(ivProfileEditPic)
     }
 
 
 
     private fun mCallApiEditProfile() {
         showLoadingProgress(this@EditProfileActivity)
-        var call: Call<SingleResponse>?=null
+        val call: Call<SingleResponse>?
         getLog("File_Path",mSelectedFileImg!!.absolutePath)
         getLog("File_Path",mSelectedFileImg!!.isFile.toString())
-        if(mSelectedFileImg!=null){
-            call= ApiClient.getClient.setProfile(setRequestBody(SharePreference.getStringPref(this@EditProfileActivity,SharePreference.userId)!!),setRequestBody(edUserName.text.toString()),setImageUpload("image",mSelectedFileImg!!))
-        }else {
-            call= ApiClient.getClient.setProfile(setRequestBody(SharePreference.getStringPref(this@EditProfileActivity,SharePreference.userId)!!),setRequestBody(edUserName.text.toString()),null)
+        call = if(mSelectedFileImg!=null)
+            ApiClient.getClient.setProfile(setRequestBody(getStringSharedPrefs(this@EditProfileActivity, userId)!!),
+                setRequestBody(edUserName.text.toString()),setImageUpload("image",mSelectedFileImg!!)) else {
+            val profile = ApiClient.getClient.setProfile(
+                setRequestBody(getStringSharedPrefs(this@EditProfileActivity, userId)!!),
+                setRequestBody(edUserName.text.toString()), null
+            )
+            profile
         }
         call.enqueue(object : Callback<SingleResponse> {
             override fun onResponse(call: Call<SingleResponse>, response: Response<SingleResponse>) {
@@ -350,6 +356,6 @@ class EditProfileActivity:BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@EditProfileActivity, false)
+        this@EditProfileActivity.getCurrentLanguage(false)
     }
 }

@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
-import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.getCurrentLanguage
 import android.os.Bundle
 import android.widget.Toast
@@ -23,7 +22,7 @@ class AddCamionStockActivity : BaseActivity() {
     }
 
     override fun InitView() {
-        getCurrentLanguage(this@AddCamionStockActivity,false)
+        this@AddCamionStockActivity.getCurrentLanguage(false)
 
 
         ivBack.setOnClickListener {
@@ -47,8 +46,7 @@ class AddCamionStockActivity : BaseActivity() {
         setContentView(R.layout.activity_addcamionstock)
         //setSupportActionBar(toolbar)
 
-        btnAddStock.setOnClickListener { view ->
-
+        btnAddStock.setOnClickListener {
             addCamionStock()
         }
 
@@ -154,7 +152,7 @@ class AddCamionStockActivity : BaseActivity() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
 
         //performing positive action
-        builder.setPositiveButton("Yes") { dialogInterface, which ->
+        builder.setPositiveButton("Yes") { dialogInterface, _ ->
 
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
@@ -173,7 +171,7 @@ class AddCamionStockActivity : BaseActivity() {
             dialogInterface.dismiss() // Dialog will be dismissed
         }
         //performing negative action
-        builder.setNegativeButton("No") { dialogInterface, which ->
+        builder.setNegativeButton("No") { dialogInterface, _ ->
             dialogInterface.dismiss() // Dialog will be dismissed
         }
         // Create the AlertDialog
@@ -198,7 +196,7 @@ class AddCamionStockActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@AddCamionStockActivity, false)
+        this@AddCamionStockActivity.getCurrentLanguage(false)
     }
 
 }

@@ -12,9 +12,9 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
-import com.foodapp.app.utils.Common
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import com.foodapp.app.utils.SharePreference.Companion.isTutorial
-import com.foodapp.app.utils.SharePreference.Companion.setBooleanPref
+import com.foodapp.app.utils.SharePreference.Companion.setBooleanSharedPrefs
 import kotlinx.android.synthetic.main.activity_tutorial.*
 
 class TutorialActivity:BaseActivity(){
@@ -24,8 +24,8 @@ class TutorialActivity:BaseActivity(){
     }
 
     override fun InitView() {
-        Common.getCurrentLanguage(this@TutorialActivity, false)
-        setBooleanPref(this@TutorialActivity, isTutorial,true)
+        this@TutorialActivity.getCurrentLanguage(false)
+        setBooleanSharedPrefs(this@TutorialActivity, isTutorial,true)
         imagelist = ArrayList()
         imagelist!!.add(ResourcesCompat.getDrawable(resources,R.drawable.ic_pageone,null)!!)
         imagelist!!.add(ResourcesCompat.getDrawable(resources,R.drawable.ic_pagetwo,null)!!)
@@ -82,6 +82,6 @@ class TutorialActivity:BaseActivity(){
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@TutorialActivity, false)
+        this@TutorialActivity.getCurrentLanguage(false)
     }
 }

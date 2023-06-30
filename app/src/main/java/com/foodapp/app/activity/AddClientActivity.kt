@@ -657,7 +657,7 @@ class AddClientActivity : BaseActivity() {
     }
 
     override fun InitView() {
-        getCurrentLanguage(this@AddClientActivity,false)
+        this@AddClientActivity.getCurrentLanguage(false)
 
         btnAddUser.setOnClickListener {
             addClient()
@@ -691,7 +691,7 @@ class AddClientActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(this@AddClientActivity, false)
+        this@AddClientActivity.getCurrentLanguage(false)
     }
 
 }

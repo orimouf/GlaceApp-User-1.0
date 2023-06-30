@@ -1,21 +1,24 @@
 package com.foodapp.app.activity
 
+import android.Manifest
 import android.app.Activity
 import android.os.Bundle
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.pm.PackageManager
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.EditText;
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.app.R
 import com.foodapp.app.adaptor.DeviceAdaptor
 import com.foodapp.app.model.DeviceModel
-import com.foodapp.app.utils.Common
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.activity_print.*
 import kotlinx.android.synthetic.main.activity_print.ivBack
@@ -133,6 +136,21 @@ class PrintActivity : Activity() {
             }
             if (!mBluetoothAdapter?.isEnabled!!) {
                 val enableBluetooth = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.BLUETOOTH_CONNECT
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(this@PrintActivity, "enable the bluetooth permission", Toast.LENGTH_LONG).show()
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return
+                }
                 startActivityForResult(enableBluetooth, 0)
             }
             val pairedDevices = mBluetoothAdapter!!.bondedDevices
@@ -186,6 +204,21 @@ class PrintActivity : Activity() {
 
             // Standard SerialPortService ID
             val uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(this@PrintActivity, "enable the bluetooth permission", Toast.LENGTH_LONG).show()
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
             mmSocket = mmDevice!!.createRfcommSocketToServiceRecord(uuid)
             mmSocket?.connect()
             mmOutputStream = mmSocket?.outputStream
@@ -291,7 +324,7 @@ class PrintActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@PrintActivity, false)
+        this@PrintActivity.getCurrentLanguage(false)
     }
 
 }

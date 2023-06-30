@@ -14,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@Suppress("DEPRECATION")
 class OTPVerificatinActivity:BaseActivity() {
     var strEmail: String = ""
     var strToken=""
@@ -74,12 +75,12 @@ class OTPVerificatinActivity:BaseActivity() {
                         Common.alertErrorOrValidationDialog(this@OTPVerificatinActivity, statusMessage)
                     } else if (statusType == 1) {
                         Common.dismissLoadingProgress()
-                        SharePreference.setStringPref(
+                        SharePreference.setStringSharedPrefs(
                             this@OTPVerificatinActivity,
                             SharePreference.userId,
                             mainObject.getJSONObject("data").getString("id")
                         )
-                        SharePreference.setBooleanPref(
+                        SharePreference.setBooleanSharedPrefs(
                             this@OTPVerificatinActivity,
                             SharePreference.isLogin,
                             true

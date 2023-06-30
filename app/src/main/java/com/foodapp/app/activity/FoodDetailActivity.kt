@@ -33,11 +33,13 @@ import com.foodapp.app.model.ItemDetailModel
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.alertErrorOrValidationDialog
 import com.foodapp.app.utils.Common.isCheckNetwork
-import com.foodapp.app.utils.SharePreference
-import com.foodapp.app.utils.SharePreference.Companion.getStringPref
 import com.foodapp.app.utils.SharePreference.Companion.isCurrancy
 import com.foodapp.app.utils.SharePreference.Companion.userId
 import com.bumptech.glide.Glide
+import com.foodapp.app.utils.SharePreference
+import com.foodapp.app.utils.SharePreference.Companion.getBooleanSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.getStringSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.isLogin
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_foodorderdetail.*
 import kotlinx.android.synthetic.main.row_ingrediants.view.*
@@ -48,6 +50,7 @@ import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
+@Suppress("DEPRECATION")
 class FoodDetailActivity : BaseActivity() {
     var timer: Timer? = null
     private var currentPage = 0
@@ -77,7 +80,7 @@ class FoodDetailActivity : BaseActivity() {
             finish()
         }
         ivCart.setOnClickListener {
-            if (SharePreference.getBooleanPref(this@FoodDetailActivity, SharePreference.isLogin)) {
+            if (getBooleanSharedPrefs(this@FoodDetailActivity, isLogin)) {
                 openActivity(CartActivity::class.java)
             }else{
                 openActivity(LoginActivity::class.java)
@@ -90,13 +93,13 @@ class FoodDetailActivity : BaseActivity() {
     private fun loadPagerImages(imageHase: ArrayList<*>) {
         val adapter = ImageSliderAdaptor(this@FoodDetailActivity, imageHase)
         tabLayout.setupWithViewPager(viewPager, true)
-        viewPager.setAdapter(adapter)
+        viewPager.adapter = adapter
         val handler = Handler()
 
         if (imageHase.size == 1) {
-            tabLayout.setVisibility(View.GONE)
+            tabLayout.visibility = View.GONE
         }
-        val Update = Runnable {
+        val update = Runnable {
             if (currentPage == imageHase.size) {
                 currentPage = 0
             }
@@ -107,7 +110,7 @@ class FoodDetailActivity : BaseActivity() {
         timer!!.schedule(object : TimerTask() {
             // task to be scheduled
             override fun run() {
-                handler.post(Update)
+                handler.post(update)
             }
         }, 500, 3000)
 
@@ -138,7 +141,7 @@ class FoodDetailActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (SharePreference.getBooleanPref(this@FoodDetailActivity, SharePreference.isLogin)) {
+        if (getBooleanSharedPrefs(this@FoodDetailActivity, isLogin)) {
             rlCount.visibility=View.VISIBLE
             if(Common.isCartTrue){
                 if (isCheckNetwork(this@FoodDetailActivity)) {
@@ -150,7 +153,7 @@ class FoodDetailActivity : BaseActivity() {
             }
         }else{
             rlCount.visibility=View.GONE
-            timer = Timer()
+            Timer().also { timer = it }
             val handler = Handler()
             val Update = Runnable {
                 if (currentPage == imagelist!!.size) {
@@ -186,7 +189,7 @@ class FoodDetailActivity : BaseActivity() {
                     //dismissLoadingProgress()
                     val restResponce: RestResponse<ItemDetailModel> = response.body()!!
                     setRestaurantData(restResponce.getData())
-                    if(SharePreference.getBooleanPref(this@FoodDetailActivity,SharePreference.isLogin)){
+                    if(getBooleanSharedPrefs(this@FoodDetailActivity,isLogin)){
                         if (isCheckNetwork(this@FoodDetailActivity)) {
                             callApiCartCount(true,false,"")
                         } else {
@@ -197,7 +200,7 @@ class FoodDetailActivity : BaseActivity() {
                     }
 
                 }else{
-                    if(SharePreference.getBooleanPref(this@FoodDetailActivity,SharePreference.isLogin)){
+                    if(getBooleanSharedPrefs(this@FoodDetailActivity,isLogin)){
                         if (isCheckNetwork(this@FoodDetailActivity)) {
                             callApiCartCount(true,false,"")
                         } else {
@@ -225,7 +228,7 @@ class FoodDetailActivity : BaseActivity() {
         listAddons: ArrayList<AddonsModel>
     ) {
         showLoadingProgress(this@FoodDetailActivity)
-        val price = tvAddtoCart.text.toString().replace(resources.getString(R.string.addtocart)+" "+getStringPref(this@FoodDetailActivity, isCurrancy), "")
+        val price = tvAddtoCart.text.toString().replace(resources.getString(R.string.addtocart)+" "+ getStringSharedPrefs(this@FoodDetailActivity, isCurrancy), "")
         val actulePrice=price.replace(",", "")
         Common.getLog("getPrice", actulePrice)
         val map = HashMap<String, String>()
@@ -234,7 +237,7 @@ class FoodDetailActivity : BaseActivity() {
         map.put("item_notes", edNotes.text.toString())
         map.put("qty", tvFoodQty.text.toString())
         map.put("price",String.format(Locale.US,"%.02f",actulePrice.toDouble()))
-        map.put("user_id", getStringPref(this@FoodDetailActivity, userId)!!)
+        map.put("user_id", getStringSharedPrefs(this@FoodDetailActivity, userId)!!)
         val call = ApiClient.getClient.setAddToCart(map)
         call.enqueue(object : Callback<SingleResponse> {
             @SuppressLint("SetTextI18n")
@@ -256,7 +259,7 @@ class FoodDetailActivity : BaseActivity() {
                         edNotes.setText("")
                         qty=0
                         tvFoodQty.text = "1"
-                        tvAddtoCart.text = resources.getString(R.string.addtocart)+" "+ getStringPref(this@FoodDetailActivity, isCurrancy).plus(String.format(Locale.US,"%,.2f",itemModel!!.getItem_price()!!.toDouble()))
+                        tvAddtoCart.text = resources.getString(R.string.addtocart)+" "+ getStringSharedPrefs(this@FoodDetailActivity, isCurrancy).plus(String.format(Locale.US,"%,.2f",itemModel!!.getItem_price()!!.toDouble()))
                         listAddons.clear()
                     }
                 } else {
@@ -298,12 +301,12 @@ class FoodDetailActivity : BaseActivity() {
 
 
         tvFoodName.text = restResponce.getItem_name()
-        tvFoodPrice.text = getStringPref(this@FoodDetailActivity, isCurrancy)+String.format(Locale.US,"%,.2f",restResponce.getItem_price()!!.toDouble())
+        tvFoodPrice.text = getStringSharedPrefs(this@FoodDetailActivity, isCurrancy)+String.format(Locale.US,"%,.2f",restResponce.getItem_price()!!.toDouble())
         tvFoodType.text = restResponce.getCategory_name()
         tvTime.text = restResponce.getDelivery_time()
         tvDetail.text = restResponce.getItem_description()
 
-        tvAddtoCart.text = resources.getString(R.string.addtocart)+" ${getStringPref(
+        tvAddtoCart.text = resources.getString(R.string.addtocart)+" ${getStringSharedPrefs(
             this@FoodDetailActivity,
             isCurrancy
         ).plus(String.format(Locale.US,"%,.2f",itemModel!!.getItem_price()!!.toDouble()))}"
@@ -321,13 +324,13 @@ class FoodDetailActivity : BaseActivity() {
                     }
                     val getPrice = qty * (price + itemModel!!.getItem_price()!!.toDouble())
                     tvAddtoCart.text =
-                        resources.getString(R.string.addtocart)+" "+ getStringPref(this@FoodDetailActivity, isCurrancy).plus(
+                        resources.getString(R.string.addtocart)+" "+ getStringSharedPrefs(this@FoodDetailActivity, isCurrancy).plus(
                             String.format(Locale.US,"%,.2f",getPrice)
                         )
                 } else {
                     val getPrice = qty * itemModel!!.getItem_price()!!.toDouble()
                     tvAddtoCart.text =
-                        resources.getString(R.string.addtocart)+" "+ getStringPref(this@FoodDetailActivity, isCurrancy).plus(
+                        resources.getString(R.string.addtocart)+" "+ getStringSharedPrefs(this@FoodDetailActivity, isCurrancy).plus(
                             String.format(Locale.US,"%,.2f",getPrice)
                         )
                 }
@@ -335,7 +338,7 @@ class FoodDetailActivity : BaseActivity() {
         }
 
         ivPlus.setOnClickListener {
-            if(qty<getStringPref(this@FoodDetailActivity,SharePreference.isMiniMumQty)!!.toInt()){
+            if(qty<getStringSharedPrefs(this@FoodDetailActivity,SharePreference.isMiniMumQty)!!.toInt()){
                 qty = qty + 1
                 tvFoodQty.text = qty.toString()
                 if (listSeletecAddons.size > 0) {
@@ -344,19 +347,19 @@ class FoodDetailActivity : BaseActivity() {
                         price = price + listSeletecAddons.get(i).getPrice()!!.toDouble()
                     }
                     val getPrice = qty * (price + itemModel!!.getItem_price()!!.toDouble())
-                    tvAddtoCart.text =resources.getString(R.string.addtocart)+" "+ getStringPref(
+                    tvAddtoCart.text =resources.getString(R.string.addtocart)+" "+ getStringSharedPrefs(
                         this@FoodDetailActivity,
                         isCurrancy
                     ).plus(String.format(Locale.US,"%,.2f",getPrice))
                 } else {
                     val getPrice = qty * itemModel!!.getItem_price()!!.toDouble()
-                    tvAddtoCart.text =  resources.getString(R.string.addtocart)+" "+ getStringPref(
+                    tvAddtoCart.text =  resources.getString(R.string.addtocart)+" "+ getStringSharedPrefs(
                         this@FoodDetailActivity,
                         isCurrancy
                     ).plus(String.format(Locale.US,"%,.2f",getPrice))
                 }
             }else{
-                alertErrorOrValidationDialog(this@FoodDetailActivity,"Maximum quantity allowed ${getStringPref(this@FoodDetailActivity,SharePreference.isMiniMumQty)}")
+                alertErrorOrValidationDialog(this@FoodDetailActivity,"Maximum quantity allowed ${getStringSharedPrefs(this@FoodDetailActivity,SharePreference.isMiniMumQty)}")
             }
 
         }
@@ -390,7 +393,7 @@ class FoodDetailActivity : BaseActivity() {
         }
 
         tvAddtoCart.setOnClickListener {
-            if (SharePreference.getBooleanPref(this@FoodDetailActivity, SharePreference.isLogin)) {
+            if (SharePreference.getBooleanSharedPrefs(this@FoodDetailActivity, SharePreference.isLogin)) {
                 var strAddonsGetId = ""
                 Common.getLog("getFinalAddonsList", Gson().toJson(listAddons))
                 if (listAddons.size > 0) {
@@ -501,7 +504,7 @@ class FoodDetailActivity : BaseActivity() {
                 tvFoodQty.text.toString().toInt() * (price + itemModel!!.getItem_price()!!
                     .toDouble())
             tvAddtoCart.text =
-                resources.getString(R.string.addtocart)+" "+getStringPref(this@FoodDetailActivity, isCurrancy).plus(String.format(Locale.US,"%,.2f",getPrice))
+                resources.getString(R.string.addtocart)+" "+getStringSharedPrefs(this@FoodDetailActivity, isCurrancy).plus(String.format(Locale.US,"%,.2f",getPrice))
             dialog.dismiss()
         }
         dialog.show()
@@ -529,7 +532,7 @@ class FoodDetailActivity : BaseActivity() {
                     if(String.format(Locale.US,"%.2f",getAddonsList[position].getPrice()!!.toDouble())=="0.00"){
                         tvAddonsPrice.text ="Free"
                     }else{
-                        tvAddonsPrice.text = getStringPref(
+                        tvAddonsPrice.text = getStringSharedPrefs(
                             this@FoodDetailActivity,
                             isCurrancy
                         )+String.format(Locale.US,"%,.2f",getAddonsList[position].getPrice()!!.toDouble())
@@ -598,7 +601,7 @@ class FoodDetailActivity : BaseActivity() {
                     if(String.format(Locale.US,"%,.2f",lisAddons[position].getPrice()!!.toDouble())=="0.00"){
                         tvAddonsPrice.text ="Free"
                     }else{
-                        tvAddonsPrice.text = getStringPref(
+                        tvAddonsPrice.text = getStringSharedPrefs(
                             this@FoodDetailActivity,
                             isCurrancy
                         )+String.format(Locale.US,"%,.2f",lisAddons[position].getPrice()!!.toDouble())
@@ -614,14 +617,14 @@ class FoodDetailActivity : BaseActivity() {
                                 price = price + getSelectedlist.get(i).getPrice()!!.toDouble()
                             }
                             val getPrice:Double = tvFoodQty.text.toString().toInt()*(price + itemModel!!.getItem_price()!!.toDouble())
-                            tvAddtoCart.text = resources.getString(R.string.addtocart)+" "+getStringPref(this@FoodDetailActivity,isCurrancy).plus(String.format(Locale.US,"%,.2f",getPrice))
+                            tvAddtoCart.text = resources.getString(R.string.addtocart)+" "+getStringSharedPrefs(this@FoodDetailActivity,isCurrancy).plus(String.format(Locale.US,"%,.2f",getPrice))
                         } else {
                             rvAddons.visibility = View.GONE
                             tvNoDataAddonsFound.visibility = View.VISIBLE
                             val getPrice:Double =
                                 tvFoodQty.text.toString().toInt() * itemModel!!.getItem_price()!!
                                     .toDouble()
-                            tvAddtoCart.text = resources.getString(R.string.addtocart)+" "+getStringPref(this@FoodDetailActivity,isCurrancy).plus(String.format(Locale.US,"%,.2f",getPrice))
+                            tvAddtoCart.text = resources.getString(R.string.addtocart)+" "+getStringSharedPrefs(this@FoodDetailActivity,isCurrancy).plus(String.format(Locale.US,"%,.2f",getPrice))
 
                         }
                         notifyDataSetChanged()
@@ -658,7 +661,7 @@ class FoodDetailActivity : BaseActivity() {
             showLoadingProgress(this@FoodDetailActivity)
         }
         val map = HashMap<String, String>()
-        map.put("user_id", SharePreference.getStringPref(this@FoodDetailActivity, SharePreference.userId)!!)
+        map.put("user_id", SharePreference.getStringSharedPrefs(this@FoodDetailActivity, SharePreference.userId)!!)
         val call = ApiClient.getClient.getCartCount(map)
         call.enqueue(object : Callback<CartCountModel> {
             @SuppressLint("SetTextI18n")
@@ -679,9 +682,9 @@ class FoodDetailActivity : BaseActivity() {
                         }
 
                         if(!isFristTime){
-                            timer = Timer()
+                            Timer().also { timer = it }
                             val handler = Handler()
-                            val Update = Runnable {
+                            val update = Runnable {
                                 if (currentPage == imagelist!!.size) {
                                     currentPage = 0
                                 }
@@ -693,7 +696,7 @@ class FoodDetailActivity : BaseActivity() {
                             }
                             timer!!.schedule(object : TimerTask() {
                                 override fun run() {
-                                    handler.post(Update)
+                                    handler.post(update)
                                 }
                             }, 4000, 3000)
                         }
@@ -735,7 +738,7 @@ class FoodDetailActivity : BaseActivity() {
                         error.getString("message")
                     )
                     if(!isFristTime){
-                        timer = Timer()
+                        Timer().also { timer = it }
                         val handler = Handler()
                         val Update = Runnable {
                             if (currentPage == imagelist!!.size) {

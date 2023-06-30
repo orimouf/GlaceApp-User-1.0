@@ -13,6 +13,7 @@ import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
 import com.foodapp.app.utils.Common
 import com.foodapp.app.api.*
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_forgetpassword.edEmail
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +25,7 @@ class ForgetPasswordActivity:BaseActivity() {
         return R.layout.activity_forgetpassword
     }
     override fun InitView() {
-        Common.getCurrentLanguage(this@ForgetPasswordActivity, false)
+        this@ForgetPasswordActivity.getCurrentLanguage(false)
     }
 
     fun onClick(v: View?) {
@@ -113,6 +114,6 @@ class ForgetPasswordActivity:BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@ForgetPasswordActivity, false)
+        this@ForgetPasswordActivity.getCurrentLanguage(false)
     }
 }

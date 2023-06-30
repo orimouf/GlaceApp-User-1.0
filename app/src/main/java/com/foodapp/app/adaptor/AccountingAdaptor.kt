@@ -53,19 +53,19 @@ class AccountingAdaptor(val context: Context, private val orders: ArrayList<Orde
         outputView(holder, order)
 
         holder.tvAccountingCheck.setOnClickListener {
-            if (context is AccountingActivity) {
+            if (context is com.foodapp.app.activity.AccountingActivity) {
                 context.makeItCheck(order.id, "order")
             }
         }
 
         holder.tvAccountingDelete.setOnClickListener {
-            if (context is AccountingActivity) {
+            if (context is com.foodapp.app.activity.AccountingActivity) {
                 context.deleteOrder(order.id)
             }
         }
 
         holder.tvAccountingEdit.setOnClickListener {
-            if (context is AccountingActivity) {
+            if (context is com.foodapp.app.activity.AccountingActivity) {
                 context.editOrder(order)
             }
         }
@@ -97,7 +97,7 @@ class AccountingAdaptor(val context: Context, private val orders: ArrayList<Orde
         val verssment = parseInt(order.verssi)
         dayAmount += verssment
 
-        if (context is AccountingActivity) {
+        if (context is com.foodapp.app.activity.AccountingActivity) {
             context.tvTotalDayView.text = dayAmount.toString()
         }
 

@@ -1,16 +1,16 @@
 package com.foodapp.app.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.view.View
 import com.foodapp.app.BuildConfig
 import com.foodapp.app.R
 import com.foodapp.app.activity.*
-import com.foodapp.app.api.ApiClient.PrivicyPolicy
 import com.foodapp.app.base.BaseFragmnet
-import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.getCurrentLanguage
 import com.foodapp.app.utils.SharePreference
+import com.foodapp.app.utils.SharePreference.Companion.getBooleanSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.isLogin
+import com.foodapp.app.utils.SharePreference.Companion.setStringSharedPrefs
 import kotlinx.android.synthetic.main.fragment_home.ivMenu
 import kotlinx.android.synthetic.main.fragment_setting.*
 
@@ -20,40 +20,40 @@ class SettingFragment: BaseFragmnet() {
         return R.layout.fragment_setting
     }
     override fun Init(view: View) {
-        getCurrentLanguage(activity!!, false)
+        requireActivity().getCurrentLanguage(false)
         ivMenu.setOnClickListener {
             (activity as DashboardActivity?)!!.onDrawerToggle()
         }
 
         cvBtnEditProfile.setOnClickListener {
-            if(SharePreference.getBooleanPref(activity!!,SharePreference.isLogin)){
+            if(getBooleanSharedPrefs(requireActivity(),isLogin)){
                 openActivity(EditProfileActivity::class.java)
             }else {
                 openActivity(LoginActivity::class.java)
-                activity!!.finish()
-                activity!!.finishAffinity()
+                requireActivity().finish()
+                requireActivity().finishAffinity()
             }
         }
 
         cvBtnPassword.setOnClickListener {
-            if(SharePreference.getBooleanPref(activity!!,SharePreference.isLogin)){
+            if(getBooleanSharedPrefs(requireActivity(),isLogin)){
                 openActivity(ChangePasswordActivity::class.java)
             }else {
                 openActivity(LoginActivity::class.java)
-                activity!!.finish()
-                activity!!.finishAffinity()
+                requireActivity().finish()
+                requireActivity().finishAffinity()
             }
         }
         cvPolicy.setOnClickListener {
             openActivity(ProvacyPolicyActivity::class.java)
         }
         llArabic.setOnClickListener {
-            SharePreference.setStringPref(activity!!, SharePreference.SELECTED_LANGUAGE,activity!!.resources.getString(R.string.language_hindi))
-            getCurrentLanguage(activity!!, true)
+            setStringSharedPrefs(requireActivity(), SharePreference.SELECTED_LANGUAGE,requireActivity().resources.getString(R.string.language_hindi))
+            requireActivity().getCurrentLanguage(true)
         }
         llEnglish.setOnClickListener {
-            SharePreference.setStringPref(activity!!, SharePreference.SELECTED_LANGUAGE,activity!!.resources.getString(R.string.language_english))
-            getCurrentLanguage(activity!!, true)
+            setStringSharedPrefs(requireActivity(), SharePreference.SELECTED_LANGUAGE,requireActivity().resources.getString(R.string.language_english))
+            requireActivity().getCurrentLanguage(true)
         }
         cvShare.setOnClickListener {
             try {
@@ -71,7 +71,7 @@ class SettingFragment: BaseFragmnet() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(activity!!, false)
+        requireActivity().getCurrentLanguage(false)
     }
 
 

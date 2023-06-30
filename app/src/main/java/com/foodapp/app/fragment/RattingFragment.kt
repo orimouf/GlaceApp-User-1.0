@@ -1,50 +1,19 @@
 package com.foodapp.app.fragment
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Dialog
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
-import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.app.R
 import com.foodapp.app.activity.DashboardActivity
 import com.foodapp.app.activity.LoginActivity
-import com.foodapp.app.api.ApiClient
-import com.foodapp.app.api.ListResponse
-import com.foodapp.app.api.SingleResponse
-import com.foodapp.app.base.BaseAdaptor
 import com.foodapp.app.base.BaseFragmnet
 import com.foodapp.app.model.RattingModel
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.alertErrorOrValidationDialog
-import com.foodapp.app.utils.Common.dismissLoadingProgress
-import com.foodapp.app.utils.Common.showLoadingProgress
-import com.foodapp.app.utils.SharePreference
-import kotlinx.android.synthetic.main.dlg_write_review.view.*
+import com.foodapp.app.utils.Common.getCurrentLanguage
+import com.foodapp.app.utils.SharePreference.Companion.getBooleanSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.isLogin
 import kotlinx.android.synthetic.main.fragment_ratting.*
 import kotlinx.android.synthetic.main.fragment_ratting.ivMenu
 import kotlinx.android.synthetic.main.fragment_ratting.swiperefresh
-import kotlinx.android.synthetic.main.fragment_ratting.tvNoDataFound
-import kotlinx.android.synthetic.main.row_ratting.view.*
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.HashMap
 
 class RattingFragment:BaseFragmnet() {
     var rattingList:ArrayList<RattingModel>?=null
@@ -53,13 +22,13 @@ class RattingFragment:BaseFragmnet() {
     }
 
     override fun Init(view: View) {
-        Common.getCurrentLanguage(activity!!, false)
+        requireActivity().getCurrentLanguage(false)
         rattingList= ArrayList()
-        if(Common.isCheckNetwork(activity!!)){
+        if(Common.isCheckNetwork(requireActivity())){
             //callApiRatting(false)
         }else{
             alertErrorOrValidationDialog(
-                activity!!,
+                requireActivity(),
                 resources.getString(R.string.no_internet)
             )
         }
@@ -68,23 +37,23 @@ class RattingFragment:BaseFragmnet() {
             (activity as DashboardActivity?)!!.onDrawerToggle()
         }
         ivAddWallpaper.setOnClickListener {
-            if(SharePreference.getBooleanPref(activity!!,SharePreference.isLogin)){
+            if(getBooleanSharedPrefs(requireActivity(),isLogin)){
                 //mWriteReviewDialog(activity!!)
             }else {
                 openActivity(LoginActivity::class.java)
-                activity!!.finish()
+                requireActivity().finish()
             }
 
         }
 
         swiperefresh.setOnRefreshListener { // Your code to refresh the list here.
             rattingList= ArrayList()
-            if(Common.isCheckNetwork(activity!!)){
+            if(Common.isCheckNetwork(requireActivity())){
                 swiperefresh.isRefreshing=false
                 //callApiRatting(false)
             }else{
                 alertErrorOrValidationDialog(
-                    activity!!,
+                    requireActivity(),
                     resources.getString(R.string.no_internet)
                 )
             }

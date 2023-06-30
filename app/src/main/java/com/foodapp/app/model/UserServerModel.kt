@@ -6,8 +6,6 @@ class UserServerModel(
 
     val appId: String,
 
-    val profilePic: String,
-
     val username: String,
 
     val email: String,
@@ -15,6 +13,8 @@ class UserServerModel(
     val password: String,
 
     val camion: String,
+
+    val profilePic: String,
 
     val isAdmin: Boolean,
 

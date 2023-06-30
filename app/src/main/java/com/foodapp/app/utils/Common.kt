@@ -31,11 +31,11 @@ import com.foodapp.app.base.BaseAdaptor
 import com.foodapp.app.model.AddonsModel
 import com.foodapp.app.model.LocationModel
 import com.foodapp.app.utils.SharePreference.Companion.SELECTED_LANGUAGE
-import com.foodapp.app.utils.SharePreference.Companion.getStringPref
 import com.foodapp.app.utils.SharePreference.Companion.isCurrancy
-import com.foodapp.app.utils.SharePreference.Companion.setBooleanPref
-import com.foodapp.app.utils.SharePreference.Companion.setStringPref
 import com.androidadvance.topsnackbar.TSnackbar
+import com.foodapp.app.utils.SharePreference.Companion.getStringSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.setBooleanSharedPrefs
+import com.foodapp.app.utils.SharePreference.Companion.setStringSharedPrefs
 import kotlinx.android.synthetic.main.dlg_setting.view.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -217,17 +217,17 @@ object Common {
         }
     }
 
-    fun setLogout(activity: Activity) {
-        val getLanguage=getStringPref(activity,SELECTED_LANGUAGE)
-        val isTutorialsActivity:Boolean=SharePreference.getBooleanPref(activity!!,SharePreference.isTutorial)
-        val preference = SharePreference(activity)
+    fun Activity.setLogout() {
+        val getLanguage= getStringSharedPrefs(this,SELECTED_LANGUAGE)
+        val isTutorialsActivity:Boolean=SharePreference.getBooleanSharedPrefs(this!!,SharePreference.isTutorial)
+        val preference = SharePreference(this)
         preference.mLogout()
-        setBooleanPref(activity,SharePreference.isTutorial,isTutorialsActivity)
-        setStringPref(activity,SharePreference.SELECTED_LANGUAGE,getLanguage!!)
-        val intent = Intent(activity, LoginActivity::class.java)
+        setBooleanSharedPrefs(this,SharePreference.isTutorial,isTutorialsActivity)
+        setStringSharedPrefs(this,SharePreference.SELECTED_LANGUAGE,getLanguage!!)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        activity.startActivity(intent);
-        activity.finish()
+        startActivity(intent);
+        finish()
     }
 
 
@@ -255,40 +255,40 @@ object Common {
 
 
     fun getCurrancy(act:Activity):String{
-        return getStringPref(act,isCurrancy)!!
+        return getStringSharedPrefs(act,isCurrancy)!!
     }
 
 
-    fun getCurrentLanguage(context: Activity, isChangeLanguage: Boolean) {
-        if (getStringPref(context,SELECTED_LANGUAGE) == null || getStringPref(context,SELECTED_LANGUAGE).equals("",true)) {
-            setStringPref(context,SELECTED_LANGUAGE, context.resources.getString(R.string.language_english))
+    fun Activity.getCurrentLanguage(isChangeLanguage: Boolean) {
+        if (getStringSharedPrefs(this,SELECTED_LANGUAGE) == null || getStringSharedPrefs(this,SELECTED_LANGUAGE).equals("",true)) {
+            setStringSharedPrefs(this,SELECTED_LANGUAGE, resources.getString(R.string.language_english))
         }
-        val locale = if (getStringPref(context,SELECTED_LANGUAGE).equals(context.resources.getString(R.string.language_english),true)) {
+        val locale = if (getStringSharedPrefs(this,SELECTED_LANGUAGE).equals(resources.getString(R.string.language_english),true)) {
             Locale("en-us")
         } else {
             Locale("ar")
         }
         //start
-        val activityRes = context.resources
+        val activityRes = resources
         val activityConf = activityRes.configuration
         val newLocale = locale
-        if (getStringPref(context,SELECTED_LANGUAGE).equals(context.resources.getString(R.string.language_english),true)) {
+        if (getStringSharedPrefs(this,SELECTED_LANGUAGE).equals(resources.getString(R.string.language_english),true)) {
             activityConf.setLocale(Locale("en-us")) // API 17+ only.
         } else {
             activityConf.setLocale(Locale("ar"))
         }
         activityRes.updateConfiguration(activityConf, activityRes.displayMetrics)
-        val applicationRes = context.applicationContext.resources
+        val applicationRes = applicationContext.resources
         val applicationConf = applicationRes.configuration
         applicationConf.setLocale(newLocale)
         applicationRes.updateConfiguration(applicationConf, applicationRes.displayMetrics)
 
         if (isChangeLanguage) {
-            val intent = Intent(context, DashboardActivity::class.java)
+            val intent = Intent(this, DashboardActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-            context.finish()
-            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            startActivity(intent)
+            finish()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
@@ -358,7 +358,7 @@ object Common {
                 if(String.format(Locale.US,"%.2f",orderHistoryList[position].getPrice()!!.toDouble())=="0.00"){
                     tvAddonsPrice.text = "Free"
                 }else{
-                    tvAddonsPrice.text = getStringPref(activity,isCurrancy)+String.format(Locale.US,"%,.02f", orderHistoryList.get(position).getPrice()!!.toDouble())
+                    tvAddonsPrice.text = getStringSharedPrefs(activity,isCurrancy) +String.format(Locale.US,"%,.02f", orderHistoryList.get(position).getPrice()!!.toDouble())
                 }
 
             }
@@ -457,7 +457,7 @@ object Common {
     }
 
     fun getPrice(price:Double,tvPrice:TextView,activity: Activity){
-        tvPrice.text = getStringPref(activity,isCurrancy)+String.format(Locale.US,"%,.2f",price)
+        tvPrice.text = getStringSharedPrefs(activity,isCurrancy) +String.format(Locale.US,"%,.2f",price)
     }
 
 }

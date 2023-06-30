@@ -89,7 +89,7 @@ class AccountingActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun InitView() {
-        getCurrentLanguage(this@AccountingActivity,false)
+        this@AccountingActivity.getCurrentLanguage(false)
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -343,13 +343,13 @@ class AccountingActivity : BaseActivity() {
             val total_to_pay = updateDialog.etUpdateTotalSomme.text.toString()
             val verssi = updateDialog.etUpdateVerssi.text.toString()
             val rest = updateDialog.etUpdateRest.text.toString()
-            val status = updateDialog.etUpdateStatus.text.toString()
+            val _status = updateDialog.etUpdateStatus.text.toString()
 
             val databaseHandler = DatabaseHandler(this)
 
-            val statusInt = status.toInt()
+            val statusInt = _status.toInt()
 
-            if (total_to_pay.isNotEmpty() && verssi.isNotEmpty() && status.isNotEmpty() && rest.isNotEmpty()) {
+            if (total_to_pay.isNotEmpty() && verssi.isNotEmpty() && _status.isNotEmpty() && rest.isNotEmpty()) {
 
                 val status =
                     databaseHandler.updateOrderSummary(OrderSummaryModel(order.id,order.server_id, order.client_name, order.client_id,
@@ -386,6 +386,6 @@ class AccountingActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(this@AccountingActivity, false)
+        this@AccountingActivity.getCurrentLanguage(false)
     }
 }

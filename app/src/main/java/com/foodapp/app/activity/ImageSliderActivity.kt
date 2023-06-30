@@ -9,8 +9,8 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
-import com.foodapp.app.utils.Common
 import com.bumptech.glide.Glide
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_imagepager.*
 
 class ImageSliderActivity:BaseActivity() {
@@ -63,6 +63,6 @@ class ImageSliderActivity:BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@ImageSliderActivity, false)
+        this@ImageSliderActivity.getCurrentLanguage(false)
     }
 }

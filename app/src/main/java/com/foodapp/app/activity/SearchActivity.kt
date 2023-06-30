@@ -11,10 +11,10 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foodapp.app.R
 import com.foodapp.app.base.BaseActivity
-import com.foodapp.app.utils.Common
 import com.foodapp.app.adaptor.ClientAdaptor
 import com.foodapp.app.model.ClientModel
 import com.foodapp.app.model.VerssementModel
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_addproduct.*
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_search.ivBack
@@ -61,7 +61,7 @@ class SearchActivity : BaseActivity() {
     }
 
     override fun InitView() {
-        Common.getCurrentLanguage(this@SearchActivity, false)
+        this@SearchActivity.getCurrentLanguage(false)
 
         setupListOfDataIntoRecyclerView("")
 
@@ -138,6 +138,6 @@ class SearchActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@SearchActivity, false)
+        this@SearchActivity.getCurrentLanguage(false)
     }
 }

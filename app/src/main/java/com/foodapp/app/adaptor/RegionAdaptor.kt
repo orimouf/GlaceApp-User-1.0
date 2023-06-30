@@ -13,7 +13,7 @@ import com.foodapp.app.api.Communicator
 import com.foodapp.app.model.RegionModel
 import kotlinx.android.synthetic.main.row_region.view.*
 
-
+@Suppress("UNSAFE_CALL_ON_PARTIALLY_DEFINED_RESOURCE")
 class RegionAdaptor(val context: Context, private val regions: ArrayList<RegionModel>, private val listener: Communicator, private val selectPosition: Int) :
     RecyclerView.Adapter<RegionAdaptor.ViewHolder>() {
 
@@ -53,7 +53,7 @@ class RegionAdaptor(val context: Context, private val regions: ArrayList<RegionM
             holder.llRegionC?.background = null
         }
 
-        holder.tvRegionName?.text = region.region_name
+        holder.tvRegionName.text = region.region_name
 
         holder.llRegionC?.setOnClickListener {
             listener.passData(position,region.region_name)
@@ -72,7 +72,7 @@ class RegionAdaptor(val context: Context, private val regions: ArrayList<RegionM
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Holds the TextView that will add each item to
-        val tvRegionName: TextView ?= view.tvRegionName
+        val tvRegionName: TextView = view.tvRegionName
         val llRegionC: LinearLayout ?= view.llRegionC
     }
 }

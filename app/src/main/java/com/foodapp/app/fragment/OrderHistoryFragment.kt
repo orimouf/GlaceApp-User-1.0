@@ -14,25 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.app.R
 import com.foodapp.app.activity.DashboardActivity
 import com.foodapp.app.activity.OrderDetailActivity
-import com.foodapp.app.api.ApiClient
-import com.foodapp.app.api.ListResponse
 import com.foodapp.app.base.BaseAdaptor
 import com.foodapp.app.base.BaseFragmnet
 import com.foodapp.app.model.OrderHistoryModel
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.alertErrorOrValidationDialog
-import com.foodapp.app.utils.Common.dismissLoadingProgress
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import com.foodapp.app.utils.Common.getDate
-import com.foodapp.app.utils.Common.showLoadingProgress
 import com.foodapp.app.utils.SharePreference
-import com.foodapp.app.utils.SharePreference.Companion.getStringPref
-import com.foodapp.app.utils.SharePreference.Companion.userId
+import com.foodapp.app.utils.SharePreference.Companion.getStringSharedPrefs
 import kotlinx.android.synthetic.main.fragment_orderhistory.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class OrderHistoryFragment : BaseFragmnet() {
@@ -41,11 +33,11 @@ class OrderHistoryFragment : BaseFragmnet() {
     }
 
     override fun Init(view: View) {
-        Common.getCurrentLanguage(activity!!, false)
-        if (Common.isCheckNetwork(activity!!)) {
+        requireActivity().getCurrentLanguage(false)
+        if (Common.isCheckNetwork(requireActivity())) {
             //callApiOrderHistory()
         } else {
-            alertErrorOrValidationDialog(activity!!,resources.getString(R.string.no_internet))
+            alertErrorOrValidationDialog(requireActivity(),resources.getString(R.string.no_internet))
         }
 
         ivMenu.setOnClickListener {
@@ -53,11 +45,11 @@ class OrderHistoryFragment : BaseFragmnet() {
         }
 
         swiperefresh.setOnRefreshListener {
-            if (Common.isCheckNetwork(activity!!)) {
+            if (Common.isCheckNetwork(requireActivity())) {
                 swiperefresh.isRefreshing=false
                 //callApiOrderHistory()
             } else {
-                alertErrorOrValidationDialog(activity!!,resources.getString(R.string.no_internet))
+                alertErrorOrValidationDialog(requireActivity(),resources.getString(R.string.no_internet))
             }
         }
     }
@@ -106,7 +98,7 @@ class OrderHistoryFragment : BaseFragmnet() {
 //
     fun setFoodCategoryAdaptor(orderHistoryList: ArrayList<OrderHistoryModel>) {
         val orderHistoryAdapter =
-            object : BaseAdaptor<OrderHistoryModel>(activity!!, orderHistoryList) {
+            object : BaseAdaptor<OrderHistoryModel>(requireActivity(), orderHistoryList) {
                 @SuppressLint("SetTextI18n", "NewApi", "UseCompatLoadingForDrawables")
                 override fun onBindData(
                     holder: RecyclerView.ViewHolder?,
@@ -140,7 +132,7 @@ class OrderHistoryFragment : BaseFragmnet() {
 
 
                     tvOrderNumber.text = orderHistoryList.get(position).getOrder_number()
-                    tvPrice.text =getStringPref(activity!!,SharePreference.isCurrancy)+String.format(Locale.US,"%,.2f",orderHistoryList.get(position).getTotal_price()!!.toDouble())
+                    tvPrice.text = getStringSharedPrefs(activity!!,SharePreference.isCurrancy) +String.format(Locale.US,"%,.2f",orderHistoryList.get(position).getTotal_price()!!.toDouble())
                     tvQtyNumber.text = orderHistoryList.get(position).getQty()
 
 
@@ -356,13 +348,13 @@ class OrderHistoryFragment : BaseFragmnet() {
                 }
             }
         rvOrderHistory.adapter = orderHistoryAdapter
-        rvOrderHistory.layoutManager = LinearLayoutManager(activity!!)
+        rvOrderHistory.layoutManager = LinearLayoutManager(requireActivity())
         rvOrderHistory.itemAnimator = DefaultItemAnimator()
         rvOrderHistory.isNestedScrollingEnabled = true
     }
 
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(activity!!, false)
+        requireActivity().getCurrentLanguage(false)
     }
 }

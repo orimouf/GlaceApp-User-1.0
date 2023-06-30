@@ -16,6 +16,8 @@
             android:padding="@dimen/_3sdp"
             android:layout_marginLeft="@dimen/_2sdp"
             android:onClick="onClick"
+            android:contentDescription="@string/go_back"
+            android:hint="@string/e_g_5"
             android:id="@+id/ivBack"
             android:rotation="180"
             android:src="@drawable/ic_back"
@@ -48,20 +50,22 @@
                 app:riv_oval="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_placeholder"
-                android:id="@+id/ivProfile"
+                android:id="@+id/ivProfileEditPic"
                 />
             <ImageView
                 android:id="@+id/ivGellary"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:adjustViewBounds="true"
                 android:onClick="onClick"
+                android:contentDescription="@string/edit_image"
+                android:hint="@string/e_g_5"
                 android:padding="@dimen/_8sdp"
                 android:background="@drawable/bg_black_corner_10"
                 android:src="@drawable/ic_camera"
-                android:tint="@color/white"/>
+                app:tint="@color/white"/>
         </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +80,7 @@
             tools:ignore="MissingPrefix" />
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="@dimen/_40sdp"
             android:background="@drawable/bg_onlycorner_gary"
             android:id="@+id/edEmailAddress"
             fontPath="@string/font_medium"
@@ -87,7 +91,6 @@
             android:hint="Email Address"
             android:textAlignment="viewStart"
             android:textSize="@dimen/_12ssp"
-            android:editable="false"
             android:layout_marginLeft="@dimen/_12sdp"
             android:layout_marginRight="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -105,7 +108,7 @@
             tools:ignore="MissingPrefix" />
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="@dimen/_40sdp"
             android:background="@drawable/bg_onlycorner_gary"
             android:id="@+id/edUserName"
             android:gravity="start|center_vertical"
@@ -152,7 +155,7 @@
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp"
+        android:layout_height="@dimen/_40sdp"
         android:backgroundTint="@color/light_orange"
         android:background="@drawable/bg_corner_white_10"
         fontPath="@string/font_medium"

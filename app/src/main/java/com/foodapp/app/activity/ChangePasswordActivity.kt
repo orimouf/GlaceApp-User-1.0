@@ -19,6 +19,7 @@ import com.foodapp.app.utils.Common.showLoadingProgress
 import com.foodapp.app.utils.SharePreference
 import com.foodapp.app.api.*
 import com.foodapp.app.utils.Common
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.activity_changepassword.*
 import org.json.JSONObject
 import retrofit2.Call
@@ -32,7 +33,7 @@ class ChangePasswordActivity:BaseActivity() {
     }
 
     override fun InitView() {
-        Common.getCurrentLanguage(this@ChangePasswordActivity, false)
+        this@ChangePasswordActivity.getCurrentLanguage(false)
     }
 
     fun onClick(v: View?) {
@@ -53,7 +54,7 @@ class ChangePasswordActivity:BaseActivity() {
                     Common.showErrorFullMsg(this@ChangePasswordActivity,resources.getString(R.string.validation_valid_cpassword))
                 }else{
                     val hasmap = HashMap<String, String>()
-                    hasmap.put("user_id", SharePreference.getStringPref(this@ChangePasswordActivity,SharePreference.userId)!!)
+                    hasmap.put("user_id", SharePreference.getStringSharedPrefs(this@ChangePasswordActivity,SharePreference.userId)!!)
                     hasmap.put("old_password", edOldPass.text.toString())
                     hasmap.put("new_password", edNewPassword.text.toString())
                     if(isCheckNetwork(this@ChangePasswordActivity)){
@@ -105,10 +106,9 @@ class ChangePasswordActivity:BaseActivity() {
     fun successfulDialog(act: Activity, msg: String?) {
         var dialog: Dialog? = null
         try {
-            if (dialog != null) {
-                dialog.dismiss()
-                dialog = null
-            }
+//            if (dialog != null) {
+//                dialog.dismiss()
+//            }
             dialog = Dialog(act, R.style.AppCompatAlertDialogStyleBig)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.window!!.setLayout(
@@ -136,6 +136,6 @@ class ChangePasswordActivity:BaseActivity() {
     }
     override fun onResume() {
         super.onResume()
-        Common.getCurrentLanguage(this@ChangePasswordActivity, false)
+        this@ChangePasswordActivity.getCurrentLanguage(false)
     }
 }

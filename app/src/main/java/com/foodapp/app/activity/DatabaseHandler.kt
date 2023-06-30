@@ -600,7 +600,7 @@ class DatabaseHandler(context: Context) :
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROMT$TABLE_USER WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_USER WHERE $KEY_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -687,7 +687,94 @@ class DatabaseHandler(context: Context) :
         var responce = false
 
         // Query to select all the records from the table.
-        val selectQuery = "SELECT * FROMT$TABLE_VERSSEMENT WHERE $KEY_ID = '$id'"
+        val selectQuery = "SELECT * FROM $TABLE_VERSSEMENT WHERE $KEY_ID = '$id'"
+
+
+        val db = this.readableDatabase
+        // Cursor is used to read the record one by one. Add them to data model class.
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return responce
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                responce = true
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return responce
+    }
+
+    fun viewCheckProduct(id: Int): Boolean {
+
+        var responce = false
+
+        // Query to select all the records from the table.
+        val selectQuery = "SELECT * FROM $TABLE_ITEMS WHERE $KEY_ID = '$id'"
+
+
+        val db = this.readableDatabase
+        // Cursor is used to read the record one by one. Add them to data model class.
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return responce
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                responce = true
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return responce
+    }
+
+    fun viewCheckOrders(id: Int): Boolean {
+
+        var responce = false
+
+        // Query to select all the records from the table.
+        val selectQuery = "SELECT * FROM $TABLE_ORDER_SUMMARY WHERE $KEY_ID = '$id'"
+
+
+        val db = this.readableDatabase
+        // Cursor is used to read the record one by one. Add them to data model class.
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return responce
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                responce = true
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return responce
+    }
+
+    fun viewCheckOrderedProducts(id: Int): Boolean {
+
+        var responce = false
+
+        // Query to select all the records from the table.
+        val selectQuery = "SELECT * FROM $TABLE_ALL_PRODUCT WHERE $KEY_ID = '$id'"
 
 
         val db = this.readableDatabase
@@ -1380,6 +1467,7 @@ class DatabaseHandler(context: Context) :
     fun updateRegion(region: RegionModel): Int {
         val db = this.writableDatabase
         val contentValues = ContentValues()
+        contentValues.put(KEY_SERVER_ID, region.server_id)
         contentValues.put(KEY_REGION, region.region_name)
         contentValues.put(KEY_CREATEAT, region.createdAt)
         contentValues.put(KEY_UPDATEAT, region.updatedAt)

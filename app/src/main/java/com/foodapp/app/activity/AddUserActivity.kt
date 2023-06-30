@@ -44,7 +44,7 @@ class AddUserActivity : BaseActivity() {
     }
 
     override fun InitView() {
-        getCurrentLanguage(this@AddUserActivity,false)
+        this@AddUserActivity.getCurrentLanguage(false)
 
         btnAddUser.setOnClickListener {
             addUser()
@@ -74,6 +74,6 @@ class AddUserActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCurrentLanguage(this@AddUserActivity, false)
+        this@AddUserActivity.getCurrentLanguage(false)
     }
 }

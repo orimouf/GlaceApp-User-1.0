@@ -1,40 +1,20 @@
 package com.foodapp.app.fragment
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foodapp.app.R
 import com.foodapp.app.activity.DashboardActivity
-import com.foodapp.app.activity.FoodDetailActivity
-import com.foodapp.app.api.ApiClient
-import com.foodapp.app.api.RestResponse
-import com.foodapp.app.api.SingleResponse
 import com.foodapp.app.base.BaseAdaptor
 import com.foodapp.app.base.BaseFragmnet
 import com.foodapp.app.model.FavouriteFoodModel
-import com.foodapp.app.model.FoodFavouriteResponseModel
 import com.foodapp.app.utils.Common
 import com.foodapp.app.utils.Common.alertErrorOrValidationDialog
-import com.foodapp.app.utils.Common.dismissLoadingProgress
 import com.foodapp.app.utils.Common.isCheckNetwork
-import com.foodapp.app.utils.Common.showLoadingProgress
-import com.foodapp.app.utils.SharePreference
-import com.bumptech.glide.Glide
+import com.foodapp.app.utils.Common.getCurrentLanguage
 import kotlinx.android.synthetic.main.fragment_favourite.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class FavouriteFragment:BaseFragmnet(){
     var CURRENT_PAGES: Int = 1
@@ -48,7 +28,7 @@ class FavouriteFragment:BaseFragmnet(){
        return R.layout.fragment_favourite
     }
     override fun Init(view: View) {
-        Common.getCurrentLanguage(activity!!, false)
+        requireActivity().getCurrentLanguage(false)
         foodList=ArrayList()
         rvFavourite=view.findViewById(R.id.rvFavourite)
         tvNoDataFound=view.findViewById(R.id.tvNoDataFound)
@@ -57,11 +37,11 @@ class FavouriteFragment:BaseFragmnet(){
         ivMenu.setOnClickListener {
             (activity as DashboardActivity?)!!.onDrawerToggle()
         }
-        if (isCheckNetwork(activity!!)) {
+        if (isCheckNetwork(requireActivity())) {
             //callApiFavouriteFood(true)
         } else {
             alertErrorOrValidationDialog(
-                activity!!,
+                requireActivity(),
                 resources.getString(R.string.no_internet)
             )
         }
