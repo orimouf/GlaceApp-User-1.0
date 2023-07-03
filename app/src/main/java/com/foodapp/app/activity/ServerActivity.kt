@@ -40,8 +40,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Integer.parseInt
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.PBEKeySpec
+import javax.crypto.spec.SecretKeySpec
 
 class ServerActivity : BaseActivity() {
 
@@ -132,9 +138,9 @@ class ServerActivity : BaseActivity() {
                     if (getUserList.isEmpty()){ operationDone("user") } else { callApiUsers(hashmapUser, getUserList) }
                     if (getRegionList.isEmpty()){ operationDone("region") } else { callApiRegions(hashmapRegion, getRegionList) }
                     if (getProductList.isEmpty()){ operationDone("product") } else { callApiProducts(hashmapProduct, getProductList) }
-                    if (getOrderList.isEmpty()){ operationDone("order") } else { callApiOrders(hashmapOrder, getOrderList) }
-                    if (getPaymentList.isEmpty()){ operationDone("payment") } else { callApiPayments(hashmapPayment, getPaymentList) }
-                    if (getOrderedProductList.isEmpty()){ operationDone("orderproduct") } else { callApiOrderedProducts(hashmapOrderedProduct, getOrderedProductList) }
+                    if (getOrderList.isEmpty()){ operationDone("order") } else { callApiOrders(hashmapOrder) }
+                    if (getPaymentList.isEmpty()){ operationDone("payment") } else { callApiPayments(hashmapPayment) }
+                    if (getOrderedProductList.isEmpty()){ operationDone("orderproduct") } else { callApiOrderedProducts(hashmapOrderedProduct) }
                 }
             } else {
                 Common.alertErrorOrValidationDialog(this@ServerActivity,resources.getString(R.string.no_internet))
@@ -390,36 +396,36 @@ class ServerActivity : BaseActivity() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun callApiPayments(hashmap: HashMap<String, ArrayList<VerssementModel>>, userCollection: ArrayList<VerssementModel>) {
+    private fun callApiPayments(hashmap: HashMap<String, ArrayList<VerssementModel>>) {
         Common.showLoadingProgress(this@ServerActivity)
         GlobalScope.launch(Dispatchers.IO) {
             // Async / await Method
             withContext(Dispatchers.Default) {
 
                 val call = ApiClient.getClient.setPayments(hashmap)
-                call.enqueue(object : Callback<RestResponse<VerssementModel>> {
+                call.enqueue(object : Callback<ListResponse<VerssementModel>> {
                     override fun onResponse(
-                        call: Call<RestResponse<VerssementModel>>,
-                        response: Response<RestResponse<VerssementModel>>
+                        call: Call<ListResponse<VerssementModel>>,
+                        response: Response<ListResponse<VerssementModel>>
                     ) {
                         if (response.code() == 201) {
-                            val serverResponse: RestResponse<VerssementModel> = response.body()!!
-                            if (serverResponse.getStatus().equals("1")) {
-                                for (item in userCollection) {
+                            val serverResponse: ListResponse<VerssementModel> = response.body()!!
+                            val serverData = serverResponse.idObj
+
+                            if (serverData?.size != 0) {
+                                for (i in serverData?.indices!!) {
                                     val databaseHandler = DatabaseHandler(applicationContext)
-                                    databaseHandler.updateUpToServer(item.id, "TABLE_VERSSEMENT")
+                                    serverData[i].appId?.let { databaseHandler.updateUpToServer(it.toInt(), "TABLE_VERSSEMENT") }
+                                    serverData[i].appId?.let { databaseHandler.updateServerId(it.toInt(), "TABLE_VERSSEMENT", serverData[i]._id) }
                                 }
                                 Common.dismissLoadingProgress()
-                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
-                                // make view checked
-                                operationDone("payment")
-                            } else if (serverResponse.getStatus().equals("0")) {
+                                successfulDialog(this@ServerActivity, "Payments Up To Server Successfully")
+                            } else {
                                 Common.dismissLoadingProgress()
-                                Common.alertErrorOrValidationDialog(
-                                    this@ServerActivity,
-                                    serverResponse.getMessage()
-                                )
+                                successfulDialog(this@ServerActivity, "All Payments On The Server")
                             }
+                            // make view checked
+                            operationDone("payment")
                         } else {
                             Common.dismissLoadingProgress()
                             Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
@@ -427,7 +433,7 @@ class ServerActivity : BaseActivity() {
                     }
 
                     override fun onFailure(
-                        call: Call<RestResponse<VerssementModel>>,
+                        call: Call<ListResponse<VerssementModel>>,
                         t: Throwable
                     ) {
                         Common.dismissLoadingProgress()
@@ -493,37 +499,37 @@ class ServerActivity : BaseActivity() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun callApiOrders(hashmap: HashMap<String, ArrayList<OrderSummaryModel>>, orderCollection: ArrayList<OrderSummaryModel>) {
+    private fun callApiOrders(hashmap: HashMap<String, ArrayList<OrderSummaryModel>>) {
         Common.showLoadingProgress(this@ServerActivity)
         GlobalScope.launch(Dispatchers.IO) {
             // Async / await Method
             withContext(Dispatchers.Default) {
 
                 val call = ApiClient.getClient.setOrders(hashmap)
-                call.enqueue(object : Callback<RestResponse<OrderSummaryModel>> {
+                call.enqueue(object : Callback<ListResponse<OrderSummaryModel>> {
+                    @RequiresApi(Build.VERSION_CODES.O)
                     override fun onResponse(
-                        call: Call<RestResponse<OrderSummaryModel>>,
-                        response: Response<RestResponse<OrderSummaryModel>>
+                        call: Call<ListResponse<OrderSummaryModel>>,
+                        response: Response<ListResponse<OrderSummaryModel>>
                     ) {
-                        getToast(this@ServerActivity, response.code().toString())
                         if (response.code() == 201) {
-                            val serverResponse: RestResponse<OrderSummaryModel> = response.body()!!
-                            if (serverResponse.getStatus().equals("1")) {
-                                for (item in orderCollection) {
+                            val serverResponse: ListResponse<OrderSummaryModel> = response.body()!!
+                            val serverData = serverResponse.idObj
+
+                            if (serverData?.size != 0) {
+                                for (i in serverData?.indices!!) {
                                     val databaseHandler = DatabaseHandler(applicationContext)
-                                    databaseHandler.updateUpToServer(item.id, "TABLE_ORDER_SUMMARY")
+                                    serverData[i].appId?.let { databaseHandler.updateUpToServer(it.toInt(), "TABLE_ORDER_SUMMARY") }
+                                    serverData[i].appId?.let { databaseHandler.updateServerId(it.toInt(), "TABLE_ORDER_SUMMARY", serverData[i]._id) }
                                 }
                                 Common.dismissLoadingProgress()
-                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
-                                // make view checked
-                                operationDone("order")
-                            } else if (serverResponse.getStatus().equals("0")) {
+                                successfulDialog(this@ServerActivity, "Orders Up To Server Successfully")
+                            } else {
                                 Common.dismissLoadingProgress()
-                                Common.alertErrorOrValidationDialog(
-                                    this@ServerActivity,
-                                    serverResponse.getMessage()
-                                )
+                                successfulDialog(this@ServerActivity, "All Orders On The Server")
                             }
+                            // make view checked
+                            operationDone("order")
                         } else {
                             Common.dismissLoadingProgress()
                             Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
@@ -531,7 +537,7 @@ class ServerActivity : BaseActivity() {
                     }
 
                     override fun onFailure(
-                        call: Call<RestResponse<OrderSummaryModel>>,
+                        call: Call<ListResponse<OrderSummaryModel>>,
                         t: Throwable
                     ) {
                         Common.dismissLoadingProgress()
@@ -547,44 +553,45 @@ class ServerActivity : BaseActivity() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun callApiOrderedProducts(hashmap: HashMap<String, ArrayList<AllProductModel>>, orderedProductCollection: ArrayList<AllProductModel>) {
+    private fun callApiOrderedProducts(hashmap: HashMap<String, ArrayList<AllProductModel>>) {
         Common.showLoadingProgress(this@ServerActivity)
         GlobalScope.launch(Dispatchers.IO) {
             // Async / await Method
             withContext(Dispatchers.Default) {
 
                 val call = ApiClient.getClient.setOrderedProducts(hashmap)
-                call.enqueue(object : Callback<RestResponse<AllProductModel>> {
+                call.enqueue(object : Callback<ListResponse<AllProductModel>> {
                     override fun onResponse(
-                        call: Call<RestResponse<AllProductModel>>,
-                        response: Response<RestResponse<AllProductModel>>
+                        call: Call<ListResponse<AllProductModel>>,
+                        response: Response<ListResponse<AllProductModel>>
                     ) {
                         if (response.code() == 201) {
-                            val serverResponse: RestResponse<AllProductModel> = response.body()!!
-                            if (serverResponse.getStatus().equals("1")) {
-                                for (item in orderedProductCollection) {
+                            val serverResponse: ListResponse<AllProductModel> = response.body()!!
+                            val serverData = serverResponse.idObj
+
+                            if (serverData?.size != 0) {
+                                for (i in serverData?.indices!!) {
                                     val databaseHandler = DatabaseHandler(applicationContext)
-                                    databaseHandler.updateUpToServer(item.id, "TABLE_ALL_PRODUCT")
+                                    serverData[i].appId?.let { databaseHandler.updateUpToServer(it.toInt(), "TABLE_ALL_PRODUCT") }
+                                    serverData[i].appId?.let { databaseHandler.updateServerId(it.toInt(), "TABLE_ALL_PRODUCT", serverData[i]._id) }
                                 }
                                 Common.dismissLoadingProgress()
-                                successfulDialog(this@ServerActivity, serverResponse.getMessage())
-                                // make view checked
-                                operationDone("orderproduct")
-                            } else if (serverResponse.getStatus().equals("0")) {
+                                successfulDialog(this@ServerActivity, "Ordered Products Up To Server Successfully")
+                            } else {
                                 Common.dismissLoadingProgress()
-                                Common.alertErrorOrValidationDialog(
-                                    this@ServerActivity,
-                                    serverResponse.getMessage()
-                                )
+                                successfulDialog(this@ServerActivity, "All Ordered Products On The Server")
                             }
+                            // make view checked
+                            operationDone("orderproduct")
                         } else {
+                            getToast(this@ServerActivity, response.code().toString())
                             Common.dismissLoadingProgress()
                             Common.showErrorFullMsg(this@ServerActivity, "Error with apis")
                         }
                     }
 
                     override fun onFailure(
-                        call: Call<RestResponse<AllProductModel>>,
+                        call: Call<ListResponse<AllProductModel>>,
                         t: Throwable
                     ) {
                         Common.dismissLoadingProgress()

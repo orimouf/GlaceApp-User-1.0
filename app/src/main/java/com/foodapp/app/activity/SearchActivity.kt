@@ -107,7 +107,7 @@ class SearchActivity : BaseActivity() {
             if (payment.isNotEmpty() && rest.isNotEmpty()) {
 
                 val status =
-                    databaseHandler.addVerssement(VerssementModel(0,"", client.id.toString(), client.client_name, client.region,
+                    databaseHandler.addVerssement(VerssementModel(0, "", "","", client.id.toString(), client.client_name, client.region,
                         client.old_credit, payment, rest, 0, 0, "0", "0", "0", date))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Payment saved", Toast.LENGTH_LONG).show()

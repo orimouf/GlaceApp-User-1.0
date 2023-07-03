@@ -174,7 +174,7 @@ class CartActivity : BaseActivity() {
         if (clientName.isNotEmpty() && clientId.isNotEmpty()) {
             val status =
                 databaseHandler.addOrderSummary(
-                    OrderSummaryModel(0,"", clientName, parseInt(clientId), initialProductListId,
+                    OrderSummaryModel(0,"", "", "", clientName, parseInt(clientId), initialProductListId,
                         0, "0", "0", isCredit, date,0, "0", "0", "0",0))
             if (status > -1) {
                 val getOrderId = databaseHandler.viewLastOrderSummary()
@@ -194,7 +194,7 @@ class CartActivity : BaseActivity() {
     fun addToAllProduct(orderID: Int) {
         val databaseHandler = DatabaseHandler(this)
         val status =
-            databaseHandler.addAllProduct(AllProductModel(0,"", orderID, 0, 60, 0, 50, 0,
+            databaseHandler.addAllProduct(AllProductModel(0, "", "", "", orderID, 0, 60, 0, 50, 0,
                 60, 0,60,0,45,0,60,0,45,
                 0,50,0,45,0,30,0,
                 60, 0,50,0,50,0,50,0,
@@ -281,7 +281,7 @@ class CartActivity : BaseActivity() {
         val databaseHandler = DatabaseHandler(this)
         val status =
             databaseHandler.updateAllProduct(AllProductModel(
-                item.id, item.server_id, item.orderId, mini_qty, mini_q_u, trio_qty, trio_q_u,
+                item.id, "", "", item.server_id, item.orderId, mini_qty, mini_q_u, trio_qty, trio_q_u,
                 solo_qty, solo_q_u, pot_qty, pot_q_u, gini_qty,gini_q_u, big_qty, big_q_u,
                 cornito_4_qty, cornito_4_q_u, cornito_5_qty, cornito_5_q_u, cornito_g_qty,
                 cornito_g_q_u, gofrito_qty, gofrito_q_u, pot_v_qty, pot_v_q_u, g8_qty,
@@ -361,7 +361,7 @@ class CartActivity : BaseActivity() {
             val status =
                 databaseHandler.updateOrderSummary(
                     OrderSummaryModel(
-                        orderID, "","", 0,
+                        orderID, "", "", "","", 0,
                         productListID, 0, "", "",0,"",0, "0", getCurrentDateTime(), "0",0
                     ), "up_to_server"
                 )

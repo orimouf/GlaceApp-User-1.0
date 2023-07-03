@@ -182,7 +182,7 @@ class AccountingActivity : BaseActivity() {
 
             if (type == "order") {
                 val databaseHandler = DatabaseHandler(this)
-                val status = databaseHandler.updateOrderSummary(OrderSummaryModel(id,"", "", 0, 0,
+                val status = databaseHandler.updateOrderSummary(OrderSummaryModel(id, "", "","", "", 0, 0,
                     0, "","",0,"",1,"0",getCurrentDateTime(),"0",0), "is_check")
                 if (status > -1) {
                     Toast.makeText(
@@ -195,7 +195,7 @@ class AccountingActivity : BaseActivity() {
                 }
             } else {
                 val databaseHandler = DatabaseHandler(this)
-                val status = databaseHandler.updateVerssement(VerssementModel(id,"", "", "", "",
+                val status = databaseHandler.updateVerssement(VerssementModel(id, "", "", "", "", "", "",
                     "", "","",0,0,"0",getCurrentDateTime(),"0", "0"), "is_check")
                 if (status > -1) {
                     Toast.makeText(
@@ -261,7 +261,7 @@ class AccountingActivity : BaseActivity() {
 
             val databaseHandler = DatabaseHandler(this)
             val status = databaseHandler.deleteVerssement(
-                VerssementModel(id,"", "", "", "", "",
+                VerssementModel(id, "", "","", "", "", "", "",
                     "","",0,0,"0","0","0","0"))
             if (status > -1) {
                 Toast.makeText(
@@ -303,7 +303,7 @@ class AccountingActivity : BaseActivity() {
             if (payment.isNotEmpty() && rest.isNotEmpty()) {
 
                 val status =
-                    databaseHandler.updateVerssement(VerssementModel(0,"", pay.id.toString(), pay.client_name, pay.region,
+                    databaseHandler.updateVerssement(VerssementModel(0, "", "","", pay.id.toString(), pay.client_name, pay.region,
                         pay.old_somme, payment, rest, 0, 0, "0",getCurrentDateTime(),"0", pay.date))
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Payment updated", Toast.LENGTH_LONG).show()
@@ -353,7 +353,7 @@ class AccountingActivity : BaseActivity() {
             if (total_to_pay.isNotEmpty() && verssi.isNotEmpty() && _status.isNotEmpty() && rest.isNotEmpty()) {
 
                 val status =
-                    databaseHandler.updateOrderSummary(OrderSummaryModel(order.id,order.server_id, order.client_name, order.client_id,
+                    databaseHandler.updateOrderSummary(OrderSummaryModel(order.id, "", "",order.server_id, order.client_name, order.client_id,
                         order.product_list_id, total_to_pay.toInt(), verssi, rest, statusInt, order.date,
                         order.is_check, "0",getCurrentDateTime(),"0",0), "All")
                 if (status > -1) {

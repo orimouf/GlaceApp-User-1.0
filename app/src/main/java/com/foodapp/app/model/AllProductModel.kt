@@ -4,6 +4,10 @@ class AllProductModel(
 
     val id: Int,
 
+    var appId: String? = null,
+
+    val _id: String? = null,
+
     val server_id: String,
 
     val orderId: Int,

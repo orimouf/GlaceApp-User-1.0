@@ -58,8 +58,8 @@ interface ApiInterface {
     fun setUsers(@Body map: HashMap<String, ArrayList<UserModel>>): Call<RestResponse<UserModel>>
 
     //Send Payments Data To Server Api 0
-    @POST("appdata/datapayment")
-    fun setPayments(@Body map: HashMap<String, ArrayList<VerssementModel>>): Call<RestResponse<VerssementModel>>
+    @POST("appdata/datapayments")
+    fun setPayments(@Body map: HashMap<String, ArrayList<VerssementModel>>): Call<ListResponse<VerssementModel>>
 
     //Send Users Data To Server Api 0
     @POST("appdata/dataregions")
@@ -71,11 +71,11 @@ interface ApiInterface {
 
     //Send Users Data To Server Api 0
     @POST("appdata/dataorders")
-    fun setOrders(@Body map: HashMap<String, ArrayList<OrderSummaryModel>>): Call<RestResponse<OrderSummaryModel>>
+    fun setOrders(@Body map: HashMap<String, ArrayList<OrderSummaryModel>>): Call<ListResponse<OrderSummaryModel>>
 
     //Send Users Data To Server Api 0
     @POST("appdata/dataorderproducts")
-    fun setOrderedProducts(@Body map: HashMap<String, ArrayList<AllProductModel>>): Call<RestResponse<AllProductModel>>
+    fun setOrderedProducts(@Body map: HashMap<String, ArrayList<AllProductModel>>): Call<ListResponse<AllProductModel>>
 
     //Profile Api 3
     @POST("auth/getprofile")

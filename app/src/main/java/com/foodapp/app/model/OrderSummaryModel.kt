@@ -4,7 +4,11 @@ import java.util.*
 
 class OrderSummaryModel (
 
-    val id: Int,
+    var id: Int,
+
+    var appId: String? = null,
+
+    val _id: String? = null,
 
     val server_id: String,
 

@@ -8,6 +8,7 @@ class ListResponse<T> {
     val products: Array<T>?=null
     val orders: Array<T>?=null
     val orderedProducts: Array<T>?=null
+    val idObj: Array<T>?=null
 
     private var data: ArrayList<T>?=null
 

@@ -4,6 +4,8 @@ class RestResponse<T> {
 
     private var data:T?=null
 
+    val idObj: Array<T>?=null
+
     private var message: String? = null
 
     private var status: String? = null

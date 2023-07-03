@@ -1173,7 +1173,7 @@ class DatabaseHandler(context: Context) :
                 __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
                 up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
-                val order = OrderSummaryModel(id = _id, server_id = server_id, client_name = client_name, client_id = client_id,
+                val order = OrderSummaryModel(id = _id, _id = "", server_id = server_id, client_name = client_name, client_id = client_id,
                     product_list_id = product_list_id, total_to_pay = total_to_pay, verssi = verssi,
                     rest = rest, iscredit = iscredit, up_to_server = up_to_server, date = _date, is_check = is_check
                     , createdAt = createdAt, updatedAt = updatedAt, __v = __v)
@@ -1239,7 +1239,7 @@ class DatabaseHandler(context: Context) :
                 __v = cursor.getString(cursor.getColumnIndexOrThrow(KEY___V))
                 up_to_server = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_UP_TO_SERVER))
 
-                val item = VerssementModel(id, server_id, client_id, cliant_name, region, old_somme, verssi, rest, up_to_server, is_check, _date, createdAt, updatedAt, __v)
+                val item = VerssementModel(id, "", "", server_id, client_id, cliant_name, region, old_somme, verssi, rest, up_to_server, is_check, _date, createdAt, updatedAt, __v)
                 verssementList.add(item)
 
             } while (cursor.moveToNext())
@@ -1539,6 +1539,25 @@ class DatabaseHandler(context: Context) :
             "TABLE_ALL_PRODUCT" -> db.update(TABLE_ALL_PRODUCT, contentValues, "$KEY_ID = $id", null)
             "TABLE_CLIENT" -> db.update(TABLE_CLIENT, contentValues, "$KEY_ID = $id", null)
             "TABLE_REGION" -> db.update(TABLE_REGION, contentValues, "$KEY_ID = $id", null)
+            else -> -1
+        }
+
+        // Closing database connection
+        db.close()
+        return success
+    }
+
+
+    fun updateServerId(id: Int, tableName: String, serverId: String?): Int {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_SERVER_ID, serverId)
+        contentValues.put(KEY_UPDATEAT, getCurrentDateTime())
+
+        val success = when (tableName) {
+            "TABLE_ORDER_SUMMARY" -> db.update(TABLE_ORDER_SUMMARY, contentValues, "$KEY_ID = $id", null)
+            "TABLE_ALL_PRODUCT" -> db.update(TABLE_ALL_PRODUCT, contentValues, "$KEY_ID = $id", null)
+            "TABLE_VERSSEMENT" -> db.update(TABLE_VERSSEMENT, contentValues, "$KEY_ID = $id", null)
             else -> -1
         }
 
