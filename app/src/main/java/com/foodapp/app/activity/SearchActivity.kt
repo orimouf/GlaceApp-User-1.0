@@ -56,7 +56,6 @@ class SearchActivity : BaseActivity() {
      */
     private fun getClientList(string: String): ArrayList<ClientModel> {
         val databaseHandler = DatabaseHandler(this)
-
         return databaseHandler.viewSearchClient(string)
     }
 

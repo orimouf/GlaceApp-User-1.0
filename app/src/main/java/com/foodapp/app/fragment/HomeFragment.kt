@@ -75,7 +75,7 @@ class HomeFragment : BaseFragmnet() , Communicator {
      * Function is used to get the Client List from the database table.
      */
     private fun getClientList(regionName: String): ArrayList<ClientModel> {
-        val databaseHandler: DatabaseHandler = DatabaseHandler(requireContext())
+        val databaseHandler = DatabaseHandler(requireContext())
 
         return databaseHandler.viewClient(-1, false, regionName)
     }
@@ -84,7 +84,7 @@ class HomeFragment : BaseFragmnet() , Communicator {
      * Function is used to get the Region List from the database table.
      */
     private fun getRegionList(): ArrayList<RegionModel> {
-        val databaseHandler: DatabaseHandler = DatabaseHandler(requireContext())
+        val databaseHandler = DatabaseHandler(requireContext())
 
         return databaseHandler.viewRegion()
     }

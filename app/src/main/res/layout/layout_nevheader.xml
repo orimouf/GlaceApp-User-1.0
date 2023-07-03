@@ -242,7 +242,7 @@
             android:orientation="horizontal"
             android:id="@+id/rl_addClient"
             android:onClick="onClick"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="@dimen/_17sdp"
